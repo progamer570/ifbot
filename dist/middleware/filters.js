@@ -36,45 +36,89 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import env from "../services/env.js";
 import { getSystemUsage, getSystemUsageDetails } from "../extra/systemUses.js";
+import auth from "../services/auth.js";
 export default {
     private: function (ctx, next) {
-        var _this = this;
-        var _a, _b;
-        console.log((_a = ctx.chat) === null || _a === void 0 ? void 0 : _a.id);
-        if (ctx.message && "text" in ctx.message && ctx.message.text === "/systemuses") {
-            try {
-                ctx.reply("System uses by : " +
-                    getSystemUsageDetails() +
-                    "System uses by machine:" +
-                    getSystemUsage());
-            }
-            catch (_c) { }
-        }
-        if (((_b = ctx.chat) === null || _b === void 0 ? void 0 : _b.id) !== undefined) {
-            if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
-                next();
-            }
-        }
-        if (ctx.message && containsSGD(ctx.message)) {
-            try {
-                setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-                    var _a;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0: return [4 /*yield*/, ctx.deleteMessage((_a = ctx.message) === null || _a === void 0 ? void 0 : _a.message_id).catch(function (error) {
-                                    console.error("Failed to delete message:", error);
-                                })];
-                            case 1:
-                                _b.sent();
-                                return [2 /*return*/];
+        var _a, _b, _c, _d;
+        return __awaiter(this, void 0, void 0, function () {
+            var callbackData, message, err_1;
+            var _this = this;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        console.log((_a = ctx.chat) === null || _a === void 0 ? void 0 : _a.id);
+                        if (ctx.message && "text" in ctx.message && ctx.message.text === "/systemuses") {
+                            try {
+                                ctx.reply("System uses by : " +
+                                    getSystemUsageDetails() +
+                                    "System uses by machine:" +
+                                    getSystemUsage());
+                            }
+                            catch (_f) { }
                         }
-                    });
-                }); }, 300000);
-            }
-            catch (error) {
-                console.error("Unexpected error while deleting message:", error);
-            }
-        }
+                        if (((_b = ctx.chat) === null || _b === void 0 ? void 0 : _b.id) !== undefined) {
+                            if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
+                                next();
+                            }
+                        }
+                        if (ctx.message && containsSGD(ctx.message)) {
+                            try {
+                                setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                                    var _a;
+                                    return __generator(this, function (_b) {
+                                        switch (_b.label) {
+                                            case 0: return [4 /*yield*/, ctx.deleteMessage((_a = ctx.message) === null || _a === void 0 ? void 0 : _a.message_id).catch(function (error) {
+                                                    console.error("Failed to delete message:", error);
+                                                })];
+                                            case 1:
+                                                _b.sent();
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); }, 300000);
+                            }
+                            catch (error) {
+                                console.error("Unexpected error while deleting message:", error);
+                            }
+                        }
+                        if (!auth.isAdmin((_d = (_c = ctx.from) === null || _c === void 0 ? void 0 : _c.id) !== null && _d !== void 0 ? _d : 0)) return [3 /*break*/, 4];
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 4];
+                        callbackData = ctx.callbackQuery.data;
+                        _e.label = 1;
+                    case 1:
+                        _e.trys.push([1, 3, , 4]);
+                        message = void 0;
+                        switch (callbackData) {
+                            case "addDrama":
+                                message = "";
+                                break;
+                            case "addOngoing":
+                                message = "use /add to add new drama or series or movie";
+                                break;
+                            case "addHindi":
+                                message = "use /addh to add new hindi drama or series or movie";
+                                break;
+                            case "addOngoing":
+                                message = "use /addong to add ongoing drama or series or movie";
+                                break;
+                            case "search":
+                                message = "send uploaded drama or series or movie name ";
+                                break;
+                            default:
+                                message = "Unknown topic. Please try again.";
+                        }
+                        return [4 /*yield*/, ctx.reply(message)];
+                    case 2:
+                        _e.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        err_1 = _e.sent();
+                        console.log("Error handling callback:", err_1);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
     },
 };
 function containsSGD(message) {

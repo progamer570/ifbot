@@ -1,7 +1,8 @@
-
 # Telegram Bot Configuration
 
 This repository contains the configuration settings for the Telegram bot. The bot is designed to perform a variety of actions such as sending and managing messages, handling commands, storing files, and interacting with users across multiple channels and groups.
+
+This project was created for **skill improvement** and is implemented in **TypeScript**.
 
 ## Table of Contents
 
@@ -138,13 +139,37 @@ Below are the key configuration settings that need to be updated for your bot to
 - **Description**: Telegram message link or tutorial video for downloading.
 - **Example**:  
   `HOW_TO_DOWNLOAD_MSG_LINK=https://t.me/message_id_for_tutorial`
-  
+
 ## Setup Instructions
 
 1. Clone this repository to your local machine or server.
 2. Install the required dependencies using `npm install`.
 3. Set up your `.env` file with the necessary values (refer to the configuration settings above).
-4. Start the bot using `npm start`.
+4. Start the bot locally using `npm run dev`.
+
+### To Deploy on Render:
+
+1. **Create a Render Account**:  
+   Go to [Render](https://render.com/) and sign up for an account if you don't have one.
+
+2. **Create a New Web Service**:
+
+   - Click on **New** and select **Web Service**.
+   - Select **Public repository** and enter the repository URL: `https://github.com/anmol0404/ifbot`.
+   - Choose the branch you want to deploy (usually `main` or `master`).
+
+3. **Configure Environment Variables**:
+
+   - In the **Environment** section of the Render service setup, add the necessary environment variables (like the values from your `sample.env` file).
+   - Render will automatically use these environment variables when deploying the application.
+
+4. **Deploy the Bot**:
+
+   - After setting the environment variables, Render will automatically deploy the bot.
+   - You can monitor the deployment process in the Render dashboard.
+
+5. **Access the Bot**:
+   - Once deployed, copy the domain from the Render dashboard and update the `WEBHOOK_DOMAIN` environment variable with this domain.
 
 ## How to Use
 
@@ -154,5 +179,4 @@ Below are the key configuration settings that need to be updated for your bot to
 
 ## License
 
-This project is licensed under the MIT License.
-
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
