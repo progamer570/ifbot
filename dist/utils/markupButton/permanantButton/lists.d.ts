@@ -1,0 +1,10 @@
+declare const genresList: string[][];
+declare const seasonList: string[][];
+declare const subList: string[][];
+declare const langList: string[][];
+declare const imdbRatingList: string[][];
+declare const qualityList: string[][];
+declare const genresHashtagList: string[];
+declare const reservedWordList: string[];
+declare function thankReply(text: string): boolean;
+export { genresList, seasonList, langList, imdbRatingList, qualityList, subList, genresHashtagList, reservedWordList, thankReply, };
