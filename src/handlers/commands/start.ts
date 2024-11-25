@@ -22,7 +22,7 @@ export default async function startHandler(ctx: CommandContext) {
       if (firstSortItem !== null) {
         const activeShareId = firstSortItem.currentActivePath;
 
-        if (tokenNumber === activeShareId.toString()) {
+        if (tokenNumber === activeShareId) {
           const { token } = await database.manageToken(userId.toString());
           await ctx.reply(`Your token is: ${token}`);
         }
@@ -73,20 +73,23 @@ Click the link to join and start enjoying now!\n${env.join}\n\n`);
       if (!isValidToken) {
         const getFirstItem = await database.getFirstItem();
         if (getFirstItem) {
-          await ctx.reply(`Hello ${user.first_name}!\n `, {
-            reply_to_message_id: ctx.message.message_id,
-            reply_markup: {
-              inline_keyboard: [
-                [
-                  {
-                    text: "Click Me To Generate New Token",
-                    url: getFirstItem.sort[0].aioShortUrl,
-                  },
+          return await ctx.reply(
+            `Hello dear ${user.first_name}, your token has expired.\nYou can generate a new token only once a day. After that, you can make as many requests as you want within 24 hours`,
+            {
+              reply_to_message_id: ctx.message.message_id,
+              reply_markup: {
+                inline_keyboard: [
+                  [
+                    {
+                      text: "Click Me To Generate New Token",
+                      url: getFirstItem.sort[0].aioShortUrl,
+                    },
+                  ],
                 ],
-              ],
-            },
-            parse_mode: "Markdown",
-          });
+              },
+              parse_mode: "Markdown",
+            }
+          );
         }
       }
     }

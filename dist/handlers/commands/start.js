@@ -60,7 +60,7 @@ export default function startHandler(ctx) {
                     firstSortItem = _d.sent();
                     if (!(firstSortItem !== null)) return [3 /*break*/, 5];
                     activeShareId = firstSortItem.currentActivePath;
-                    if (!(tokenNumber === activeShareId.toString())) return [3 /*break*/, 5];
+                    if (!(tokenNumber === activeShareId)) return [3 /*break*/, 5];
                     return [4 /*yield*/, database.manageToken(userId.toString())];
                 case 3:
                     token = (_d.sent()).token;
@@ -115,7 +115,7 @@ export default function startHandler(ctx) {
                 case 14:
                     getFirstItem = _d.sent();
                     if (!getFirstItem) return [3 /*break*/, 16];
-                    return [4 /*yield*/, ctx.reply("Hello ".concat(user.first_name, "!\n "), {
+                    return [4 /*yield*/, ctx.reply("Hello dear ".concat(user.first_name, ", your token has expired.\nYou can generate a new token only once a day. After that, you can make as many requests as you want within 24 hours"), {
                             reply_to_message_id: ctx.message.message_id,
                             reply_markup: {
                                 inline_keyboard: [
@@ -129,9 +129,7 @@ export default function startHandler(ctx) {
                             },
                             parse_mode: "Markdown",
                         })];
-                case 15:
-                    _d.sent();
-                    _d.label = 16;
+                case 15: return [2 /*return*/, _d.sent()];
                 case 16:
                     messageIds = void 0;
                     channel = void 0;

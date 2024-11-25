@@ -42,10 +42,6 @@ async function main() {
     const server = express();
     server.get("/check", (req, res) => {
       res.sendStatus(200);
-      // setInterval(() => {
-      //   sendRequest();
-      // }, 5 * 60 * 1000);
-      // res.send("working server!");
     });
     const port = env.port;
 
