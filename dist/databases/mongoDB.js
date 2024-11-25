@@ -39,10 +39,12 @@ import env from "../services/env.js";
 import MessageModel from "./models/messageModel.js";
 import UserModel from "./models/userModel.js";
 import SortModel from "./models/sortModel.js";
+import jwt from "jsonwebtoken";
 import AIOModel from "./models/aIOModel.js";
 import OngoingModel from "./models/ongoingModel.js";
 import { HindiDramaModel } from "./models/aIOModel.js";
 import { InviteService } from "./inviteService.js";
+import TokenModel from "./models/tokeModel.js";
 var MongoDB = /** @class */ (function () {
     function MongoDB() {
         this.db = mongoose;
@@ -50,6 +52,7 @@ var MongoDB = /** @class */ (function () {
         this.UserModel = UserModel;
         this.SortModel = SortModel;
         this.AIOModel = AIOModel;
+        this.TokenModel = TokenModel;
         this.OngoingModel = OngoingModel;
         this.HindiDramaModel = HindiDramaModel;
         this.databaseUrl = env.databaseUrl || "";
@@ -180,13 +183,13 @@ var MongoDB = /** @class */ (function () {
             });
         });
     };
-    MongoDB.prototype.removeFirstItem = function () {
+    MongoDB.prototype.getFirstItem = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var document_1, removedItem, err_1;
+            var document_1, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, SortModel.findOne({}, { sort: { $slice: 1 } })];
                     case 1:
                         document_1 = _a.sent();
@@ -194,15 +197,11 @@ var MongoDB = /** @class */ (function () {
                             console.log("No document found or the sort array is empty.");
                             return [2 /*return*/, null];
                         }
-                        removedItem = document_1.sort[0];
-                        return [4 /*yield*/, SortModel.findOneAndUpdate({ _id: document_1._id }, { $pop: { sort: -1 } }, { new: true })];
+                        return [2 /*return*/, document_1];
                     case 2:
-                        _a.sent();
-                        return [2 /*return*/, removedItem];
-                    case 3:
                         err_1 = _a.sent();
                         return [2 /*return*/, null];
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -474,6 +473,236 @@ var MongoDB = /** @class */ (function () {
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // token
+    MongoDB.prototype.hasGeneratedToken = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenData, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
+                    case 1:
+                        tokenData = _a.sent();
+                        return [2 /*return*/, tokenData !== null];
+                    case 2:
+                        error_6 = _a.sent();
+                        console.error("Error checking if token exists for user:", error_6);
+                        throw error_6;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MongoDB.prototype.verifyAndValidateToken = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenData, decoded, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
+                    case 1:
+                        tokenData = _a.sent();
+                        if (!tokenData) {
+                            console.error("Token not found in the database");
+                            return [2 /*return*/, false];
+                        }
+                        else {
+                            decoded = jwt.verify(tokenData.token, env.jwtSecret);
+                            if (new Date() > tokenData.expiresAt) {
+                                console.error("Token has expired");
+                                return [2 /*return*/, false];
+                            }
+                            return [2 /*return*/, true];
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_7 = _a.sent();
+                        if (error_7 instanceof jwt.TokenExpiredError) {
+                            console.error("Token has expired");
+                        }
+                        else if (error_7 instanceof jwt.JsonWebTokenError) {
+                            console.error("Invalid token");
+                        }
+                        else {
+                            console.error("Unexpected error during token verification:", error_7);
+                        }
+                        return [2 /*return*/, false];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MongoDB.prototype.generateNewToken = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var newToken, expiresAt, existingToken, newTokenData, error_8;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        newToken = jwt.sign({ userId: userId }, env.jwtSecret, { expiresIn: "24h" });
+                        expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 7, , 8]);
+                        return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
+                    case 2:
+                        existingToken = _a.sent();
+                        if (!existingToken) return [3 /*break*/, 4];
+                        existingToken.token = newToken;
+                        existingToken.expiresAt = expiresAt;
+                        return [4 /*yield*/, existingToken.save()];
+                    case 3:
+                        _a.sent();
+                        return [3 /*break*/, 6];
+                    case 4:
+                        newTokenData = new this.TokenModel({ userId: userId, token: newToken, expiresAt: expiresAt });
+                        return [4 /*yield*/, newTokenData.save()];
+                    case 5:
+                        _a.sent();
+                        _a.label = 6;
+                    case 6: return [2 /*return*/, newToken];
+                    case 7:
+                        error_8 = _a.sent();
+                        console.error("Error generating or saving token:", error_8);
+                        throw error_8;
+                    case 8: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MongoDB.prototype.manageToken = function (userId, token) {
+        return __awaiter(this, void 0, void 0, function () {
+            var hasToken, newToken, isValid, newToken, newToken, error_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 11, , 12]);
+                        return [4 /*yield*/, this.hasGeneratedToken(userId)];
+                    case 1:
+                        hasToken = _a.sent();
+                        if (!!hasToken) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.generateNewToken(userId)];
+                    case 2:
+                        newToken = _a.sent();
+                        return [2 /*return*/, { token: newToken, message: "No token found. New token generated." }];
+                    case 3:
+                        if (!token) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.verifyAndValidateToken(userId)];
+                    case 4:
+                        isValid = _a.sent();
+                        if (!isValid) return [3 /*break*/, 5];
+                        return [2 /*return*/, { token: token, message: "Token is valid." }];
+                    case 5: return [4 /*yield*/, this.generateNewToken(userId)];
+                    case 6:
+                        newToken = _a.sent();
+                        return [2 /*return*/, { token: newToken, message: "Token expired or invalid. New token generated." }];
+                    case 7: return [3 /*break*/, 10];
+                    case 8: return [4 /*yield*/, this.generateNewToken(userId)];
+                    case 9:
+                        newToken = _a.sent();
+                        return [2 /*return*/, { token: newToken, message: " New token generated." }];
+                    case 10: return [3 /*break*/, 12];
+                    case 11:
+                        error_9 = _a.sent();
+                        console.error("Error managing token:", error_9);
+                        throw error_9;
+                    case 12: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // sort link
+    MongoDB.prototype.addLinkToFirstSort = function (newLink) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, SortModel.updateOne({}, { $push: { sort: { $each: [newLink], $position: 0 } } })];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result.modifiedCount > 0];
+                    case 2:
+                        error_10 = _a.sent();
+                        console.error("Error adding link to first sort:", error_10);
+                        return [2 /*return*/, false];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Function to get the first item in the sort array
+    MongoDB.prototype.getFirstSortItem = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var document_2, error_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, SortModel.findOne({}, { sort: { $slice: 1 } })];
+                    case 1:
+                        document_2 = _a.sent();
+                        if (!document_2 || document_2.sort.length === 0) {
+                            console.log("No document found or the sort array is empty.");
+                            return [2 /*return*/, null];
+                        }
+                        return [2 /*return*/, document_2];
+                    case 2:
+                        error_11 = _a.sent();
+                        console.error("Error retrieving first sort item:", error_11);
+                        return [2 /*return*/, null];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Function to set the current active share ID
+    MongoDB.prototype.setActiveShareId = function (newActiveShareId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_12;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, SortModel.updateOne({}, { $set: { currentActivePath: newActiveShareId } })];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result.modifiedCount > 0];
+                    case 2:
+                        error_12 = _a.sent();
+                        console.error("Error setting active share ID:", error_12);
+                        return [2 /*return*/, false];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Function to update both the first sort and the current active path atomically
+    MongoDB.prototype.updateFirstSortAndActivePath = function (newLink, newActiveShareId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_13;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, SortModel.updateOne({}, {
+                                $push: { sort: { $each: [newLink], $position: 0 } },
+                                $set: { currentActivePath: newActiveShareId },
+                            })];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result.modifiedCount > 0];
+                    case 2:
+                        error_13 = _a.sent();
+                        console.error("Error updating first sort and active path:", error_13);
+                        return [2 /*return*/, false];
+                    case 3: return [2 /*return*/];
                 }
             });
         });

@@ -52,9 +52,11 @@ export default function helpHandler(ctx) {
                     _b.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, ctx.reply("Choose a topic below to get more help:", Markup.inlineKeyboard([
                             [Markup.button.callback("Add New Drama / Series / Movie ", "addDrama")],
+                            [Markup.button.callback("Edit Uploaded Drama / Series / Movie ", "editDrama")],
                             [Markup.button.callback("Add Ongoing", "addOngoing")],
                             [Markup.button.callback("Add Hindi Drama / Series / Movie", "addHindi")],
                             [Markup.button.callback("How To Search", "search")],
+                            [Markup.button.callback("How To Broadcast", "broadcast")],
                         ]))];
                 case 2:
                     _b.sent();

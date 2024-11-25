@@ -17,6 +17,7 @@ export const sort = new Schema<Sort>(
 );
 
 export const sortSchema = new Schema<SortDocument>({
+  currentActivePath: String,
   sort: [sort],
 });
 

@@ -11,6 +11,7 @@ export var sort = new Schema({
     },
 }, { timestamps: true });
 export var sortSchema = new Schema({
+    currentActivePath: String,
     sort: [sort],
 });
 var DramaModel = mongoose.model("sort", sortSchema);

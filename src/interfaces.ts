@@ -41,7 +41,7 @@ export interface DatabaseClient {
   deleteAIO(shareId: number): any;
 
   updateAIOAttribute(shareId: number, attribute: any): any;
-  removeFirstItem(): any;
+  getFirstItem(): Promise<SortDocument | null>;
   getAllUserIds(): Promise<number[] | undefined>;
 
   //invite
@@ -49,7 +49,23 @@ export interface DatabaseClient {
   getInviteUser(userId: string): Promise<InviteUser | null>;
   canRequest(userId: string): Promise<boolean>;
   useRequest(userId: string): Promise<void>;
+
+  //token
+  hasGeneratedToken(userId: string): Promise<boolean>;
+  verifyAndValidateToken(userId: string): Promise<boolean>;
+  generateNewToken(userId: string): Promise<string>;
+  manageToken(userId: string): Promise<{ token: string; message: string }>;
+
+  //sort
+  addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean>;
+  getFirstSortItem(): Promise<SortDocument | null>;
+  setActiveShareId(newActiveShareId: string): Promise<boolean>;
+  updateFirstSortAndActivePath(
+    newLink: { shareId: number; aioShortUrl: string },
+    newActiveShareId: string
+  ): Promise<boolean>;
 }
+
 export interface RequestDBClient {
   initialize(): Promise<void>;
   hasReachedRequestLimit(userId: string): any;

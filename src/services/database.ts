@@ -54,12 +54,12 @@ class Database {
   async getHindiMessages(shareId: number) {
     return this.client.getHindiMessages(shareId);
   }
-  async saveSort(sortDocument: SortDocument) {
-    await this.client.saveSort(sortDocument);
-    return sortDocument;
-  }
-  async removeFirstItem() {
-    return await this.client.removeFirstItem();
+  // async saveSort(sortDocument: SortDocument) {
+  //   await this.client.saveSort(sortDocument);
+  //   return sortDocument;
+  // }
+  async getFirstItem(): Promise<SortDocument | null> {
+    return await this.client.getFirstItem();
   }
 
   async saveUser(user: User) {
@@ -104,8 +104,38 @@ class Database {
   }
 
   async useRequest(userId: string) {
-    await this.client.useRequest(userId);
+    return await this.client.useRequest(userId);
   }
+  //token
+  async hasGeneratedToken(userId: string): Promise<boolean> {
+    return await this.client.hasGeneratedToken(userId);
+  }
+  async verifyAndValidateToken(userId: string): Promise<boolean> {
+    return await this.client.verifyAndValidateToken(userId);
+  }
+  async generateNewToken(userId: string): Promise<string> {
+    return await this.client.generateNewToken(userId);
+  }
+  async manageToken(userId: string): Promise<{ token: string; message: string }> {
+    return await this.client.manageToken(userId);
+  }
+  async addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean> {
+    return await this.client.addLinkToFirstSort(newLink);
+  }
+  async getFirstSortItem(): Promise<SortDocument | null> {
+    return await this.client.getFirstSortItem();
+  }
+  async setActiveShareId(newActiveShareId: string): Promise<boolean> {
+    return await this.client.setActiveShareId(newActiveShareId);
+  }
+  async updateFirstSortAndActivePath(
+    newLink: { shareId: number; aioShortUrl: string },
+    newActiveShareId: string
+  ): Promise<boolean> {
+    return await this.client.updateFirstSortAndActivePath(newLink, newActiveShareId);
+  }
+
+  //sort
 }
 
 class ReqDB {

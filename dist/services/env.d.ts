@@ -8,6 +8,7 @@ declare const _default: {
     botUserName: string | undefined;
     dbPosterLink: string | undefined;
     dbPosterID: number;
+    jwtSecret: string;
     development: string | undefined;
     webhookDomain: string | undefined;
     port: string | number;

@@ -10,7 +10,24 @@ export default async function startHandler(ctx: CommandContext) {
   const userId = user.id;
   const payload: string = ctx.message.text.split(" ")[1];
   let shareId: number | undefined = undefined;
+
   try {
+    // token generator
+
+    if (payload && payload.includes("token-")) {
+      const tokenNumber = payload.replace("token-", "");
+
+      const firstSortItem = await database.getFirstSortItem();
+
+      if (firstSortItem !== null) {
+        const activeShareId = firstSortItem.currentActivePath;
+
+        if (tokenNumber === activeShareId.toString()) {
+          const { token } = await database.manageToken(userId.toString());
+          await ctx.reply(`Your token is: ${token}`);
+        }
+      }
+    }
     if (payload) {
       const inviteParts = payload.split("-");
       if (payload.includes("invite") && inviteParts.length > 1) {
@@ -51,6 +68,26 @@ Click the link to join and start enjoying now!\n${env.join}\n\n`);
       const chatsUserHasNotJoined = await telegram.getChatsUserHasNotJoined(userId);
       if (chatsUserHasNotJoined.length) {
         return telegram.sendForceJoinMessage(shareId, chatId, user, chatsUserHasNotJoined);
+      }
+      const isValidToken = await database.verifyAndValidateToken(ctx.from?.id.toString()!);
+      if (!isValidToken) {
+        const getFirstItem = await database.getFirstItem();
+        if (getFirstItem) {
+          await ctx.reply(`Hello ${user.first_name}!\n `, {
+            reply_to_message_id: ctx.message.message_id,
+            reply_markup: {
+              inline_keyboard: [
+                [
+                  {
+                    text: "Click Me To Generate New Token",
+                    url: getFirstItem.sort[0].aioShortUrl,
+                  },
+                ],
+              ],
+            },
+            parse_mode: "Markdown",
+          });
+        }
       }
     }
 

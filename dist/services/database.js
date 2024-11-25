@@ -145,23 +145,15 @@ var Database = /** @class */ (function () {
             });
         });
     };
-    Database.prototype.saveSort = function (sortDocument) {
+    // async saveSort(sortDocument: SortDocument) {
+    //   await this.client.saveSort(sortDocument);
+    //   return sortDocument;
+    // }
+    Database.prototype.getFirstItem = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.saveSort(sortDocument)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, sortDocument];
-                }
-            });
-        });
-    };
-    Database.prototype.removeFirstItem = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.removeFirstItem()];
+                    case 0: return [4 /*yield*/, this.client.getFirstItem()];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -261,9 +253,88 @@ var Database = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.client.useRequest(userId)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    //token
+    Database.prototype.hasGeneratedToken = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.hasGeneratedToken(userId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Database.prototype.verifyAndValidateToken = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.verifyAndValidateToken(userId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Database.prototype.generateNewToken = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.generateNewToken(userId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Database.prototype.manageToken = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.manageToken(userId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Database.prototype.addLinkToFirstSort = function (newLink) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.addLinkToFirstSort(newLink)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Database.prototype.getFirstSortItem = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.getFirstSortItem()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Database.prototype.setActiveShareId = function (newActiveShareId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.setActiveShareId(newActiveShareId)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    Database.prototype.updateFirstSortAndActivePath = function (newLink, newActiveShareId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.client.updateFirstSortAndActivePath(newLink, newActiveShareId)];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

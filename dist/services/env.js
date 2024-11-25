@@ -31,6 +31,7 @@ var collectionAIO = Number(env.COLLECTION_AIO) || "";
 var collectionHindi = Number(env.COLLECTION_HINDI) || "";
 var collectionOngoing = Number(env.ONGOING_COLLECTION) || "";
 var collectionAIOBackup = Number(env.COLLECTION_AIO_BACKUP) || "";
+var jwtSecret = env.JWT_SECRET || "randomSecretString";
 if (!token) {
     throw Error("Provide TELEGRAM_BOT_TOKEN");
 }
@@ -46,6 +47,7 @@ export default {
     botUserName: botUserName,
     dbPosterLink: dbPosterLink,
     dbPosterID: dbPosterID,
+    jwtSecret: jwtSecret,
     development: development,
     webhookDomain: webhookDomain,
     port: port,

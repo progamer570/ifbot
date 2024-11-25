@@ -1,5 +1,7 @@
-import crypto from "crypto";
 export default function getRandomId() {
-    var buffer = crypto.randomBytes(4);
-    return buffer.readUInt32BE(0);
+    var timestamp = Date.now().toString();
+    var timestampWithoutFirst5Digits = timestamp.slice(6);
+    var randomDigits = Math.floor(Math.random() * 900) + 100;
+    var randomId = timestampWithoutFirst5Digits + randomDigits;
+    return Number(randomId);
 }

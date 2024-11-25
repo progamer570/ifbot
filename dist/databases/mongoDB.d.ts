@@ -31,6 +31,7 @@ import { AIOSearchCriteria } from "./interfaces/searchCriteria.js";
 import { InviteService } from "./inviteService.js";
 import { InviteUser } from "./interfaces/inviteUser.js";
 import { OngoingDocument } from "./interfaces/ongoingDocument.js";
+import { ITokenDocument } from "./interfaces/token.js";
 declare class MongoDB {
     db: typeof mongoose;
     MessageModel: Model<MessageDocument>;
@@ -39,6 +40,7 @@ declare class MongoDB {
     AIOModel: Model<AIODocument>;
     OngoingModel: Model<OngoingDocument>;
     HindiDramaModel: Model<AIODocument>;
+    TokenModel: Model<ITokenDocument>;
     inviteService: InviteService;
     databaseUrl: string;
     constructor();
@@ -49,7 +51,7 @@ declare class MongoDB {
     isUserExist(userId: string): Promise<boolean>;
     countUsers(): Promise<string>;
     saveSort(sort: SortDocument): Promise<SortDocument>;
-    removeFirstItem(): Promise<import("./interfaces/sort.js").Sort | null>;
+    getFirstItem(): Promise<SortDocument | null>;
     getMessages(shareId: number): Promise<number[] | undefined>;
     getAIOMessages(shareId: number): Promise<number[] | undefined>;
     getOngoingMessages(shareId: number): Promise<number[] | undefined>;
@@ -66,6 +68,23 @@ declare class MongoDB {
     getInviteUser(userId: string): Promise<InviteUser | null>;
     canRequest(userId: string): Promise<boolean>;
     useRequest(userId: string): Promise<void>;
+    hasGeneratedToken(userId: string): Promise<boolean>;
+    verifyAndValidateToken(userId: string): Promise<boolean>;
+    generateNewToken(userId: string): Promise<string>;
+    manageToken(userId: string, token?: string): Promise<{
+        token: string;
+        message: string;
+    }>;
+    addLinkToFirstSort(newLink: {
+        shareId: number;
+        aioShortUrl: string;
+    }): Promise<boolean>;
+    getFirstSortItem(): Promise<SortDocument | null>;
+    setActiveShareId(newActiveShareId: string): Promise<boolean>;
+    updateFirstSortAndActivePath(newLink: {
+        shareId: number;
+        aioShortUrl: string;
+    }, newActiveShareId: string): Promise<boolean>;
 }
 declare const mongoDB: MongoDB;
 export default mongoDB;

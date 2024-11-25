@@ -37,26 +37,63 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import env from "../services/env.js";
 import { getSystemUsage, getSystemUsageDetails } from "../extra/systemUses.js";
 import auth from "../services/auth.js";
+import database from "../services/database.js";
 export default {
     private: function (ctx, next) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e, _f, _g;
         return __awaiter(this, void 0, void 0, function () {
-            var callbackData, message, err_1;
+            var messageText, _h, command, args, _j, error_1, callbackData, message, err_1;
             var _this = this;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
+            return __generator(this, function (_k) {
+                switch (_k.label) {
                     case 0:
                         console.log((_a = ctx.chat) === null || _a === void 0 ? void 0 : _a.id);
-                        if (ctx.message && "text" in ctx.message && ctx.message.text === "/systemuses") {
-                            try {
-                                ctx.reply("System uses by : " +
-                                    getSystemUsageDetails() +
-                                    "System uses by machine:" +
-                                    getSystemUsage());
-                            }
-                            catch (_f) { }
+                        if (!(ctx.message && "text" in ctx.message && auth.isAdmin((_c = (_b = ctx.from) === null || _b === void 0 ? void 0 : _b.id) !== null && _c !== void 0 ? _c : 0))) return [3 /*break*/, 16];
+                        messageText = (_d = ctx.message) === null || _d === void 0 ? void 0 : _d.text;
+                        _h = messageText.split(" "), command = _h[0], args = _h.slice(1);
+                        _k.label = 1;
+                    case 1:
+                        _k.trys.push([1, 14, , 16]);
+                        _j = command;
+                        switch (_j) {
+                            case "/setLink": return [3 /*break*/, 2];
+                            case "/getFirstItem": return [3 /*break*/, 4];
+                            case "/setActive": return [3 /*break*/, 6];
+                            case "/updateFirstAndActive": return [3 /*break*/, 8];
+                            case "/systemuses": return [3 /*break*/, 10];
                         }
-                        if (((_b = ctx.chat) === null || _b === void 0 ? void 0 : _b.id) !== undefined) {
+                        return [3 /*break*/, 12];
+                    case 2: return [4 /*yield*/, handleSetLink(ctx, args)];
+                    case 3:
+                        _k.sent();
+                        return [3 /*break*/, 13];
+                    case 4: return [4 /*yield*/, handleGetFirstItem(ctx)];
+                    case 5:
+                        _k.sent();
+                        return [3 /*break*/, 13];
+                    case 6: return [4 /*yield*/, handleSetActive(ctx, args)];
+                    case 7:
+                        _k.sent();
+                        return [3 /*break*/, 13];
+                    case 8: return [4 /*yield*/, handleUpdateFirstAndActive(ctx, args)];
+                    case 9:
+                        _k.sent();
+                        return [3 /*break*/, 13];
+                    case 10: return [4 /*yield*/, handleSystemUses(ctx)];
+                    case 11:
+                        _k.sent();
+                        return [3 /*break*/, 13];
+                    case 12: return [3 /*break*/, 13];
+                    case 13: return [3 /*break*/, 16];
+                    case 14:
+                        error_1 = _k.sent();
+                        console.error("Error handling command:", error_1);
+                        return [4 /*yield*/, ctx.reply("An error occurred while processing your request.")];
+                    case 15:
+                        _k.sent();
+                        return [3 /*break*/, 16];
+                    case 16:
+                        if (((_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id) !== undefined) {
                             if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
                                 next();
                             }
@@ -81,12 +118,12 @@ export default {
                                 console.error("Unexpected error while deleting message:", error);
                             }
                         }
-                        if (!auth.isAdmin((_d = (_c = ctx.from) === null || _c === void 0 ? void 0 : _c.id) !== null && _d !== void 0 ? _d : 0)) return [3 /*break*/, 4];
-                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 4];
+                        if (!auth.isAdmin((_g = (_f = ctx.from) === null || _f === void 0 ? void 0 : _f.id) !== null && _g !== void 0 ? _g : 0)) return [3 /*break*/, 20];
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 20];
                         callbackData = ctx.callbackQuery.data;
-                        _e.label = 1;
-                    case 1:
-                        _e.trys.push([1, 3, , 4]);
+                        _k.label = 17;
+                    case 17:
+                        _k.trys.push([17, 19, , 20]);
                         message = void 0;
                         switch (callbackData) {
                             case "addDrama":
@@ -94,6 +131,9 @@ export default {
                                 break;
                             case "addOngoing":
                                 message = "use /add to add new drama or series or movie";
+                                break;
+                            case "editDrama":
+                                message = "use </edit drama name> to edit uploaded drama or series or movie";
                                 break;
                             case "addHindi":
                                 message = "use /addh to add new hindi drama or series or movie";
@@ -104,18 +144,21 @@ export default {
                             case "search":
                                 message = "send uploaded drama or series or movie name ";
                                 break;
+                            case "broadcast":
+                                message = "reply to the message /broadcast that you want to broadcast to your user";
+                                break;
                             default:
                                 message = "Unknown topic. Please try again.";
                         }
                         return [4 /*yield*/, ctx.reply(message)];
-                    case 2:
-                        _e.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        err_1 = _e.sent();
+                    case 18:
+                        _k.sent();
+                        return [3 /*break*/, 20];
+                    case 19:
+                        err_1 = _k.sent();
                         console.log("Error handling callback:", err_1);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 20];
+                    case 20: return [2 /*return*/];
                 }
             });
         });
@@ -125,4 +168,119 @@ function containsSGD(message) {
     return (message.animation !== undefined ||
         message.sticker !== undefined ||
         message.document !== undefined);
+}
+function handleSetLink(ctx, args) {
+    return __awaiter(this, void 0, void 0, function () {
+        var shareId, aioShortUrl, success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    shareId = args[0], aioShortUrl = args[1];
+                    if (!(!shareId || !aioShortUrl)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, ctx.reply("Usage: /setLink <shareId> <aioShortUrl>")];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+                case 2: return [4 /*yield*/, database.addLinkToFirstSort({
+                        shareId: Number(shareId),
+                        aioShortUrl: aioShortUrl,
+                    })];
+                case 3:
+                    success = _a.sent();
+                    return [4 /*yield*/, ctx.reply(success ? "Link added successfully!" : "Failed to add link.")];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+// Handle the "/getFirstItem" command
+function handleGetFirstItem(ctx) {
+    return __awaiter(this, void 0, void 0, function () {
+        var firstItem;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, database.getFirstSortItem()];
+                case 1:
+                    firstItem = _a.sent();
+                    return [4 /*yield*/, ctx.reply(firstItem ? "First Item: ".concat(JSON.stringify(firstItem)) : "No items found.")];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+// Handle the "/setActive" command
+function handleSetActive(ctx, args) {
+    return __awaiter(this, void 0, void 0, function () {
+        var newActiveShareId, success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    newActiveShareId = args[0];
+                    if (!!newActiveShareId) return [3 /*break*/, 2];
+                    return [4 /*yield*/, ctx.reply("Usage: /setActive <newActiveShareId>")];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+                case 2: return [4 /*yield*/, database.setActiveShareId(newActiveShareId)];
+                case 3:
+                    success = _a.sent();
+                    return [4 /*yield*/, ctx.reply(success ? "Active Share ID set successfully!" : "Failed to set Active Share ID.")];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+// Handle the "/updateFirstAndActive" command
+function handleUpdateFirstAndActive(ctx, args) {
+    return __awaiter(this, void 0, void 0, function () {
+        var shareId, aioShortUrl, newActiveShareId, success;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    shareId = args[0], aioShortUrl = args[1], newActiveShareId = args[2];
+                    if (!(!shareId || !aioShortUrl || !newActiveShareId)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, ctx.reply("Usage: /updateFirstAndActive <shareId> <aioShortUrl> <newActiveShareId>")];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+                case 2: return [4 /*yield*/, database.updateFirstSortAndActivePath({ shareId: Number(shareId), aioShortUrl: aioShortUrl }, newActiveShareId)];
+                case 3:
+                    success = _a.sent();
+                    return [4 /*yield*/, ctx.reply(success
+                            ? "First sort item and Active Share ID updated successfully!"
+                            : "Failed to update First sort item and Active Share ID.")];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+// Handle the "/systemuses" command
+function handleSystemUses(ctx) {
+    return __awaiter(this, void 0, void 0, function () {
+        var error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 1, , 3]);
+                    ctx.reply("System uses by: " + getSystemUsageDetails() + "\nSystem uses by machine: " + getSystemUsage());
+                    return [3 /*break*/, 3];
+                case 1:
+                    error_2 = _a.sent();
+                    console.error("Error fetching system usage:", error_2);
+                    return [4 /*yield*/, ctx.reply("Failed to retrieve system usage information.")];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
 }

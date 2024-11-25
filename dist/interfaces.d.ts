@@ -29,12 +29,29 @@ export interface DatabaseClient {
     addAIO(shareId: number, messageIds: number[]): any;
     deleteAIO(shareId: number): any;
     updateAIOAttribute(shareId: number, attribute: any): any;
-    removeFirstItem(): any;
+    getFirstItem(): Promise<SortDocument | null>;
     getAllUserIds(): Promise<number[] | undefined>;
     addInvite(userId: string, invitedUsername: string, invitedUserId: string): Promise<void>;
     getInviteUser(userId: string): Promise<InviteUser | null>;
     canRequest(userId: string): Promise<boolean>;
     useRequest(userId: string): Promise<void>;
+    hasGeneratedToken(userId: string): Promise<boolean>;
+    verifyAndValidateToken(userId: string): Promise<boolean>;
+    generateNewToken(userId: string): Promise<string>;
+    manageToken(userId: string): Promise<{
+        token: string;
+        message: string;
+    }>;
+    addLinkToFirstSort(newLink: {
+        shareId: number;
+        aioShortUrl: string;
+    }): Promise<boolean>;
+    getFirstSortItem(): Promise<SortDocument | null>;
+    setActiveShareId(newActiveShareId: string): Promise<boolean>;
+    updateFirstSortAndActivePath(newLink: {
+        shareId: number;
+        aioShortUrl: string;
+    }, newActiveShareId: string): Promise<boolean>;
 }
 export interface RequestDBClient {
     initialize(): Promise<void>;

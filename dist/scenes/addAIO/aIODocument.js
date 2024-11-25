@@ -34,38 +34,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import database from "../../services/database.js";
+import getRandomId from "../../extra/getRandomId.js";
 export default function getDramadata(dramaDetails, messageIds) {
     return __awaiter(this, void 0, void 0, function () {
-        var sortData, shareId, sortLink, error_1;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, database.removeFirstItem()];
-                case 1:
-                    sortData = _a.sent();
-                    if (!sortData) {
-                        throw new Error("Failed to retrieve sort data");
-                    }
-                    shareId = sortData.shareId;
-                    sortLink = sortData.aioShortUrl;
-                    return [2 /*return*/, {
-                            shareId: shareId,
-                            messageIds: messageIds || [],
-                            aIOTitle: dramaDetails.aIOTitle || "",
-                            aIOPosterID: dramaDetails.aIOPosterID || "0",
-                            aioShortUrl: sortLink || "null",
-                            episodes: [
-                                { episodeNumber: 1, shortUrl: "DummyLink1", teleUrl: "DummyURL1" },
-                                { episodeNumber: 2, shortUrl: "DummyLink2", teleUrl: "DummyURL2" },
-                            ],
-                        }];
-                case 2:
-                    error_1 = _a.sent();
-                    return [2 /*return*/, null];
-                case 3: return [2 /*return*/];
+            try {
+                return [2 /*return*/, {
+                        shareId: getRandomId(),
+                        messageIds: messageIds || [],
+                        aIOTitle: dramaDetails.aIOTitle || "",
+                        aIOPosterID: dramaDetails.aIOPosterID || "0",
+                        aioShortUrl: "null",
+                        episodes: [
+                            { episodeNumber: 1, shortUrl: "DummyLink1", teleUrl: "DummyURL1" },
+                            { episodeNumber: 2, shortUrl: "DummyLink2", teleUrl: "DummyURL2" },
+                        ],
+                    }];
             }
+            catch (error) {
+                return [2 /*return*/, null];
+            }
+            return [2 /*return*/];
         });
     });
 }

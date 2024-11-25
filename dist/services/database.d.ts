@@ -18,8 +18,7 @@ declare class Database {
     getAIOMessages(shareId: number): Promise<number[] | undefined>;
     getOngoingMessages(shareId: number): Promise<number[] | undefined>;
     getHindiMessages(shareId: number): Promise<number[] | undefined>;
-    saveSort(sortDocument: SortDocument): Promise<SortDocument>;
-    removeFirstItem(): Promise<any>;
+    getFirstItem(): Promise<SortDocument | null>;
     saveUser(user: User): Promise<User>;
     getAllUserIds(): Promise<number[] | undefined>;
     isUserExist(user: string): Promise<boolean>;
@@ -32,6 +31,23 @@ declare class Database {
     getInviteUser(userId: string): Promise<InviteUser | null>;
     canRequest(userId: string): Promise<boolean>;
     useRequest(userId: string): Promise<void>;
+    hasGeneratedToken(userId: string): Promise<boolean>;
+    verifyAndValidateToken(userId: string): Promise<boolean>;
+    generateNewToken(userId: string): Promise<string>;
+    manageToken(userId: string): Promise<{
+        token: string;
+        message: string;
+    }>;
+    addLinkToFirstSort(newLink: {
+        shareId: number;
+        aioShortUrl: string;
+    }): Promise<boolean>;
+    getFirstSortItem(): Promise<SortDocument | null>;
+    setActiveShareId(newActiveShareId: string): Promise<boolean>;
+    updateFirstSortAndActivePath(newLink: {
+        shareId: number;
+        aioShortUrl: string;
+    }, newActiveShareId: string): Promise<boolean>;
 }
 declare class ReqDB {
     reqClient: RequestDBClient;

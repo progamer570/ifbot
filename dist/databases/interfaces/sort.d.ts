@@ -3,5 +3,6 @@ export interface Sort {
     aioShortUrl: string;
 }
 export interface SortDocument {
+    currentActivePath: string;
     sort: Sort[];
 }

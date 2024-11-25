@@ -12,9 +12,11 @@ export default async function helpHandler(ctx: CommandContext) {
       "Choose a topic below to get more help:",
       Markup.inlineKeyboard([
         [Markup.button.callback("Add New Drama / Series / Movie ", "addDrama")],
+        [Markup.button.callback("Edit Uploaded Drama / Series / Movie ", "editDrama")],
         [Markup.button.callback("Add Ongoing", "addOngoing")],
         [Markup.button.callback("Add Hindi Drama / Series / Movie", "addHindi")],
         [Markup.button.callback("How To Search", "search")],
+        [Markup.button.callback("How To Broadcast", "broadcast")],
       ])
     );
   } catch (err) {

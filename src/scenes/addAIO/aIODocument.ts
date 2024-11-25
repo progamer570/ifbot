@@ -1,4 +1,5 @@
 import { AIODocument } from "../../databases/interfaces/aIO.js";
+import getRandomId from "../../extra/getRandomId.js";
 import database from "../../services/database.js";
 
 interface AIODetails {
@@ -15,21 +16,12 @@ export default async function getDramadata(
   messageIds: number[]
 ): Promise<AIODocument | null> {
   try {
-    const sortData = await database.removeFirstItem();
-
-    if (!sortData) {
-      throw new Error("Failed to retrieve sort data");
-    }
-
-    const shareId = sortData.shareId;
-    const sortLink: string = sortData.aioShortUrl;
-
     return {
-      shareId: shareId,
+      shareId: getRandomId(),
       messageIds: messageIds || [],
       aIOTitle: dramaDetails.aIOTitle || "",
       aIOPosterID: dramaDetails.aIOPosterID || "0",
-      aioShortUrl: sortLink || "null",
+      aioShortUrl: "null",
       episodes: [
         { episodeNumber: 1, shortUrl: "DummyLink1", teleUrl: "DummyURL1" },
         { episodeNumber: 2, shortUrl: "DummyLink2", teleUrl: "DummyURL2" },
