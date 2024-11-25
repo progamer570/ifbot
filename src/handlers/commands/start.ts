@@ -10,7 +10,7 @@ export default async function startHandler(ctx: CommandContext) {
   const userId = user.id;
   const payload: string = ctx.message.text.split(" ")[1];
   let shareId: number | undefined = undefined;
-
+  console.log(payload);
   try {
     // Handle token generation
     if (payload && payload.includes("token-")) {
@@ -22,7 +22,9 @@ export default async function startHandler(ctx: CommandContext) {
 
         if (tokenNumber === activeShareId) {
           const { token } = await database.manageToken(userId.toString());
-          return await ctx.reply(`Your token is: ${token}`);
+          return await ctx.reply(
+            `Your New token generated:${token.slice(0, 5)} ..., Now click on Try Again button 👆👆!`
+          );
         }
       }
     }
@@ -93,6 +95,10 @@ ANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`,
                   {
                     text: "Click Me To Generate New Token",
                     url: firstItem.sort[0].aioShortUrl,
+                  },
+                  {
+                    text: "Try Again",
+                    url: `https://t.me/${env.botUserName}?start=${payload}`.replace(" ", ""),
                   },
                 ],
               ],
