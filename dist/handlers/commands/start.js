@@ -64,7 +64,7 @@ export default function startHandler(ctx) {
                     return [4 /*yield*/, database.manageToken(userId.toString())];
                 case 3:
                     token = (_a.sent()).token;
-                    return [4 /*yield*/, ctx.reply("Your New token generated:".concat(token.slice(0, 5), " ..., Now click on Try Again button \uD83D\uDC46\uD83D\uDC46!"))];
+                    return [4 /*yield*/, ctx.reply("Your New token generated:".concat(token.slice(0, 5), " ...,\nNow click on Try Again button \uD83D\uDC46\uD83D\uDC46!"))];
                 case 4: return [2 /*return*/, _a.sent()];
                 case 5:
                     if (!payload) return [3 /*break*/, 11];
@@ -122,6 +122,8 @@ export default function startHandler(ctx) {
                                             text: "Click Me To Generate New Token",
                                             url: firstItem.sort[0].aioShortUrl,
                                         },
+                                    ],
+                                    [
                                         {
                                             text: "Try Again",
                                             url: "https://t.me/".concat(env.botUserName, "?start=").concat(payload).replace(" ", ""),

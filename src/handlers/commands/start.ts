@@ -23,7 +23,10 @@ export default async function startHandler(ctx: CommandContext) {
         if (tokenNumber === activeShareId) {
           const { token } = await database.manageToken(userId.toString());
           return await ctx.reply(
-            `Your New token generated:${token.slice(0, 5)} ..., Now click on Try Again button 👆👆!`
+            `Your New token generated:${token.slice(
+              0,
+              5
+            )} ...,\nNow click on Try Again button 👆👆!`
           );
         }
       }
@@ -96,6 +99,8 @@ ANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`,
                     text: "Click Me To Generate New Token",
                     url: firstItem.sort[0].aioShortUrl,
                   },
+                ],
+                [
                   {
                     text: "Try Again",
                     url: `https://t.me/${env.botUserName}?start=${payload}`.replace(" ", ""),
