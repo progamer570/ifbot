@@ -50,69 +50,71 @@ export default function startHandler(ctx) {
                     userId = user.id;
                     payload = ctx.message.text.split(" ")[1];
                     shareId = undefined;
-                    if (!(payload && payload.includes("token-"))) return [3 /*break*/, 4];
+                    _d.label = 1;
+                case 1:
+                    _d.trys.push([1, 35, , 36]);
+                    if (!(payload && payload.includes("token-"))) return [3 /*break*/, 5];
                     tokenNumber = payload.replace("token-", "");
                     return [4 /*yield*/, database.getFirstSortItem()];
-                case 1:
-                    firstSortItem = _d.sent();
-                    if (!(firstSortItem !== null)) return [3 /*break*/, 4];
-                    activeShareId = firstSortItem.currentActivePath;
-                    if (!(tokenNumber === activeShareId.toString())) return [3 /*break*/, 4];
-                    return [4 /*yield*/, database.manageToken(userId.toString())];
                 case 2:
+                    firstSortItem = _d.sent();
+                    if (!(firstSortItem !== null)) return [3 /*break*/, 5];
+                    activeShareId = firstSortItem.currentActivePath;
+                    if (!(tokenNumber === activeShareId.toString())) return [3 /*break*/, 5];
+                    return [4 /*yield*/, database.manageToken(userId.toString())];
+                case 3:
                     token = (_d.sent()).token;
                     return [4 /*yield*/, ctx.reply("Your token is: ".concat(token))];
-                case 3:
-                    _d.sent();
-                    _d.label = 4;
                 case 4:
-                    _d.trys.push([4, 34, , 35]);
-                    if (!payload) return [3 /*break*/, 10];
+                    _d.sent();
+                    _d.label = 5;
+                case 5:
+                    if (!payload) return [3 /*break*/, 11];
                     inviteParts = payload.split("-");
-                    if (!(payload.includes("invite") && inviteParts.length > 1)) return [3 /*break*/, 9];
+                    if (!(payload.includes("invite") && inviteParts.length > 1)) return [3 /*break*/, 10];
                     inviterId = inviteParts[1];
                     userId_1 = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id.toString();
-                    if (!(userId_1 && inviterId && userId_1 !== inviterId)) return [3 /*break*/, 8];
+                    if (!(userId_1 && inviterId && userId_1 !== inviterId)) return [3 /*break*/, 9];
                     return [4 /*yield*/, database.isUserExist(userId_1)];
-                case 5:
-                    isUserExist = _d.sent();
-                    if (!!isUserExist) return [3 /*break*/, 8];
-                    return [4 /*yield*/, addInviteUser(inviterId, userId_1, user.username || "null")];
                 case 6:
-                    _d.sent();
-                    return [4 /*yield*/, ctx.reply("Welcome! You were invited by a user with ID ".concat(inviterId, ".\nJoin our main channel for unlimited movies, dramas, and more. Stay updated with the latest releases and exclusive content.\nClick the link to join and start enjoying now!\n").concat(env.join, "\n\n"))];
+                    isUserExist = _d.sent();
+                    if (!!isUserExist) return [3 /*break*/, 9];
+                    return [4 /*yield*/, addInviteUser(inviterId, userId_1, user.username || "null")];
                 case 7:
                     _d.sent();
-                    _d.label = 8;
-                case 8: return [3 /*break*/, 10];
-                case 9:
+                    return [4 /*yield*/, ctx.reply("Welcome! You were invited by a user with ID ".concat(inviterId, ".\nJoin our main channel for unlimited movies, dramas, and more. Stay updated with the latest releases and exclusive content.\nClick the link to join and start enjoying now!\n").concat(env.join, "\n\n"))];
+                case 8:
+                    _d.sent();
+                    _d.label = 9;
+                case 9: return [3 /*break*/, 11];
+                case 10:
                     parts = payload.split("-");
                     if (parts.length > 0) {
                         shareId = Number(parts[0]);
                     }
-                    _d.label = 10;
-                case 10:
+                    _d.label = 11;
+                case 11:
                     if (!shareId) {
                         return [2 /*return*/, ctx.reply("Hello ".concat(user.first_name, "!\n").concat(env.request, "\n\n\nInvite your friends your invite link is:\n").concat(generateInviteLink(userId.toString(), false)), {
                                 reply_to_message_id: ctx.message.message_id,
                                 parse_mode: "HTML",
                             })];
                     }
-                    if (!!auth.isAdmin(userId)) return [3 /*break*/, 15];
+                    if (!!auth.isAdmin(userId)) return [3 /*break*/, 16];
                     return [4 /*yield*/, telegram.getChatsUserHasNotJoined(userId)];
-                case 11:
+                case 12:
                     chatsUserHasNotJoined = _d.sent();
                     if (chatsUserHasNotJoined.length) {
                         return [2 /*return*/, telegram.sendForceJoinMessage(shareId, chatId, user, chatsUserHasNotJoined)];
                     }
                     return [4 /*yield*/, database.verifyAndValidateToken((_b = ctx.from) === null || _b === void 0 ? void 0 : _b.id.toString())];
-                case 12:
-                    isValidToken = _d.sent();
-                    if (!!isValidToken) return [3 /*break*/, 15];
-                    return [4 /*yield*/, database.getFirstItem()];
                 case 13:
+                    isValidToken = _d.sent();
+                    if (!!isValidToken) return [3 /*break*/, 16];
+                    return [4 /*yield*/, database.getFirstItem()];
+                case 14:
                     getFirstItem = _d.sent();
-                    if (!getFirstItem) return [3 /*break*/, 15];
+                    if (!getFirstItem) return [3 /*break*/, 16];
                     return [4 /*yield*/, ctx.reply("Hello ".concat(user.first_name, "!\n "), {
                             reply_to_message_id: ctx.message.message_id,
                             reply_markup: {
@@ -127,48 +129,48 @@ export default function startHandler(ctx) {
                             },
                             parse_mode: "Markdown",
                         })];
-                case 14:
-                    _d.sent();
-                    _d.label = 15;
                 case 15:
+                    _d.sent();
+                    _d.label = 16;
+                case 16:
                     messageIds = void 0;
                     channel = void 0;
                     return [4 /*yield*/, database.canRequest(userId.toString())];
-                case 16:
-                    canRequest = _d.sent();
-                    if (!(canRequest || env.adminIds.includes(userId))) return [3 /*break*/, 32];
-                    _d.label = 17;
                 case 17:
-                    _d.trys.push([17, 19, , 20]);
-                    return [4 /*yield*/, database.useRequest(userId.toString())];
+                    canRequest = _d.sent();
+                    if (!(canRequest || env.adminIds.includes(userId))) return [3 /*break*/, 33];
+                    _d.label = 18;
                 case 18:
-                    _d.sent();
-                    return [3 /*break*/, 20];
+                    _d.trys.push([18, 20, , 21]);
+                    return [4 /*yield*/, database.useRequest(userId.toString())];
                 case 19:
-                    error_1 = _d.sent();
-                    return [3 /*break*/, 20];
+                    _d.sent();
+                    return [3 /*break*/, 21];
                 case 20:
-                    if (!payload.includes("eng")) return [3 /*break*/, 22];
-                    return [4 /*yield*/, database.getAIOMessages(Number(shareId))];
+                    error_1 = _d.sent();
+                    return [3 /*break*/, 21];
                 case 21:
-                    messageIds = _d.sent();
-                    channel = env.dbAIOChannelId;
-                    _d.label = 22;
+                    if (!payload.includes("eng")) return [3 /*break*/, 23];
+                    return [4 /*yield*/, database.getAIOMessages(Number(shareId))];
                 case 22:
-                    if (!payload.includes("hindi")) return [3 /*break*/, 24];
-                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
-                case 23:
                     messageIds = _d.sent();
                     channel = env.dbAIOChannelId;
-                    _d.label = 24;
+                    _d.label = 23;
+                case 23:
+                    if (!payload.includes("hindi")) return [3 /*break*/, 25];
+                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
                 case 24:
-                    if (!payload.includes("ong")) return [3 /*break*/, 26];
-                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                    messageIds = _d.sent();
+                    channel = env.dbAIOChannelId;
+                    _d.label = 25;
                 case 25:
+                    if (!payload.includes("ong")) return [3 /*break*/, 27];
+                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                case 26:
                     messageIds = _d.sent();
                     channel = env.dbOngoingChannelId;
-                    _d.label = 26;
-                case 26:
+                    _d.label = 27;
+                case 27:
                     if (!messageIds) {
                         return [2 /*return*/, ctx.reply("Message not found, try another link", {
                                 reply_to_message_id: ctx.message.message_id,
@@ -178,29 +180,29 @@ export default function startHandler(ctx) {
                         throw Error("There must be DB_CHANNEL_ID and DB_MOVIE_CHANNEL_ID");
                     }
                     return [4 /*yield*/, telegram.forwardMessages(chatId, channel, messageIds, true)];
-                case 27:
-                    _d.sent();
-                    _d.label = 28;
                 case 28:
-                    _d.trys.push([28, 30, , 31]);
-                    return [4 /*yield*/, database.saveUser(user)];
-                case 29:
                     _d.sent();
-                    return [3 /*break*/, 31];
+                    _d.label = 29;
+                case 29:
+                    _d.trys.push([29, 31, , 32]);
+                    return [4 /*yield*/, database.saveUser(user)];
                 case 30:
+                    _d.sent();
+                    return [3 /*break*/, 32];
+                case 31:
                     _c = _d.sent();
-                    return [3 /*break*/, 31];
-                case 31: return [3 /*break*/, 33];
-                case 32: return [2 /*return*/, ctx.reply("Hello ".concat(user === null || user === void 0 ? void 0 : user.first_name, "!\n In 1 day, you can only make 5 request. Increase your limit by inviting users. \nIt will increase your request limit by per day per user by 1\n your invite link is: \"").concat(generateInviteLink(userId.toString(), false)), {
+                    return [3 /*break*/, 32];
+                case 32: return [3 /*break*/, 34];
+                case 33: return [2 /*return*/, ctx.reply("Hello ".concat(user === null || user === void 0 ? void 0 : user.first_name, "!\n In 1 day, you can only make 5 request. Increase your limit by inviting users. \nIt will increase your request limit by per day per user by 1\n your invite link is: \"").concat(generateInviteLink(userId.toString(), false)), {
                         reply_to_message_id: ctx.message.message_id,
                         parse_mode: "HTML",
                     })];
-                case 33: return [3 /*break*/, 35];
-                case 34:
+                case 34: return [3 /*break*/, 36];
+                case 35:
                     error_2 = _d.sent();
                     console.log(error_2);
-                    return [3 /*break*/, 35];
-                case 35: return [2 /*return*/];
+                    return [3 /*break*/, 36];
+                case 36: return [2 /*return*/];
             }
         });
     });
