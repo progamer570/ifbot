@@ -1,6 +1,7 @@
 export function processCaption(oldCaption: string, join: string): string {
   let newCaption: string = "";
   const stringWithoutSpecialChars: string = oldCaption
+    .replace("@ADrama_Lovers", "")
     .replace(/\./g, " ")
     .replace(/-/g, " ")
     .replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
@@ -26,6 +27,7 @@ export function processCaption(oldCaption: string, join: string): string {
 export function editAIOTitle(oldCaption: string, join: string): string {
   let newCaption: string = "";
   newCaption = oldCaption
+    .replace("@ADrama_Lovers", "")
     .replace(/\#/g, " ")
     .replace(/\👉/g, "")
     .replace(/\👈/g, "")
@@ -63,6 +65,7 @@ export function editAIOTitle(oldCaption: string, join: string): string {
 export function processCaptionForStore(oldCaption: string): string {
   let newCaption: string = "";
   newCaption = oldCaption
+    .replace("@ADrama_Lovers", "")
     .replace(/\./g, " ")
     .replace(/_/g, " ")
     .replace(/-/g, " ")

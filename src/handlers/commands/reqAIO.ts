@@ -39,8 +39,8 @@ export default async function reqAIOHandler(ctx: WizardContext, next: () => void
           .then((sentMessage) => {
             try {
               const messageIdToDelete = sentMessage.message_id;
-              setTimeout(() => {
-                ctx.deleteMessage(messageIdToDelete);
+              setTimeout(async () => {
+                await ctx.deleteMessage(messageIdToDelete);
               }, 1 * 60 * 1000);
             } catch {}
           });

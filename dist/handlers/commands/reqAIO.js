@@ -40,6 +40,7 @@ export default function reqAIOHandler(ctx, next) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
         var id, text, error_1;
+        var _this = this;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -81,9 +82,16 @@ export default function reqAIOHandler(ctx, next) {
                             .then(function (sentMessage) {
                             try {
                                 var messageIdToDelete_1 = sentMessage.message_id;
-                                setTimeout(function () {
-                                    ctx.deleteMessage(messageIdToDelete_1);
-                                }, 1 * 60 * 1000);
+                                setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
+                                            case 0: return [4 /*yield*/, ctx.deleteMessage(messageIdToDelete_1)];
+                                            case 1:
+                                                _a.sent();
+                                                return [2 /*return*/];
+                                        }
+                                    });
+                                }); }, 1 * 60 * 1000);
                             }
                             catch (_a) { }
                         })];
