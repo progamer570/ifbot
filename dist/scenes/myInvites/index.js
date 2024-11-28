@@ -40,7 +40,7 @@ import { makeAIOCaption } from "../../utils/caption/makeCaption.js";
 import getRandomId from "../../extra/getRandomId.js";
 import { sendCallbackQueryResponse } from "./answerCbQUery.js";
 import { makeInviteButtons } from "../../utils/markupButton/permanantButton/keyboard.js";
-import { generateInviteLink } from "../../handlers/commands/start.js";
+import { generateInviteLink } from "../../utils/helper.js";
 // Create a Wizard Scene
 var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("message", function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var myInviteUser, random, invites, batchSize, numberOfBatches, batches, _loop_1, i, error_1;

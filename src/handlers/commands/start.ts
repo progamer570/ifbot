@@ -3,6 +3,13 @@ import auth from "../../services/auth.js";
 import database from "../../services/database.js";
 import env from "../../services/env.js";
 import telegram from "../../services/telegram.js";
+import {
+  sendDailyLimitMessage,
+  sendInviteMessage,
+  sendInviterWelcomeMessage,
+  sendTokenExpiredMessage,
+  sendTokenGeneratedMessage,
+} from "../../utils/helper.js";
 
 export default async function startHandler(ctx: CommandContext) {
   const chatId = ctx.chat.id;
@@ -22,12 +29,7 @@ export default async function startHandler(ctx: CommandContext) {
 
         if (tokenNumber === activeShareId) {
           const { token } = await database.manageToken(userId.toString());
-          return await ctx.reply(
-            `Your New token generated:${token.slice(
-              0,
-              5
-            )} ...,\nNow click on Try Again button 👆👆!`
-          );
+          return await sendTokenGeneratedMessage(ctx, token);
         }
       }
     }
@@ -42,11 +44,7 @@ export default async function startHandler(ctx: CommandContext) {
           const isUserExist = await database.isUserExist(newUserId);
           if (!isUserExist) {
             await addInviteUser(inviterId, newUserId, user.username || "null");
-            return await ctx.reply(
-              `Welcome! You were invited by a user with ID ${inviterId}.
-Join our main channel for unlimited movies, dramas, and more. Stay updated with the latest releases and exclusive content.
-Click the link to join and start enjoying now!\n${env.join}\n\n`
-            );
+            return await sendInviterWelcomeMessage(ctx, inviterId);
           }
         }
       } else {
@@ -59,18 +57,7 @@ Click the link to join and start enjoying now!\n${env.join}\n\n`
 
     // Default message if no shareId is found
     if (!shareId) {
-      return ctx.reply(
-        `Hello ${user.first_name}!\n${
-          env.request
-        }\n\n\nInvite your friends! Your invite link is:\n${generateInviteLink(
-          userId.toString(),
-          false
-        )}`,
-        {
-          reply_to_message_id: ctx.message.message_id,
-          parse_mode: "HTML",
-        }
-      );
+      return await sendInviteMessage(ctx, user, userId.toString());
     }
 
     // Non-admin users must join chats
@@ -86,31 +73,7 @@ Click the link to join and start enjoying now!\n${env.join}\n\n`
     if (!isValidToken) {
       const firstItem = await database.getFirstItem();
       if (firstItem) {
-        return await ctx.reply(
-          `Hello ${user.first_name}, your token has expired.
-You can generate a new token once a day. After that, you can make unlimited requests within 24 hours.
-ANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`,
-          {
-            reply_to_message_id: ctx.message.message_id,
-            reply_markup: {
-              inline_keyboard: [
-                [
-                  {
-                    text: "Click Me To Generate New Token",
-                    url: firstItem.sort[0].aioShortUrl,
-                  },
-                ],
-                [
-                  {
-                    text: "Try Again",
-                    url: `https://t.me/${env.botUserName}?start=${payload}`.replace(" ", ""),
-                  },
-                ],
-              ],
-            },
-            parse_mode: "Markdown",
-          }
-        );
+        return await sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload);
       }
     }
 
@@ -153,27 +116,12 @@ ANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`,
         console.error("Error saving user data:", error);
       }
     } else {
-      return ctx.reply(
-        `Hello ${user.first_name}!
-You can make up to 5 requests per day. Increase your limit by inviting users! Each user adds 1 extra daily request.
-Your invite link is: "${generateInviteLink(userId.toString(), false)}"`,
-        {
-          reply_to_message_id: ctx.message.message_id,
-          parse_mode: "HTML",
-        }
-      );
+      return await sendDailyLimitMessage(ctx, user, userId.toString());
     }
   } catch (error) {
     console.error("Error in startHandler:", error);
   }
 }
-
-export const generateInviteLink = (userId: string, sharLink: boolean) => {
-  if (sharLink) {
-    return `https://t.me/share/url?url=https://t.me/${env.botUserName}?start=invite-${userId}`;
-  }
-  return `https://t.me/${env.botUserName}?start=invite-${userId}`;
-};
 
 const addInviteUser = async (inviterId: string, newUserId: string, username: string) => {
   await database.addInvite(inviterId, newUserId, username);

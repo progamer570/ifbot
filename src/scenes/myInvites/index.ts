@@ -6,7 +6,7 @@ import { makeAIOCaption } from "../../utils/caption/makeCaption.js";
 import getRandomId from "../../extra/getRandomId.js";
 import { sendCallbackQueryResponse } from "./answerCbQUery.js";
 import { makeInviteButtons } from "../../utils/markupButton/permanantButton/keyboard.js";
-import { generateInviteLink } from "../../handlers/commands/start.js";
+import { generateInviteLink } from "../../utils/helper.js";
 
 // Create a Wizard Scene
 const myInvitePagination = new Scenes.WizardScene<WizardContext<PageSessionData>>(

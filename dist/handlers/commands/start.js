@@ -38,6 +38,7 @@ import auth from "../../services/auth.js";
 import database from "../../services/database.js";
 import env from "../../services/env.js";
 import telegram from "../../services/telegram.js";
+import { sendDailyLimitMessage, sendInviteMessage, sendInviterWelcomeMessage, sendTokenExpiredMessage, sendTokenGeneratedMessage, } from "../../utils/helper.js";
 export default function startHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var chatId, user, userId, payload, shareId, tokenNumber, firstSortItem, activeShareId, token, inviteParts, inviterId, newUserId, isUserExist, parts, chatsUserHasNotJoined, isValidToken, firstItem, canRequest, error_1, messageIds, channel, error_2, error_3;
@@ -52,7 +53,7 @@ export default function startHandler(ctx) {
                     console.log(payload);
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 36, , 37]);
+                    _a.trys.push([1, 39, , 40]);
                     if (!(payload && payload.includes("token-"))) return [3 /*break*/, 5];
                     tokenNumber = payload.replace("token-", "");
                     return [4 /*yield*/, database.getFirstSortItem()];
@@ -64,7 +65,7 @@ export default function startHandler(ctx) {
                     return [4 /*yield*/, database.manageToken(userId.toString())];
                 case 3:
                     token = (_a.sent()).token;
-                    return [4 /*yield*/, ctx.reply("Your New token generated:".concat(token.slice(0, 5), " ...,\nNow click on Try Again button \uD83D\uDC46\uD83D\uDC46!"))];
+                    return [4 /*yield*/, sendTokenGeneratedMessage(ctx, token)];
                 case 4: return [2 /*return*/, _a.sent()];
                 case 5:
                     if (!payload) return [3 /*break*/, 11];
@@ -80,7 +81,7 @@ export default function startHandler(ctx) {
                     return [4 /*yield*/, addInviteUser(inviterId, newUserId, user.username || "null")];
                 case 7:
                     _a.sent();
-                    return [4 /*yield*/, ctx.reply("Welcome! You were invited by a user with ID ".concat(inviterId, ".\nJoin our main channel for unlimited movies, dramas, and more. Stay updated with the latest releases and exclusive content.\nClick the link to join and start enjoying now!\n").concat(env.join, "\n\n"))];
+                    return [4 /*yield*/, sendInviterWelcomeMessage(ctx, inviterId)];
                 case 8: return [2 /*return*/, _a.sent()];
                 case 9: return [3 /*break*/, 11];
                 case 10:
@@ -90,89 +91,67 @@ export default function startHandler(ctx) {
                     }
                     _a.label = 11;
                 case 11:
-                    // Default message if no shareId is found
-                    if (!shareId) {
-                        return [2 /*return*/, ctx.reply("Hello ".concat(user.first_name, "!\n").concat(env.request, "\n\n\nInvite your friends! Your invite link is:\n").concat(generateInviteLink(userId.toString(), false)), {
-                                reply_to_message_id: ctx.message.message_id,
-                                parse_mode: "HTML",
-                            })];
-                    }
-                    if (!!auth.isAdmin(userId)) return [3 /*break*/, 13];
+                    if (!!shareId) return [3 /*break*/, 13];
+                    return [4 /*yield*/, sendInviteMessage(ctx, user, userId.toString())];
+                case 12: return [2 /*return*/, _a.sent()];
+                case 13:
+                    if (!!auth.isAdmin(userId)) return [3 /*break*/, 15];
                     return [4 /*yield*/, telegram.getChatsUserHasNotJoined(userId)];
-                case 12:
+                case 14:
                     chatsUserHasNotJoined = _a.sent();
                     if (chatsUserHasNotJoined.length) {
                         return [2 /*return*/, telegram.sendForceJoinMessage(shareId, chatId, user, chatsUserHasNotJoined)];
                     }
-                    _a.label = 13;
-                case 13: return [4 /*yield*/, database.verifyAndValidateToken(userId.toString())];
-                case 14:
+                    _a.label = 15;
+                case 15: return [4 /*yield*/, database.verifyAndValidateToken(userId.toString())];
+                case 16:
                     isValidToken = _a.sent();
-                    if (!!isValidToken) return [3 /*break*/, 17];
+                    if (!!isValidToken) return [3 /*break*/, 19];
                     return [4 /*yield*/, database.getFirstItem()];
-                case 15:
+                case 17:
                     firstItem = _a.sent();
-                    if (!firstItem) return [3 /*break*/, 17];
-                    return [4 /*yield*/, ctx.reply("Hello ".concat(user.first_name, ", your token has expired.\nYou can generate a new token once a day. After that, you can make unlimited requests within 24 hours.\nANY PROBLEM CONTACT: [ADMIN](tg://user?id=").concat(env.adminIds[0], ")"), {
-                            reply_to_message_id: ctx.message.message_id,
-                            reply_markup: {
-                                inline_keyboard: [
-                                    [
-                                        {
-                                            text: "Click Me To Generate New Token",
-                                            url: firstItem.sort[0].aioShortUrl,
-                                        },
-                                    ],
-                                    [
-                                        {
-                                            text: "Try Again",
-                                            url: "https://t.me/".concat(env.botUserName, "?start=").concat(payload).replace(" ", ""),
-                                        },
-                                    ],
-                                ],
-                            },
-                            parse_mode: "Markdown",
-                        })];
-                case 16: return [2 /*return*/, _a.sent()];
-                case 17: return [4 /*yield*/, database.canRequest(userId.toString())];
-                case 18:
-                    canRequest = _a.sent();
-                    if (!(canRequest || env.adminIds.includes(userId))) return [3 /*break*/, 34];
-                    _a.label = 19;
-                case 19:
-                    _a.trys.push([19, 21, , 22]);
-                    return [4 /*yield*/, database.useRequest(userId.toString())];
+                    if (!firstItem) return [3 /*break*/, 19];
+                    return [4 /*yield*/, sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload)];
+                case 18: return [2 /*return*/, _a.sent()];
+                case 19: return [4 /*yield*/, database.canRequest(userId.toString())];
                 case 20:
-                    _a.sent();
-                    return [3 /*break*/, 22];
+                    canRequest = _a.sent();
+                    if (!(canRequest || env.adminIds.includes(userId))) return [3 /*break*/, 36];
+                    _a.label = 21;
                 case 21:
+                    _a.trys.push([21, 23, , 24]);
+                    return [4 /*yield*/, database.useRequest(userId.toString())];
+                case 22:
+                    _a.sent();
+                    return [3 /*break*/, 24];
+                case 23:
                     error_1 = _a.sent();
                     console.error("Error updating request count:", error_1);
-                    return [3 /*break*/, 22];
-                case 22:
+                    return [3 /*break*/, 24];
+                case 24:
                     messageIds = void 0;
                     channel = void 0;
-                    if (!payload.includes("eng")) return [3 /*break*/, 24];
+                    if (!payload.includes("eng")) return [3 /*break*/, 26];
                     return [4 /*yield*/, database.getAIOMessages(Number(shareId))];
-                case 23:
-                    messageIds = _a.sent();
-                    channel = env.dbAIOChannelId;
-                    return [3 /*break*/, 28];
-                case 24:
-                    if (!payload.includes("hindi")) return [3 /*break*/, 26];
-                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
                 case 25:
                     messageIds = _a.sent();
                     channel = env.dbAIOChannelId;
-                    return [3 /*break*/, 28];
+                    return [3 /*break*/, 30];
                 case 26:
-                    if (!payload.includes("ong")) return [3 /*break*/, 28];
-                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                    if (!payload.includes("hindi")) return [3 /*break*/, 28];
+                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
                 case 27:
                     messageIds = _a.sent();
-                    channel = env.dbOngoingChannelId;
-                    _a.label = 28;
+                    channel = env.dbAIOChannelId;
+                    return [3 /*break*/, 30];
                 case 28:
+                    if (!payload.includes("ong")) return [3 /*break*/, 30];
+                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                case 29:
+                    messageIds = _a.sent();
+                    channel = env.dbOngoingChannelId;
+                    _a.label = 30;
+                case 30:
                     if (!messageIds) {
                         return [2 /*return*/, ctx.reply("Message not found, try another link", {
                                 reply_to_message_id: ctx.message.message_id,
@@ -182,40 +161,32 @@ export default function startHandler(ctx) {
                         throw new Error("Missing DB_CHANNEL_ID or DB_MOVIE_CHANNEL_ID");
                     }
                     return [4 /*yield*/, telegram.forwardMessages(chatId, channel, messageIds, true)];
-                case 29:
-                    _a.sent();
-                    _a.label = 30;
-                case 30:
-                    _a.trys.push([30, 32, , 33]);
-                    return [4 /*yield*/, database.saveUser(user)];
                 case 31:
                     _a.sent();
-                    return [3 /*break*/, 33];
+                    _a.label = 32;
                 case 32:
+                    _a.trys.push([32, 34, , 35]);
+                    return [4 /*yield*/, database.saveUser(user)];
+                case 33:
+                    _a.sent();
+                    return [3 /*break*/, 35];
+                case 34:
                     error_2 = _a.sent();
                     console.error("Error saving user data:", error_2);
-                    return [3 /*break*/, 33];
-                case 33: return [3 /*break*/, 35];
-                case 34: return [2 /*return*/, ctx.reply("Hello ".concat(user.first_name, "!\nYou can make up to 5 requests per day. Increase your limit by inviting users! Each user adds 1 extra daily request.\nYour invite link is: \"").concat(generateInviteLink(userId.toString(), false), "\""), {
-                        reply_to_message_id: ctx.message.message_id,
-                        parse_mode: "HTML",
-                    })];
-                case 35: return [3 /*break*/, 37];
-                case 36:
+                    return [3 /*break*/, 35];
+                case 35: return [3 /*break*/, 38];
+                case 36: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString())];
+                case 37: return [2 /*return*/, _a.sent()];
+                case 38: return [3 /*break*/, 40];
+                case 39:
                     error_3 = _a.sent();
                     console.error("Error in startHandler:", error_3);
-                    return [3 /*break*/, 37];
-                case 37: return [2 /*return*/];
+                    return [3 /*break*/, 40];
+                case 40: return [2 /*return*/];
             }
         });
     });
 }
-export var generateInviteLink = function (userId, sharLink) {
-    if (sharLink) {
-        return "https://t.me/share/url?url=https://t.me/".concat(env.botUserName, "?start=invite-").concat(userId);
-    }
-    return "https://t.me/".concat(env.botUserName, "?start=invite-").concat(userId);
-};
 var addInviteUser = function (inviterId, newUserId, username) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
