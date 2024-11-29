@@ -38,8 +38,8 @@ class Database {
     await this.client.saveHindiDrama(aIODocument);
     return aIODocument.shareId;
   }
-  async searchAIO(searchCriteria: AIOSearchCriteria) {
-    return await this.client.searchAIO(searchCriteria);
+  async searchAIO(searchCriteria: AIOSearchCriteria, messageIdLink?: string | null) {
+    return await this.client.searchAIO(searchCriteria, messageIdLink);
   }
   async searchHindiDrama(searchCriteria: AIOSearchCriteria) {
     return await this.client.searchHindiDrama(searchCriteria);

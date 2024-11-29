@@ -35,7 +35,7 @@ declare class MongoDB {
     saveOngoing(ong: OngoingDocument): Promise<OngoingDocument>;
     getHindiMessages(shareId: number): Promise<number[] | undefined>;
     saveHindiDrama(aio: AIODocument): Promise<AIODocument>;
-    searchAIO(criteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
+    searchAIO(criteria: AIOSearchCriteria, messageIdLink?: string | null): Promise<AIODocument[] | undefined>;
     searchHindiDrama(criteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
     addAIO(shareId: number, messageIds: number[]): Promise<boolean>;
     deleteAIO(shareId: number): Promise<boolean>;

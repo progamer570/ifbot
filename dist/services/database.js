@@ -104,11 +104,11 @@ var Database = /** @class */ (function () {
             });
         });
     };
-    Database.prototype.searchAIO = function (searchCriteria) {
+    Database.prototype.searchAIO = function (searchCriteria, messageIdLink) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.searchAIO(searchCriteria)];
+                    case 0: return [4 /*yield*/, this.client.searchAIO(searchCriteria, messageIdLink)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

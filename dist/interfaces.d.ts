@@ -24,7 +24,7 @@ export interface DatabaseClient {
     getHindiMessages(shareId: number): Promise<number[] | undefined>;
     getAIOMessages(shareId: number): Promise<number[] | undefined>;
     getOngoingMessages(shareId: number): Promise<number[] | undefined>;
-    searchAIO(searchCriteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
+    searchAIO(searchCriteria: AIOSearchCriteria, messageIdLink?: string | null): Promise<AIODocument[] | undefined>;
     searchHindiDrama(searchCriteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
     addAIO(shareId: number, messageIds: number[]): any;
     deleteAIO(shareId: number): any;

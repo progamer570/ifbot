@@ -18,6 +18,7 @@ import { InviteUser } from "./interfaces/inviteUser.js";
 import { OngoingDocument } from "./interfaces/ongoingDocument.js";
 import TokenModel from "./models/tokeModel.js";
 import { ITokenDocument } from "./interfaces/token.js";
+import { sendToLogGroup } from "../utils/sendToCollection.js";
 
 class MongoDB {
   db: typeof mongoose;
@@ -144,7 +145,10 @@ class MongoDB {
     return aio;
   }
 
-  async searchAIO(criteria: AIOSearchCriteria): Promise<AIODocument[] | undefined> {
+  async searchAIO(
+    criteria: AIOSearchCriteria,
+    messageIdLink?: string | null
+  ): Promise<AIODocument[] | undefined> {
     if (!criteria.aIOTitle || criteria.aIOTitle.length < 2) {
       console.log("Please provide a valid search criteria.");
       return undefined;
@@ -176,7 +180,16 @@ class MongoDB {
       if (results.length === 0 && Object.keys(specialQuery).length > 0) {
         results = await this.AIOModel.find(specialQuery);
       }
-
+      if (results.length === 0) {
+        try {
+          await sendToLogGroup(
+            env.logGroupId,
+            `not found: ${normalizedTitle} [View Message](${
+              messageIdLink || "https://www.telegram.org/"
+            })`
+          );
+        } catch {}
+      }
       return results;
     } catch (err) {
       console.error("Error executing the query:", err);

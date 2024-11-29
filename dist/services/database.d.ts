@@ -13,7 +13,7 @@ declare class Database {
     saveAIO(aIODocument: AIODocument): Promise<number>;
     saveOngoing(ongoingDocument: OngoingDocument): Promise<number>;
     saveHindiDrama(aIODocument: AIODocument): Promise<number>;
-    searchAIO(searchCriteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
+    searchAIO(searchCriteria: AIOSearchCriteria, messageIdLink?: string | null): Promise<AIODocument[] | undefined>;
     searchHindiDrama(searchCriteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
     getAIOMessages(shareId: number): Promise<number[] | undefined>;
     getOngoingMessages(shareId: number): Promise<number[] | undefined>;

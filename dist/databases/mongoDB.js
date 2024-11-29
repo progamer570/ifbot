@@ -45,6 +45,7 @@ import OngoingModel from "./models/ongoingModel.js";
 import { HindiDramaModel } from "./models/aIOModel.js";
 import { InviteService } from "./inviteService.js";
 import TokenModel from "./models/tokeModel.js";
+import { sendToLogGroup } from "../utils/sendToCollection.js";
 var MongoDB = /** @class */ (function () {
     function MongoDB() {
         this.db = mongoose;
@@ -286,11 +287,11 @@ var MongoDB = /** @class */ (function () {
             });
         });
     };
-    MongoDB.prototype.searchAIO = function (criteria) {
+    MongoDB.prototype.searchAIO = function (criteria, messageIdLink) {
         return __awaiter(this, void 0, void 0, function () {
-            var normalizedTitle, first20Chars, query, specialQuery, keywords, regexPattern, results, err_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var normalizedTitle, first20Chars, query, specialQuery, keywords, regexPattern, results, _a, err_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         if (!criteria.aIOTitle || criteria.aIOTitle.length < 2) {
                             console.log("Please provide a valid search criteria.");
@@ -313,23 +314,35 @@ var MongoDB = /** @class */ (function () {
                                 aIOTitle: { $regex: regexPattern },
                             };
                         }
-                        _a.label = 1;
+                        _b.label = 1;
                     case 1:
-                        _a.trys.push([1, 5, , 6]);
+                        _b.trys.push([1, 9, , 10]);
                         return [4 /*yield*/, this.AIOModel.find(query)];
                     case 2:
-                        results = _a.sent();
+                        results = _b.sent();
                         if (!(results.length === 0 && Object.keys(specialQuery).length > 0)) return [3 /*break*/, 4];
                         return [4 /*yield*/, this.AIOModel.find(specialQuery)];
                     case 3:
-                        results = _a.sent();
-                        _a.label = 4;
-                    case 4: return [2 /*return*/, results];
+                        results = _b.sent();
+                        _b.label = 4;
+                    case 4:
+                        if (!(results.length === 0)) return [3 /*break*/, 8];
+                        _b.label = 5;
                     case 5:
-                        err_2 = _a.sent();
+                        _b.trys.push([5, 7, , 8]);
+                        return [4 /*yield*/, sendToLogGroup(env.logGroupId, "not found: ".concat(normalizedTitle, " [View Message](").concat(messageIdLink || "https://www.telegram.org/", ")"))];
+                    case 6:
+                        _b.sent();
+                        return [3 /*break*/, 8];
+                    case 7:
+                        _a = _b.sent();
+                        return [3 /*break*/, 8];
+                    case 8: return [2 /*return*/, results];
+                    case 9:
+                        err_2 = _b.sent();
                         console.error("Error executing the query:", err_2);
                         return [2 /*return*/, undefined];
-                    case 6: return [2 /*return*/];
+                    case 10: return [2 /*return*/];
                 }
             });
         });
