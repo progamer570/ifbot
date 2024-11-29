@@ -14,6 +14,7 @@ declare const _default: {
     port: string | number;
     channelSourceLink: string | undefined;
     join: string;
+    howToGenerateToken: string | undefined;
     backup: string;
     howToDownload: string;
     dbAIOChannelId: number;

@@ -32,6 +32,7 @@ var collectionHindi = Number(env.COLLECTION_HINDI) || "";
 var collectionOngoing = Number(env.ONGOING_COLLECTION) || "";
 var collectionAIOBackup = Number(env.COLLECTION_AIO_BACKUP) || "";
 var jwtSecret = env.JWT_SECRET || "randomSecretString";
+var howToGenerateToken = env.HOW_TO_GENERATE_TOKEN;
 if (!token) {
     throw Error("Provide TELEGRAM_BOT_TOKEN");
 }
@@ -53,6 +54,7 @@ export default {
     port: port,
     channelSourceLink: channelSourceLink,
     join: join,
+    howToGenerateToken: howToGenerateToken,
     backup: backup,
     howToDownload: howToDownload,
     dbAIOChannelId: dbAIOChannelId,

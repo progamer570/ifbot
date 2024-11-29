@@ -9,9 +9,15 @@ export async function sendTokenExpiredMessage(
   payload: string
 ): Promise<void> {
   const firstName = (user.first_name?.replace(/[^a-zA-Z0-9]/g, "") || "User").trim();
-  const message = `Hello ${firstName}, your token has expired.
-You can generate a new token once a day. After that, you can make unlimited requests within 24 hours.
-ANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`;
+  let message = `Hello ${firstName}, your token has expired.  
+You can generate a new token once a day, which takes just 30–40 seconds. After that, you’ll enjoy unlimited requests for the next 24 hours!
+`;
+
+  if (env.howToGenerateToken) {
+    message += `Tutorial:\n[TO KNOW HOW TO GENERATE NEW TOKEN](${env.howToGenerateToken})`;
+  }
+
+  message += `\nANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`;
 
   await ctx.reply(message, {
     reply_to_message_id: ctx.message.message_id,
@@ -66,6 +72,7 @@ Your invite link is: "${inviteLink}"`;
     parse_mode: "HTML",
   });
 }
+
 export async function sendInviterWelcomeMessage(
   ctx: CommandContext,
   inviterId: string
@@ -76,6 +83,7 @@ Click the link to join and start enjoying now!\n${env.join}\n\n`;
 
   await ctx.reply(message);
 }
+
 export async function sendTokenGeneratedMessage(ctx: CommandContext, token: string): Promise<void> {
   const truncatedToken = `${token.slice(0, 5)} ...`;
   const message = `Your new token is generated: ${truncatedToken},\nNow click on the Try Again button 👆👆!`;
