@@ -38,6 +38,7 @@ You can generate a new token once a day, which takes just 30–40 seconds. After
       ],
     },
     parse_mode: "Markdown",
+    disable_web_page_preview: true,
   });
 }
 

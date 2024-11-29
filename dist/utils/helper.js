@@ -67,6 +67,7 @@ export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
                                 ],
                             },
                             parse_mode: "Markdown",
+                            disable_web_page_preview: true,
                         })];
                 case 1:
                     _b.sent();
