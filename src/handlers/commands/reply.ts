@@ -11,7 +11,7 @@ export default async function replyHandler(ctx: CommandContext) {
     // if (!args) {
     //   return ctx.reply("Usage: /reply <message>");
     // }
-    await ctx.deleteMessage(replyMessage.message_id);
+    await ctx.deleteMessage();
 
     await ctx.reply(msg, {
       reply_to_message_id: replyMessage.message_id,

@@ -49,7 +49,7 @@ export default function replyHandler(ctx) {
                     // if (!args) {
                     //   return ctx.reply("Usage: /reply <message>");
                     // }
-                    return [4 /*yield*/, ctx.deleteMessage(replyMessage.message_id)];
+                    return [4 /*yield*/, ctx.deleteMessage()];
                 case 1:
                     // if (!args) {
                     //   return ctx.reply("Usage: /reply <message>");
