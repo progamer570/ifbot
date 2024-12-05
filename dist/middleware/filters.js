@@ -98,7 +98,7 @@ export default {
                                 next();
                             }
                         }
-                        if (ctx.message && containsSGD(ctx.message)) {
+                        if (ctx.message && (containsSGD(ctx.message) || "reply_to_message" in ctx.message)) {
                             try {
                                 setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
                                     var _a;

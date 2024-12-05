@@ -45,7 +45,7 @@ export default {
         next();
       }
     }
-    if (ctx.message && containsSGD(ctx.message)) {
+    if (ctx.message && (containsSGD(ctx.message) || "reply_to_message" in ctx.message)) {
       try {
         setTimeout(async () => {
           await ctx.deleteMessage(ctx.message?.message_id).catch((error) => {
@@ -56,6 +56,7 @@ export default {
         console.error("Unexpected error while deleting message:", error);
       }
     }
+
     if (auth.isAdmin(ctx.from?.id ?? 0)) {
       if (ctx.callbackQuery && "data" in ctx.callbackQuery) {
         const callbackData = ctx.callbackQuery.data;
