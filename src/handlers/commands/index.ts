@@ -7,9 +7,12 @@ import invitesHandler from "./myInvites.js";
 import totalUsersHandler from "./totalUsers.js";
 import myBroadcastHandler from "./broadcast.js";
 import addOngoingHandler from "./addOngoing.js";
+import replyHandler from "./reply.js";
 
 export default {
   startHandler,
+
+  replyHandler,
 
   reqAIOHandler,
 

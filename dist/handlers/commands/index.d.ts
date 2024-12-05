@@ -6,8 +6,10 @@ import invitesHandler from "./myInvites.js";
 import totalUsersHandler from "./totalUsers.js";
 import myBroadcastHandler from "./broadcast.js";
 import addOngoingHandler from "./addOngoing.js";
+import replyHandler from "./reply.js";
 declare const _default: {
     startHandler: typeof startHandler;
+    replyHandler: typeof replyHandler;
     reqAIOHandler: typeof reqAIOHandler;
     addAIOHandler: typeof addAIOHandler;
     editAIOHandler: typeof editAIOHandler;

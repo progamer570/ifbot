@@ -34,69 +34,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import express from "express";
-import env from "./services/env.js";
-import telegram from "./services/telegram.js";
-import commands from "./handlers/commands/index.js";
-import stage from "./scenes/index.js";
-import { session } from "telegraf";
-import database from "./services/database.js";
-import filters from "./middleware/filters.js";
-var app = telegram.app;
-app.use(session());
-app.use(stage.middleware());
-app.use(filters.private);
-app.use(commands.reqAIOHandler);
-app.command("start", commands.startHandler);
-app.command("reply", commands.startHandler);
-app.command("myinvites", commands.invitesHandler);
-app.command("totalusers", commands.totalUsersHandler);
-app.command("broadcast", commands.myBroadcastHandler);
-app.command("add", commands.addAIOHandler);
-app.command("addh", commands.addAIOHandler);
-app.command("addong", commands.addOngoingHandler);
-app.command("edit", commands.editAIOHandler);
-app.catch(function (err, ctx) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        console.error("Error in ".concat(ctx.updateType), err);
-        return [2 /*return*/];
-    });
-}); });
-function main() {
+export default function replyHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var domain, server, port_1, _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0: return [4 /*yield*/, database.initialize()];
-                case 1:
-                    _c.sent();
-                    return [4 /*yield*/, telegram.initialize()];
-                case 2:
-                    _c.sent();
-                    if (!env.development) return [3 /*break*/, 3];
-                    app.launch({ dropPendingUpdates: true });
-                    return [3 /*break*/, 5];
-                case 3:
-                    domain = env.webhookDomain;
-                    if (!domain) {
-                        throw Error("Please provide WEBHOOK_DOMAIN");
+        var replyMessage, msg, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    replyMessage = ctx.message.reply_to_message;
+                    if (!replyMessage) {
+                        return [2 /*return*/, ctx.reply("Please reply to a message to use this command.")];
                     }
-                    server = express();
-                    server.get("/check", function (req, res) {
-                        res.sendStatus(200);
-                    });
-                    port_1 = env.port;
-                    _b = (_a = server).use;
-                    return [4 /*yield*/, app.createWebhook({ domain: domain, path: "/zhao010203" })];
-                case 4:
-                    _b.apply(_a, [_c.sent()]);
-                    server.listen(port_1, function () { return console.log("Server listening on ".concat(port_1)); });
-                    _c.label = 5;
-                case 5: return [2 /*return*/];
+                    msg = ctx.message.text.replace("/reply", "").trim();
+                    // if (!args) {
+                    //   return ctx.reply("Usage: /reply <message>");
+                    // }
+                    return [4 /*yield*/, ctx.deleteMessage(replyMessage.message_id)];
+                case 1:
+                    // if (!args) {
+                    //   return ctx.reply("Usage: /reply <message>");
+                    // }
+                    _a.sent();
+                    return [4 /*yield*/, ctx.reply(msg, {
+                            reply_to_message_id: replyMessage.message_id,
+                        })];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    console.error("Error handling reply command:", err_1);
+                    ctx.reply("An error occurred while processing the reply.");
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });
 }
-main();
-process.once("SIGINT", function () { return app.stop("SIGINT"); });
-process.once("SIGTERM", function () { return app.stop("SIGTERM"); });
