@@ -48,7 +48,7 @@ app.use(stage.middleware());
 app.use(filters.private);
 app.use(commands.reqAIOHandler);
 app.command("start", commands.startHandler);
-app.command("reply", commands.startHandler);
+app.command("reply", commands.replyHandler);
 app.command("myinvites", commands.invitesHandler);
 app.command("totalusers", commands.totalUsersHandler);
 app.command("broadcast", commands.myBroadcastHandler);
