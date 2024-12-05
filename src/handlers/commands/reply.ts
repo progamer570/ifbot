@@ -18,6 +18,5 @@ export default async function replyHandler(ctx: CommandContext) {
     });
   } catch (err) {
     console.error("Error handling reply command:", err);
-    ctx.reply("An error occurred while processing the reply.");
   }
 }

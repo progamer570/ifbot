@@ -64,7 +64,6 @@ export default function replyHandler(ctx) {
                 case 3:
                     err_1 = _a.sent();
                     console.error("Error handling reply command:", err_1);
-                    ctx.reply("An error occurred while processing the reply.");
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
