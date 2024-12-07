@@ -53,7 +53,7 @@ export default function startHandler(ctx) {
                     console.log(payload);
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 39, , 40]);
+                    _a.trys.push([1, 40, , 41]);
                     if (!(payload && payload.includes("token-"))) return [3 /*break*/, 5];
                     tokenNumber = payload.replace("token-", "");
                     return [4 /*yield*/, database.getFirstSortItem()];
@@ -116,42 +116,44 @@ export default function startHandler(ctx) {
                 case 19: return [4 /*yield*/, database.canRequest(userId.toString())];
                 case 20:
                     canRequest = _a.sent();
-                    if (!(canRequest || env.adminIds.includes(userId))) return [3 /*break*/, 36];
+                    if (!(canRequest || env.adminIds.includes(userId))) return [3 /*break*/, 37];
                     _a.label = 21;
                 case 21:
-                    _a.trys.push([21, 23, , 24]);
+                    _a.trys.push([21, 24, , 25]);
+                    if (!!payload.includes("ong")) return [3 /*break*/, 23];
                     return [4 /*yield*/, database.useRequest(userId.toString())];
                 case 22:
                     _a.sent();
-                    return [3 /*break*/, 24];
-                case 23:
+                    _a.label = 23;
+                case 23: return [3 /*break*/, 25];
+                case 24:
                     error_1 = _a.sent();
                     console.error("Error updating request count:", error_1);
-                    return [3 /*break*/, 24];
-                case 24:
+                    return [3 /*break*/, 25];
+                case 25:
                     messageIds = void 0;
                     channel = void 0;
-                    if (!payload.includes("eng")) return [3 /*break*/, 26];
+                    if (!payload.includes("eng")) return [3 /*break*/, 27];
                     return [4 /*yield*/, database.getAIOMessages(Number(shareId))];
-                case 25:
-                    messageIds = _a.sent();
-                    channel = env.dbAIOChannelId;
-                    return [3 /*break*/, 30];
                 case 26:
-                    if (!payload.includes("hindi")) return [3 /*break*/, 28];
-                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
-                case 27:
                     messageIds = _a.sent();
                     channel = env.dbAIOChannelId;
-                    return [3 /*break*/, 30];
+                    return [3 /*break*/, 31];
+                case 27:
+                    if (!payload.includes("hindi")) return [3 /*break*/, 29];
+                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
                 case 28:
-                    if (!payload.includes("ong")) return [3 /*break*/, 30];
-                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                    messageIds = _a.sent();
+                    channel = env.dbAIOChannelId;
+                    return [3 /*break*/, 31];
                 case 29:
+                    if (!payload.includes("ong")) return [3 /*break*/, 31];
+                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                case 30:
                     messageIds = _a.sent();
                     channel = env.dbOngoingChannelId;
-                    _a.label = 30;
-                case 30:
+                    _a.label = 31;
+                case 31:
                     if (!messageIds) {
                         return [2 /*return*/, ctx.reply("Message not found, try another link", {
                                 reply_to_message_id: ctx.message.message_id,
@@ -161,28 +163,28 @@ export default function startHandler(ctx) {
                         throw new Error("Missing DB_CHANNEL_ID or DB_MOVIE_CHANNEL_ID");
                     }
                     return [4 /*yield*/, telegram.forwardMessages(chatId, channel, messageIds, true)];
-                case 31:
-                    _a.sent();
-                    _a.label = 32;
                 case 32:
-                    _a.trys.push([32, 34, , 35]);
-                    return [4 /*yield*/, database.saveUser(user)];
-                case 33:
                     _a.sent();
-                    return [3 /*break*/, 35];
+                    _a.label = 33;
+                case 33:
+                    _a.trys.push([33, 35, , 36]);
+                    return [4 /*yield*/, database.saveUser(user)];
                 case 34:
+                    _a.sent();
+                    return [3 /*break*/, 36];
+                case 35:
                     error_2 = _a.sent();
                     console.error("Error saving user data:", error_2);
-                    return [3 /*break*/, 35];
-                case 35: return [3 /*break*/, 38];
-                case 36: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString())];
-                case 37: return [2 /*return*/, _a.sent()];
-                case 38: return [3 /*break*/, 40];
-                case 39:
+                    return [3 /*break*/, 36];
+                case 36: return [3 /*break*/, 39];
+                case 37: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString())];
+                case 38: return [2 /*return*/, _a.sent()];
+                case 39: return [3 /*break*/, 41];
+                case 40:
                     error_3 = _a.sent();
                     console.error("Error in startHandler:", error_3);
-                    return [3 /*break*/, 40];
-                case 40: return [2 /*return*/];
+                    return [3 /*break*/, 41];
+                case 41: return [2 /*return*/];
             }
         });
     });

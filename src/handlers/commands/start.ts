@@ -81,7 +81,9 @@ export default async function startHandler(ctx: CommandContext) {
     const canRequest = await database.canRequest(userId.toString());
     if (canRequest || env.adminIds.includes(userId)) {
       try {
-        await database.useRequest(userId.toString());
+        if (!payload.includes("ong")) {
+          await database.useRequest(userId.toString());
+        }
       } catch (error) {
         console.error("Error updating request count:", error);
       }

@@ -98,7 +98,7 @@ export default {
                                 next();
                             }
                         }
-                        if (ctx.message && (containsSGD(ctx.message) || "reply_to_message" in ctx.message)) {
+                        if (ctx.message && containsSGD(ctx.message)) {
                             try {
                                 setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
                                     var _a;
@@ -112,7 +112,7 @@ export default {
                                                 return [2 /*return*/];
                                         }
                                     });
-                                }); }, 300000);
+                                }); }, 200000);
                             }
                             catch (error) {
                                 console.error("Unexpected error while deleting message:", error);

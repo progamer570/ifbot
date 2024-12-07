@@ -45,13 +45,13 @@ export default {
         next();
       }
     }
-    if (ctx.message && (containsSGD(ctx.message) || "reply_to_message" in ctx.message)) {
+    if (ctx.message && containsSGD(ctx.message)) {
       try {
         setTimeout(async () => {
           await ctx.deleteMessage(ctx.message?.message_id).catch((error) => {
             console.error("Failed to delete message:", error);
           });
-        }, 300000);
+        }, 200000);
       } catch (error) {
         console.error("Unexpected error while deleting message:", error);
       }
