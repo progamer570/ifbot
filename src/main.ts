@@ -31,7 +31,7 @@ app.command("edit", commands.editAIOHandler);
 app.catch(async (err, ctx) => {
   console.error(`Error in ${ctx.updateType}`, err);
 });
-const interval = 1 * 60 * 1000;
+const interval = 10 * 60 * 1000;
 
 async function main() {
   await database.initialize();
@@ -40,9 +40,7 @@ async function main() {
   setInterval(async () => {
     try {
       const response = await fetch(env.webhookDomain + "/check");
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+
       console.log(`Service is alive: Status ${response.status}`);
     } catch (error) {
       console.error(`service check failed`);
@@ -66,7 +64,7 @@ async function main() {
     server.listen(port, () => console.log(`Server listening on ${port}`));
   }
 }
-main();
+main().catch((err) => console.error(err));
 
 process.once("SIGINT", () => app.stop("SIGINT"));
 process.once("SIGTERM", () => app.stop("SIGTERM"));

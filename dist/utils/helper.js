@@ -153,7 +153,6 @@ export var generateInviteLink = function (userId, sharLink) {
 };
 export function getRandomReactionEmoji() {
     var emojis = ["👍", "👎", "🔥", "🎉", "😢", "😡", "👏"];
-    // Randomly select an emoji from the list
     var randomIndex = Math.floor(Math.random() * emojis.length);
     return emojis[randomIndex];
 }

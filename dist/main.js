@@ -65,7 +65,7 @@ app.catch(function (err, ctx) { return __awaiter(void 0, void 0, void 0, functio
         return [2 /*return*/];
     });
 }); });
-var interval = 1 * 60 * 1000;
+var interval = 10 * 60 * 1000;
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var domain, server, port_1, _a, _b;
@@ -87,9 +87,6 @@ function main() {
                                     return [4 /*yield*/, fetch(env.webhookDomain + "/check")];
                                 case 1:
                                     response = _a.sent();
-                                    if (!response.ok) {
-                                        throw new Error("HTTP error! Status: ".concat(response.status));
-                                    }
                                     console.log("Service is alive: Status ".concat(response.status));
                                     return [3 /*break*/, 3];
                                 case 2:
@@ -124,6 +121,6 @@ function main() {
         });
     });
 }
-main();
+main().catch(function (err) { return console.error(err); });
 process.once("SIGINT", function () { return app.stop("SIGINT"); });
 process.once("SIGTERM", function () { return app.stop("SIGTERM"); });

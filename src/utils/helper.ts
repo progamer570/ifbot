@@ -96,7 +96,6 @@ export const generateInviteLink = (userId: string, sharLink: boolean) => {
 export function getRandomReactionEmoji(): TelegramEmoji | ReactionType {
   const emojis: (TelegramEmoji | ReactionType)[] = ["👍", "👎", "🔥", "🎉", "😢", "😡", "👏"];
 
-  // Randomly select an emoji from the list
   const randomIndex = Math.floor(Math.random() * emojis.length);
   return emojis[randomIndex];
 }
