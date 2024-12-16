@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -42,18 +42,18 @@ import env from "../../services/env.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 var broadcastActive = true;
 export default function myBroadcastHandler(ctx) {
-    var _a, _b, _c, _d, _e, _f;
     return __awaiter(this, void 0, void 0, function () {
-        var userId, text, user, error_1, referencedMessage, users, successCount, _i, _g, user, error_2, _h, _j, user, error_3, error_4;
+        var userId, text, user, error_1, referencedMessage, users, successCount, _i, _a, user, error_2, _b, _c, user, error_3, error_4;
+        var _d, _e, _f, _g, _h, _j;
         return __generator(this, function (_k) {
             switch (_k.label) {
                 case 0:
-                    userId = (_b = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : 0;
+                    userId = (_e = (_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id) !== null && _e !== void 0 ? _e : 0;
                     if (!ctx.message || !("text" in ctx.message))
                         return [2 /*return*/];
                     text = ctx.message.text.replace("/broadcast", "").trim();
                     // Ensure the command is only used in private chats
-                    if (((_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.type) !== "private") {
+                    if (((_f = ctx.chat) === null || _f === void 0 ? void 0 : _f.type) !== "private") {
                         return [2 /*return*/, ctx.reply("This command can only be used in private chats.")];
                     }
                     // Check if the user is an admin
@@ -69,9 +69,9 @@ export default function myBroadcastHandler(ctx) {
                 case 1:
                     _k.trys.push([1, 3, , 4]);
                     user = {
-                        id: ((_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id) || 0,
-                        firstname: ((_e = ctx.from) === null || _e === void 0 ? void 0 : _e.first_name) || "",
-                        username: ((_f = ctx.from) === null || _f === void 0 ? void 0 : _f.username) || "",
+                        id: ((_g = ctx.from) === null || _g === void 0 ? void 0 : _g.id) || 0,
+                        firstname: ((_h = ctx.from) === null || _h === void 0 ? void 0 : _h.first_name) || "",
+                        username: ((_j = ctx.from) === null || _j === void 0 ? void 0 : _j.username) || "",
                     };
                     return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Broadcasted started by", user))];
                 case 2:
@@ -94,11 +94,11 @@ export default function myBroadcastHandler(ctx) {
                     users = _k.sent();
                     successCount = 0;
                     if (!referencedMessage) return [3 /*break*/, 15];
-                    _i = 0, _g = users;
+                    _i = 0, _a = users;
                     _k.label = 7;
                 case 7:
-                    if (!(_i < _g.length)) return [3 /*break*/, 14];
-                    user = _g[_i];
+                    if (!(_i < _a.length)) return [3 /*break*/, 14];
+                    user = _a[_i];
                     _k.label = 8;
                 case 8:
                     _k.trys.push([8, 10, , 11]);
@@ -125,11 +125,11 @@ export default function myBroadcastHandler(ctx) {
                 case 14: return [3 /*break*/, 23];
                 case 15:
                     if (!text) return [3 /*break*/, 23];
-                    _h = 0, _j = users;
+                    _b = 0, _c = users;
                     _k.label = 16;
                 case 16:
-                    if (!(_h < _j.length)) return [3 /*break*/, 23];
-                    user = _j[_h];
+                    if (!(_b < _c.length)) return [3 /*break*/, 23];
+                    user = _c[_b];
                     _k.label = 17;
                 case 17:
                     _k.trys.push([17, 19, , 20]);
@@ -149,7 +149,7 @@ export default function myBroadcastHandler(ctx) {
                     _k.sent();
                     _k.label = 22;
                 case 22:
-                    _h++;
+                    _b++;
                     return [3 /*break*/, 16];
                 case 23:
                     ctx.reply("Message broadcasted to ".concat(successCount, " users."));

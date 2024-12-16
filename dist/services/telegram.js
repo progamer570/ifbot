@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -116,10 +116,10 @@ var Telegram = /** @class */ (function () {
         });
     };
     Telegram.prototype.sendWaitingMessage = function (chatId) {
-        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var totalMessages, text, replyMarkup, delay;
             var _this = this;
+            var _a;
             return __generator(this, function (_b) {
                 clearTimeout(this.waitingMessageTimeout);
                 totalMessages = ((_a = this.messages.get(chatId)) === null || _a === void 0 ? void 0 : _a.length) || 0;
@@ -190,10 +190,10 @@ var Telegram = /** @class */ (function () {
         });
     };
     Telegram.prototype.getForceChatButtons = function (shareId, chatsUserHasNotJoined) {
-        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var limitPerRow, rawButtons, forceChatButtons;
             var _this = this;
+            var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -234,12 +234,12 @@ var Telegram = /** @class */ (function () {
         this.firstWaitingMessage = true;
         this.waitingMessageId = NaN;
     };
-    Telegram.prototype.forwardMessages = function (toChatId, fromChatId, messageIds, deleteOrNot, captions) {
-        if (deleteOrNot === void 0) { deleteOrNot = false; }
-        if (captions === void 0) { captions = []; }
-        return __awaiter(this, void 0, void 0, function () {
+    Telegram.prototype.forwardMessages = function (toChatId_1, fromChatId_1, messageIds_1) {
+        return __awaiter(this, arguments, void 0, function (toChatId, fromChatId, messageIds, deleteOrNot, captions) {
             var resultIds, i, messageId, caption, success, result, result, error_1;
             var _this = this;
+            if (deleteOrNot === void 0) { deleteOrNot = false; }
+            if (captions === void 0) { captions = []; }
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:

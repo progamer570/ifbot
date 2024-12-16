@@ -103,9 +103,7 @@ export default async function startHandler(ctx: CommandContext) {
       }
 
       if (!messageIds) {
-        return ctx.reply("Message not found, try another link", {
-          reply_to_message_id: ctx.message.message_id,
-        });
+        return ctx.reply("Message not found, try another link");
       }
       if (!channel) {
         throw new Error("Missing DB_CHANNEL_ID or DB_MOVIE_CHANNEL_ID");

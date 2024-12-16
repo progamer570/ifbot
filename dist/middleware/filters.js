@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -38,24 +38,37 @@ import env from "../services/env.js";
 import { getSystemUsage, getSystemUsageDetails } from "../extra/systemUses.js";
 import auth from "../services/auth.js";
 import database from "../services/database.js";
+import { autoReplyMemory } from "../handlers/commands/autoReact.js";
 export default {
     private: function (ctx, next) {
-        var _a, _b, _c, _d, _e, _f, _g;
         return __awaiter(this, void 0, void 0, function () {
-            var messageText, _h, command, args, _j, error_1, callbackData, message, err_1;
+            var messageText, _a, command, args, _b, error_1, callbackData, message, err_1;
             var _this = this;
-            return __generator(this, function (_k) {
-                switch (_k.label) {
+            var _c, _d, _e, _f, _g, _h, _j, _k;
+            return __generator(this, function (_l) {
+                switch (_l.label) {
                     case 0:
-                        console.log((_a = ctx.chat) === null || _a === void 0 ? void 0 : _a.id);
-                        if (!(ctx.message && "text" in ctx.message && auth.isAdmin((_c = (_b = ctx.from) === null || _b === void 0 ? void 0 : _b.id) !== null && _c !== void 0 ? _c : 0))) return [3 /*break*/, 16];
-                        messageText = (_d = ctx.message) === null || _d === void 0 ? void 0 : _d.text;
-                        _h = messageText.split(" "), command = _h[0], args = _h.slice(1);
-                        _k.label = 1;
+                        console.log((_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.id);
+                        if (!(ctx.message && "text" in ctx.message && auth.isAdmin((_e = (_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id) !== null && _e !== void 0 ? _e : 0))) return [3 /*break*/, 16];
+                        messageText = (_f = ctx.message) === null || _f === void 0 ? void 0 : _f.text;
+                        if (autoReplyMemory[(_g = ctx.from) === null || _g === void 0 ? void 0 : _g.id]) {
+                            setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, ctx.react()];
+                                        case 1:
+                                            _a.sent();
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            }); }, 60000);
+                        }
+                        _a = messageText.split(" "), command = _a[0], args = _a.slice(1);
+                        _l.label = 1;
                     case 1:
-                        _k.trys.push([1, 14, , 16]);
-                        _j = command;
-                        switch (_j) {
+                        _l.trys.push([1, 14, , 16]);
+                        _b = command;
+                        switch (_b) {
                             case "/setLink": return [3 /*break*/, 2];
                             case "/getFirstItem": return [3 /*break*/, 4];
                             case "/setActive": return [3 /*break*/, 6];
@@ -65,35 +78,35 @@ export default {
                         return [3 /*break*/, 12];
                     case 2: return [4 /*yield*/, handleSetLink(ctx, args)];
                     case 3:
-                        _k.sent();
+                        _l.sent();
                         return [3 /*break*/, 13];
                     case 4: return [4 /*yield*/, handleGetFirstItem(ctx)];
                     case 5:
-                        _k.sent();
+                        _l.sent();
                         return [3 /*break*/, 13];
                     case 6: return [4 /*yield*/, handleSetActive(ctx, args)];
                     case 7:
-                        _k.sent();
+                        _l.sent();
                         return [3 /*break*/, 13];
                     case 8: return [4 /*yield*/, handleUpdateFirstAndActive(ctx, args)];
                     case 9:
-                        _k.sent();
+                        _l.sent();
                         return [3 /*break*/, 13];
                     case 10: return [4 /*yield*/, handleSystemUses(ctx)];
                     case 11:
-                        _k.sent();
+                        _l.sent();
                         return [3 /*break*/, 13];
                     case 12: return [3 /*break*/, 13];
                     case 13: return [3 /*break*/, 16];
                     case 14:
-                        error_1 = _k.sent();
+                        error_1 = _l.sent();
                         console.error("Error handling command:", error_1);
                         return [4 /*yield*/, ctx.reply("An error occurred while processing your request.")];
                     case 15:
-                        _k.sent();
+                        _l.sent();
                         return [3 /*break*/, 16];
                     case 16:
-                        if (((_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id) !== undefined) {
+                        if (((_h = ctx.chat) === null || _h === void 0 ? void 0 : _h.id) !== undefined) {
                             if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
                                 next();
                             }
@@ -118,12 +131,12 @@ export default {
                                 console.error("Unexpected error while deleting message:", error);
                             }
                         }
-                        if (!auth.isAdmin((_g = (_f = ctx.from) === null || _f === void 0 ? void 0 : _f.id) !== null && _g !== void 0 ? _g : 0)) return [3 /*break*/, 20];
+                        if (!auth.isAdmin((_k = (_j = ctx.from) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : 0)) return [3 /*break*/, 20];
                         if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 20];
                         callbackData = ctx.callbackQuery.data;
-                        _k.label = 17;
+                        _l.label = 17;
                     case 17:
-                        _k.trys.push([17, 19, , 20]);
+                        _l.trys.push([17, 19, , 20]);
                         message = void 0;
                         switch (callbackData) {
                             case "addDrama":
@@ -152,10 +165,10 @@ export default {
                         }
                         return [4 /*yield*/, ctx.reply(message)];
                     case 18:
-                        _k.sent();
+                        _l.sent();
                         return [3 /*break*/, 20];
                     case 19:
-                        err_1 = _k.sent();
+                        err_1 = _l.sent();
                         console.log("Error handling callback:", err_1);
                         return [3 /*break*/, 20];
                     case 20: return [2 /*return*/];

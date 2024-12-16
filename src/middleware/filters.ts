@@ -4,6 +4,7 @@ import { getSystemUsage, getSystemUsageDetails } from "../extra/systemUses.js";
 import { Message } from "telegraf/typings/core/types/typegram";
 import auth from "../services/auth.js";
 import database from "../services/database.js";
+import { autoReplyMemory } from "../handlers/commands/autoReact.js";
 
 export default {
   async private(ctx: Context, next: () => void) {
@@ -11,6 +12,11 @@ export default {
 
     if (ctx.message && "text" in ctx.message && auth.isAdmin(ctx.from?.id ?? 0)) {
       const messageText = ctx.message?.text;
+      if (autoReplyMemory[ctx.from?.id!]) {
+        setTimeout(async () => {
+          await ctx.react();
+        }, 60000);
+      }
 
       const [command, ...args] = messageText.split(" ");
 

@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -53,9 +53,7 @@ var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("messag
             case 1:
                 myInviteUser = _a.sent();
                 if (!myInviteUser) {
-                    ctx.reply("Invite atleast 1 users to see your invited user list \nyour invite link is: ".concat(generateInviteLink(ctx.from.id.toString(), false)), {
-                        reply_to_message_id: ctx.message.message_id,
-                    });
+                    ctx.reply("Invite atleast 1 users to see your invited user list \nyour invite link is: ".concat(generateInviteLink(ctx.from.id.toString(), false)));
                 }
                 if (!myInviteUser) return [3 /*break*/, 5];
                 ctx.session.id = ctx.from.id.toString();
@@ -89,7 +87,6 @@ var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("messag
                         .reply("```\n".concat(batches[0] || "You have not invited anyone yet.", "\n```"), {
                         reply_markup: makeInviteButtons(generateInviteLink(ctx.from.id.toString(), true), myInviteUser.invites.length.toString(), ctx.session.next || "", ctx.session.prev || ""),
                         parse_mode: "MarkdownV2",
-                        reply_to_message_id: ctx.message.message_id,
                     })
                         .then(function (sentMessage) {
                         try {

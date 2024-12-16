@@ -6,6 +6,7 @@ import stage from "./scenes/index.js";
 import { session } from "telegraf";
 import database from "./services/database.js";
 import filters from "./middleware/filters.js";
+import { useNewReplies } from "telegraf/future";
 
 const app = telegram.app;
 
@@ -14,8 +15,10 @@ app.use(session());
 app.use(stage.middleware());
 app.use(filters.private);
 app.use(commands.reqAIOHandler);
+app.use(useNewReplies());
 
 app.command("start", commands.startHandler);
+app.command("autoreply", commands.autoReplyHandler);
 app.command("reply", commands.replyHandler);
 app.command("myinvites", commands.invitesHandler);
 app.command("totalusers", commands.totalUsersHandler);
@@ -28,10 +31,23 @@ app.command("edit", commands.editAIOHandler);
 app.catch(async (err, ctx) => {
   console.error(`Error in ${ctx.updateType}`, err);
 });
+const interval = 5 * 60 * 1000;
 
 async function main() {
   await database.initialize();
   await telegram.initialize();
+
+  setInterval(async () => {
+    try {
+      const response = await fetch(env.webhookDomain + "/check");
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      console.log(`Service is alive: Status ${response.status}`);
+    } catch (error) {
+      console.error(`Health check failed:}`);
+    }
+  }, interval);
 
   if (env.development) {
     app.launch({ dropPendingUpdates: true });

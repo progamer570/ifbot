@@ -44,7 +44,6 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
             (ctx.session as PageSessionData).prev || ""
           ),
           parse_mode: "MarkdownV2",
-          reply_to_message_id: ctx.message.message_id,
         });
         (ctx.session as PageSessionData).selectedShareId = finalResult[0].shareId;
 

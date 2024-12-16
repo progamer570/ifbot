@@ -7,8 +7,10 @@ import totalUsersHandler from "./totalUsers.js";
 import myBroadcastHandler from "./broadcast.js";
 import addOngoingHandler from "./addOngoing.js";
 import replyHandler from "./reply.js";
+import autoReplyHandler from "./autoReact.js";
 export default {
     startHandler: startHandler,
+    autoReplyHandler: autoReplyHandler,
     replyHandler: replyHandler,
     reqAIOHandler: reqAIOHandler,
     addAIOHandler: addAIOHandler,

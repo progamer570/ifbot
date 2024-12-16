@@ -20,10 +20,7 @@ const myInvitePagination = new Scenes.WizardScene<WizardContext<PageSessionData>
           `Invite atleast 1 users to see your invited user list \nyour invite link is: ${generateInviteLink(
             ctx.from.id.toString(),
             false
-          )}`,
-          {
-            reply_to_message_id: ctx.message.message_id,
-          }
+          )}`
         );
       }
       if (myInviteUser) {
@@ -62,7 +59,6 @@ ___________________________________`;
                 (ctx.session as PageSessionData).prev || ""
               ),
               parse_mode: "MarkdownV2",
-              reply_to_message_id: ctx.message.message_id,
             })
             .then((sentMessage) => {
               try {

@@ -13,9 +13,7 @@ export default async function replyHandler(ctx: CommandContext) {
     // }
     await ctx.deleteMessage();
 
-    await ctx.reply(msg, {
-      reply_to_message_id: replyMessage.message_id,
-    });
+    await ctx.reply(msg);
   } catch (err) {
     console.error("Error handling reply command:", err);
   }

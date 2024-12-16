@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -37,21 +37,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import auth from "../../services/auth.js";
 import database from "../../services/database.js";
 export default function totalUsersHandler(ctx) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var userId, _b, _c, _d;
+        var userId, _a, _b, _c;
+        var _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
-                    userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
+                    userId = (_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id;
                     if (!!auth.isAdmin(userId ? userId : 0)) return [3 /*break*/, 1];
                     return [2 /*return*/, ctx.reply("Sorry, you have no permission to do this")];
                 case 1:
-                    _c = (_b = ctx).reply;
-                    _d = "total users : ".concat;
+                    _b = (_a = ctx).reply;
+                    _c = "total users : ".concat;
                     return [4 /*yield*/, database.countUsers()];
                 case 2:
-                    _c.apply(_b, [_d.apply("total users : ", [_e.sent()])]);
+                    _b.apply(_a, [_c.apply("total users : ", [_e.sent()])]);
                     _e.label = 3;
                 case 3: return [2 /*return*/];
             }

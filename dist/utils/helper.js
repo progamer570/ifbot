@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import env from "../services/env.js";
 export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
         var firstName, message;
+        var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -49,7 +49,6 @@ export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
                     }
                     message += "\nANY PROBLEM CONTACT: [ADMIN](tg://user?id=".concat(env.adminIds[0], ")");
                     return [4 /*yield*/, ctx.reply(message, {
-                            reply_to_message_id: ctx.message.message_id,
                             reply_markup: {
                                 inline_keyboard: [
                                     [
@@ -67,7 +66,6 @@ export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
                                 ],
                             },
                             parse_mode: "Markdown",
-                            disable_web_page_preview: true,
                         })];
                 case 1:
                     _b.sent();
@@ -77,9 +75,9 @@ export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
     });
 }
 export function sendInviteMessage(ctx, user, userId) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
         var firstName, inviteLink, message;
+        var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -87,7 +85,6 @@ export function sendInviteMessage(ctx, user, userId) {
                     inviteLink = generateInviteLink(userId, false);
                     message = "Hello ".concat(firstName, "!\n").concat(env.request, "\n\n\nInvite your friends! Your invite link is:\n").concat(inviteLink);
                     return [4 /*yield*/, ctx.reply(message, {
-                            reply_to_message_id: ctx.message.message_id,
                             parse_mode: "HTML",
                         })];
                 case 1:
@@ -98,9 +95,9 @@ export function sendInviteMessage(ctx, user, userId) {
     });
 }
 export function sendDailyLimitMessage(ctx, user, userId) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
         var firstName, inviteLink, message;
+        var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -108,7 +105,6 @@ export function sendDailyLimitMessage(ctx, user, userId) {
                     inviteLink = generateInviteLink(userId, false);
                     message = "Hello ".concat(firstName, "!\nYou can make up to 5 requests per day. Increase your limit by inviting users! Each user adds 1 extra daily request.\nYour invite link is: \"").concat(inviteLink, "\"");
                     return [4 /*yield*/, ctx.reply(message, {
-                            reply_to_message_id: ctx.message.message_id,
                             parse_mode: "HTML",
                         })];
                 case 1:

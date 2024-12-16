@@ -20,7 +20,6 @@ You can generate a new token once a day, which takes just 30–40 seconds. After
   message += `\nANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`;
 
   await ctx.reply(message, {
-    reply_to_message_id: ctx.message.message_id,
     reply_markup: {
       inline_keyboard: [
         [
@@ -38,7 +37,6 @@ You can generate a new token once a day, which takes just 30–40 seconds. After
       ],
     },
     parse_mode: "Markdown",
-    disable_web_page_preview: true,
   });
 }
 
@@ -52,7 +50,6 @@ export async function sendInviteMessage(
   const message = `Hello ${firstName}!\n${env.request}\n\n\nInvite your friends! Your invite link is:\n${inviteLink}`;
 
   await ctx.reply(message, {
-    reply_to_message_id: ctx.message.message_id,
     parse_mode: "HTML",
   });
 }
@@ -69,7 +66,6 @@ You can make up to 5 requests per day. Increase your limit by inviting users! Ea
 Your invite link is: "${inviteLink}"`;
 
   await ctx.reply(message, {
-    reply_to_message_id: ctx.message.message_id,
     parse_mode: "HTML",
   });
 }

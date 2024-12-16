@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -75,8 +75,8 @@ function askTitleAIO(ctx) {
     });
 }
 function handleTitleAskPoster(ctx) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
+        var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -94,9 +94,9 @@ function handleTitleAskPoster(ctx) {
     });
 }
 function handlePosterAskRelatedMsg(ctx) {
-    var _a;
     return __awaiter(this, void 0, void 0, function () {
         var photoFileId;
+        var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -128,9 +128,9 @@ function handlePosterAskRelatedMsg(ctx) {
     });
 }
 function done(ctx) {
-    var _a, _b, _c, _d, _e, _f, _g;
     return __awaiter(this, void 0, void 0, function () {
-        var text, _h, backupChannel, messageIds, aIOPosterID, captions, aIOTitle, photoUrl, AIODetails, forwardedMessageIds, AIOData, shareId, link, botUsername, _j, _k, error_1, user, _l, error_2, caption;
+        var text, _a, backupChannel, messageIds, aIOPosterID, captions, aIOTitle, photoUrl, AIODetails, forwardedMessageIds, AIOData, shareId, link, botUsername, _b, _c, error_1, user, _d, error_2, caption;
+        var _e, _f, _g, _h, _j, _k, _l;
         return __generator(this, function (_m) {
             switch (_m.label) {
                 case 0:
@@ -144,7 +144,7 @@ function done(ctx) {
                     if (!ctx.message) return [3 /*break*/, 35];
                     text = "text" in ctx.message ? ctx.message.text : "";
                     if (!(text.toLowerCase() === "done" && !ctx.session.done)) return [3 /*break*/, 33];
-                    _h = ctx.session, backupChannel = _h.backupChannel, messageIds = _h.messageIds, aIOPosterID = _h.aIOPosterID, captions = _h.captions;
+                    _a = ctx.session, backupChannel = _a.backupChannel, messageIds = _a.messageIds, aIOPosterID = _a.aIOPosterID, captions = _a.captions;
                     aIOTitle = ctx.session.aIOTitle;
                     return [4 /*yield*/, getPhotoUrl(aIOPosterID)];
                 case 4:
@@ -162,7 +162,7 @@ function done(ctx) {
                 case 5:
                     _m.sent();
                     ctx.session.done = true;
-                    return [4 /*yield*/, telegram.forwardMessages(env.dbAIOChannelId, (_a = ctx.chat) === null || _a === void 0 ? void 0 : _a.id, AIODetails.messageIds ? AIODetails.messageIds : [], false, captions)];
+                    return [4 /*yield*/, telegram.forwardMessages(env.dbAIOChannelId, (_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id, AIODetails.messageIds ? AIODetails.messageIds : [], false, captions)];
                 case 6:
                     forwardedMessageIds = _m.sent();
                     _m.label = 7;
@@ -178,26 +178,26 @@ function done(ctx) {
                     if (!AIOData) return [3 /*break*/, 10];
                     return [4 /*yield*/, database.saveHindiDrama(AIOData)];
                 case 9:
-                    _j = _m.sent();
+                    _b = _m.sent();
                     return [3 /*break*/, 11];
                 case 10:
-                    _j = null;
+                    _b = null;
                     _m.label = 11;
                 case 11:
-                    shareId = _j;
+                    shareId = _b;
                     link = shareId ? "https://t.me/".concat(botUsername, "?start=").concat(shareId, "-hindi") : null;
                     return [3 /*break*/, 16];
                 case 12:
                     if (!AIOData) return [3 /*break*/, 14];
                     return [4 /*yield*/, database.saveAIO(AIOData)];
                 case 13:
-                    _k = _m.sent();
+                    _c = _m.sent();
                     return [3 /*break*/, 15];
                 case 14:
-                    _k = null;
+                    _c = null;
                     _m.label = 15;
                 case 15:
-                    shareId = _k;
+                    shareId = _c;
                     link = shareId ? "https://t.me/".concat(botUsername, "?start=").concat(shareId, "-eng") : null;
                     _m.label = 16;
                 case 16:
@@ -233,12 +233,12 @@ function done(ctx) {
                         firstname: ctx.from.first_name,
                         username: ctx.from.username,
                     };
-                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("".concat(processCaptionForStore(((_b = AIODetails.aIOTitle) === null || _b === void 0 ? void 0 : _b.slice(0, 40)) || "none"), " added by ..."), user))];
+                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("".concat(processCaptionForStore(((_f = AIODetails.aIOTitle) === null || _f === void 0 ? void 0 : _f.slice(0, 40)) || "none"), " added by ..."), user))];
                 case 26:
                     _m.sent();
                     return [3 /*break*/, 28];
                 case 27:
-                    _l = _m.sent();
+                    _d = _m.sent();
                     return [3 /*break*/, 28];
                 case 28: return [4 /*yield*/, ctx.scene.leave()];
                 case 29: return [2 /*return*/, _m.sent()];
@@ -247,25 +247,25 @@ function done(ctx) {
                     return [4 /*yield*/, ctx.scene.leave()];
                 case 31: return [2 /*return*/, _m.sent()];
                 case 32: return [3 /*break*/, 35];
-                case 33: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_c = ctx.session.messageIds) === null || _c === void 0 ? void 0 : _c.length), keyboard.oneTimeDoneKeyboard())];
+                case 33: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_g = ctx.session.messageIds) === null || _g === void 0 ? void 0 : _g.length), keyboard.oneTimeDoneKeyboard())];
                 case 34:
                     _m.sent();
-                    (_d = ctx.session.messageIds) === null || _d === void 0 ? void 0 : _d.push(ctx.message.message_id);
+                    (_h = ctx.session.messageIds) === null || _h === void 0 ? void 0 : _h.push(ctx.message.message_id);
                     caption = getRandomId().toString();
                     if ("document" in ctx.message && ctx.message.document.file_name) {
                         caption = ctx.message.document.file_name;
                         ctx.session.captions = ctx.session.captions || [];
-                        (_e = ctx.session.captions) === null || _e === void 0 ? void 0 : _e.push(caption);
+                        (_j = ctx.session.captions) === null || _j === void 0 ? void 0 : _j.push(caption);
                     }
                     else if ("caption" in ctx.message) {
                         caption = ctx.message.caption || " ";
                         ctx.session.captions = ctx.session.captions || [];
-                        (_f = ctx.session.captions) === null || _f === void 0 ? void 0 : _f.push(caption);
+                        (_k = ctx.session.captions) === null || _k === void 0 ? void 0 : _k.push(caption);
                     }
                     else {
                         caption = "no caption";
                         ctx.session.captions = ctx.session.captions || [];
-                        (_g = ctx.session.captions) === null || _g === void 0 ? void 0 : _g.push(caption);
+                        (_l = ctx.session.captions) === null || _l === void 0 ? void 0 : _l.push(caption);
                     }
                     _m.label = 35;
                 case 35: return [2 /*return*/];

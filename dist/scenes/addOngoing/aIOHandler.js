@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -45,9 +45,9 @@ import { processCaption } from "../../utils/caption/editCaption.js";
 import { delay } from "../../extra/delay.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 function startCopying(ctx) {
-    var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var caption, msgId, AIODetails, forwardedMessageIds, AIOData, shareId, _c, botUsername, link, user, _d, error_1;
+        var caption, msgId, AIODetails, forwardedMessageIds, AIOData, shareId, _a, botUsername, link, user, _b, error_1;
+        var _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
@@ -66,7 +66,7 @@ function startCopying(ctx) {
                 case 4:
                     _e.sent();
                     return [3 /*break*/, 22];
-                case 5: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_a = ctx.session.msgId) === null || _a === void 0 ? void 0 : _a.length), keyboard.oneTimeDoneKeyboard())];
+                case 5: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_c = ctx.session.msgId) === null || _c === void 0 ? void 0 : _c.length), keyboard.oneTimeDoneKeyboard())];
                 case 6:
                     _e.sent();
                     caption = getRandomId().toString();
@@ -85,7 +85,7 @@ function startCopying(ctx) {
                         messageIds: [msgId],
                         aIOPosterID: "none",
                     };
-                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_b = ctx.chat) === null || _b === void 0 ? void 0 : _b.id, [msgId], false, [caption])];
+                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_d = ctx.chat) === null || _d === void 0 ? void 0 : _d.id, [msgId], false, [caption])];
                 case 7:
                     forwardedMessageIds = _e.sent();
                     _e.label = 8;
@@ -97,13 +97,13 @@ function startCopying(ctx) {
                     if (!AIOData) return [3 /*break*/, 11];
                     return [4 /*yield*/, database.saveOngoing(AIOData)];
                 case 10:
-                    _c = _e.sent();
+                    _a = _e.sent();
                     return [3 /*break*/, 12];
                 case 11:
-                    _c = null;
+                    _a = null;
                     _e.label = 12;
                 case 12:
-                    shareId = _c;
+                    shareId = _a;
                     botUsername = ctx.botInfo.username;
                     link = shareId ? "https://t.me/".concat(botUsername, "?start=").concat(shareId, "-ong") : null;
                     if (!AIOData || !shareId || !link) {
@@ -131,7 +131,7 @@ function startCopying(ctx) {
                     _e.sent();
                     return [3 /*break*/, 19];
                 case 18:
-                    _d = _e.sent();
+                    _b = _e.sent();
                     return [3 /*break*/, 19];
                 case 19: return [3 /*break*/, 22];
                 case 20:

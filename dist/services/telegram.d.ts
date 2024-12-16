@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { Scenes, Telegraf } from "telegraf";
 import { User } from "telegraf/typings/core/types/typegram.js";
 declare class Telegram {

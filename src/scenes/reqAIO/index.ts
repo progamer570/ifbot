@@ -67,7 +67,6 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
                   (ctx.session as PageSessionData).prev || ""
                 ),
                 parse_mode: "MarkdownV2",
-                reply_to_message_id: ctx.message.message_id,
               })
               .then((sentMessage) => {
                 const messageIdToDelete = sentMessage.message_id;

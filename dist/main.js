@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -42,12 +42,15 @@ import stage from "./scenes/index.js";
 import { session } from "telegraf";
 import database from "./services/database.js";
 import filters from "./middleware/filters.js";
+import { useNewReplies } from "telegraf/future";
 var app = telegram.app;
 app.use(session());
 app.use(stage.middleware());
 app.use(filters.private);
 app.use(commands.reqAIOHandler);
+app.use(useNewReplies());
 app.command("start", commands.startHandler);
+app.command("autoreply", commands.autoReplyHandler);
 app.command("reply", commands.replyHandler);
 app.command("myinvites", commands.invitesHandler);
 app.command("totalusers", commands.totalUsersHandler);
@@ -62,9 +65,11 @@ app.catch(function (err, ctx) { return __awaiter(void 0, void 0, void 0, functio
         return [2 /*return*/];
     });
 }); });
+var interval = 5 * 60 * 1000;
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var domain, server, port_1, _a, _b;
+        var _this = this;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0: return [4 /*yield*/, database.initialize()];
@@ -73,6 +78,28 @@ function main() {
                     return [4 /*yield*/, telegram.initialize()];
                 case 2:
                     _c.sent();
+                    setInterval(function () { return __awaiter(_this, void 0, void 0, function () {
+                        var response, error_1;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    _a.trys.push([0, 2, , 3]);
+                                    return [4 /*yield*/, fetch(env.webhookDomain + "/check")];
+                                case 1:
+                                    response = _a.sent();
+                                    if (!response.ok) {
+                                        throw new Error("HTTP error! Status: ".concat(response.status));
+                                    }
+                                    console.log("Service is alive: Status ".concat(response.status));
+                                    return [3 /*break*/, 3];
+                                case 2:
+                                    error_1 = _a.sent();
+                                    console.error("Health check failed:}");
+                                    return [3 /*break*/, 3];
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    }); }, interval);
                     if (!env.development) return [3 /*break*/, 3];
                     app.launch({ dropPendingUpdates: true });
                     return [3 /*break*/, 5];
