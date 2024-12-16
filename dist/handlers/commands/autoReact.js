@@ -57,7 +57,7 @@ export default function autoReactHandler(ctx) {
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
-                    _e.trys.push([0, 20, , 22]);
+                    _e.trys.push([0, 18, , 20]);
                     userId = ((_b = ctx.from) === null || _b === void 0 ? void 0 : _b.id) || 2;
                     if (!!auth.isAdmin(userId)) return [3 /*break*/, 2];
                     return [4 /*yield*/, ctx.reply("Sorry, you have no permission to do this")];
@@ -130,21 +130,15 @@ export default function autoReactHandler(ctx) {
                         userName: userName,
                         expiry: Date.now() + durationMs,
                     };
-                    return [4 /*yield*/, ctx.reply("Auto-reply set for @".concat(userName, " for ").concat(value).concat(unit, "."))];
+                    return [3 /*break*/, 20];
                 case 18:
-                    _e.sent();
-                    return [4 /*yield*/, ctx.scene.enter("addAIO")];
-                case 19:
-                    _e.sent();
-                    return [3 /*break*/, 22];
-                case 20:
                     error_1 = _e.sent();
                     console.error("Error in autoReactHandler:", error_1);
                     return [4 /*yield*/, ctx.reply("An unexpected error occurred. Please try again later.")];
-                case 21:
+                case 19:
                     _e.sent();
-                    return [3 /*break*/, 22];
-                case 22: return [2 /*return*/];
+                    return [3 /*break*/, 20];
+                case 20: return [2 /*return*/];
             }
         });
     });

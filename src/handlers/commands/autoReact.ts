@@ -94,9 +94,6 @@ export default async function autoReactHandler(ctx: WizardContext): Promise<void
       userName,
       expiry: Date.now() + durationMs,
     };
-
-    await ctx.reply(`Auto-reply set for @${userName} for ${value}${unit}.`);
-    await ctx.scene.enter("addAIO");
   } catch (error) {
     console.error("Error in autoReactHandler:", error);
     await ctx.reply("An unexpected error occurred. Please try again later.");

@@ -52,20 +52,6 @@ export default {
                         console.log((_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.id);
                         if (!(ctx.message && "text" in ctx.message && auth.isAdmin((_e = (_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id) !== null && _e !== void 0 ? _e : 0))) return [3 /*break*/, 16];
                         messageText = (_f = ctx.message) === null || _f === void 0 ? void 0 : _f.text;
-                        if (autoReplyMemory[(_g = ctx.from) === null || _g === void 0 ? void 0 : _g.id]) {
-                            setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0: return [4 /*yield*/, ctx.react(getRandomReactionEmoji()).catch(function (error) {
-                                                console.error("Failed to react:", error);
-                                            })];
-                                        case 1:
-                                            _a.sent();
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); }, 60000);
-                        }
                         _a = messageText.split(" "), command = _a[0], args = _a.slice(1);
                         _l.label = 1;
                     case 1:
@@ -109,6 +95,20 @@ export default {
                         _l.sent();
                         return [3 /*break*/, 16];
                     case 16:
+                        if (autoReplyMemory[(_g = ctx.from) === null || _g === void 0 ? void 0 : _g.id]) {
+                            setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, ctx.react(getRandomReactionEmoji()).catch(function (error) {
+                                                console.error("Failed to react:", error);
+                                            })];
+                                        case 1:
+                                            _a.sent();
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            }); }, 60000);
+                        }
                         if (((_h = ctx.chat) === null || _h === void 0 ? void 0 : _h.id) !== undefined) {
                             if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
                                 next();

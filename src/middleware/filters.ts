@@ -13,13 +13,6 @@ export default {
 
     if (ctx.message && "text" in ctx.message && auth.isAdmin(ctx.from?.id ?? 0)) {
       const messageText = ctx.message?.text;
-      if (autoReplyMemory[ctx.from?.id!]) {
-        setTimeout(async () => {
-          await ctx.react(getRandomReactionEmoji()).catch((error) => {
-            console.error("Failed to react:", error);
-          });
-        }, 60000);
-      }
 
       const [command, ...args] = messageText.split(" ");
 
@@ -48,7 +41,13 @@ export default {
         await ctx.reply("An error occurred while processing your request.");
       }
     }
-
+    if (autoReplyMemory[ctx.from?.id!]) {
+      setTimeout(async () => {
+        await ctx.react(getRandomReactionEmoji()).catch((error) => {
+          console.error("Failed to react:", error);
+        });
+      }, 60000);
+    }
     if (ctx.chat?.id !== undefined) {
       if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
         next();
