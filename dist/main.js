@@ -65,7 +65,7 @@ app.catch(function (err, ctx) { return __awaiter(void 0, void 0, void 0, functio
         return [2 /*return*/];
     });
 }); });
-var interval = 5 * 60 * 1000;
+var interval = 1 * 60 * 1000;
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var domain, server, port_1, _a, _b;
@@ -94,7 +94,7 @@ function main() {
                                     return [3 /*break*/, 3];
                                 case 2:
                                     error_1 = _a.sent();
-                                    console.error("Health check failed:}");
+                                    console.error("service check failed");
                                     return [3 /*break*/, 3];
                                 case 3: return [2 /*return*/];
                             }

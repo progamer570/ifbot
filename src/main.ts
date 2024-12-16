@@ -31,7 +31,7 @@ app.command("edit", commands.editAIOHandler);
 app.catch(async (err, ctx) => {
   console.error(`Error in ${ctx.updateType}`, err);
 });
-const interval = 5 * 60 * 1000;
+const interval = 1 * 60 * 1000;
 
 async function main() {
   await database.initialize();
@@ -45,7 +45,7 @@ async function main() {
       }
       console.log(`Service is alive: Status ${response.status}`);
     } catch (error) {
-      console.error(`Health check failed:}`);
+      console.error(`service check failed`);
     }
   }, interval);
 
