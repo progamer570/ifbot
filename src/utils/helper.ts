@@ -1,4 +1,4 @@
-import { User } from "telegraf/typings/core/types/typegram.js";
+import { ReactionType, TelegramEmoji, User } from "telegraf/typings/core/types/typegram.js";
 import env from "../services/env.js";
 import { CommandContext } from "../interfaces.js";
 
@@ -93,3 +93,10 @@ export const generateInviteLink = (userId: string, sharLink: boolean) => {
   }
   return `https://t.me/${env.botUserName}?start=invite-${userId}`;
 };
+export function getRandomReactionEmoji(): TelegramEmoji | ReactionType {
+  const emojis: (TelegramEmoji | ReactionType)[] = ["👍", "👎", "🔥", "🎉", "😢", "😡", "👏"];
+
+  // Randomly select an emoji from the list
+  const randomIndex = Math.floor(Math.random() * emojis.length);
+  return emojis[randomIndex];
+}

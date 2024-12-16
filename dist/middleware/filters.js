@@ -39,6 +39,7 @@ import { getSystemUsage, getSystemUsageDetails } from "../extra/systemUses.js";
 import auth from "../services/auth.js";
 import database from "../services/database.js";
 import { autoReplyMemory } from "../handlers/commands/autoReact.js";
+import { getRandomReactionEmoji } from "../utils/helper.js";
 export default {
     private: function (ctx, next) {
         return __awaiter(this, void 0, void 0, function () {
@@ -55,7 +56,9 @@ export default {
                             setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
-                                        case 0: return [4 /*yield*/, ctx.react()];
+                                        case 0: return [4 /*yield*/, ctx.react(getRandomReactionEmoji()).catch(function (error) {
+                                                console.error("Failed to react:", error);
+                                            })];
                                         case 1:
                                             _a.sent();
                                             return [2 /*return*/];

@@ -151,3 +151,9 @@ export var generateInviteLink = function (userId, sharLink) {
     }
     return "https://t.me/".concat(env.botUserName, "?start=invite-").concat(userId);
 };
+export function getRandomReactionEmoji() {
+    var emojis = ["👍", "👎", "🔥", "🎉", "😢", "😡", "👏"];
+    // Randomly select an emoji from the list
+    var randomIndex = Math.floor(Math.random() * emojis.length);
+    return emojis[randomIndex];
+}

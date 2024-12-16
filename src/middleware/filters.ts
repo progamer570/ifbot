@@ -5,6 +5,7 @@ import { Message } from "telegraf/typings/core/types/typegram";
 import auth from "../services/auth.js";
 import database from "../services/database.js";
 import { autoReplyMemory } from "../handlers/commands/autoReact.js";
+import { getRandomReactionEmoji } from "../utils/helper.js";
 
 export default {
   async private(ctx: Context, next: () => void) {
@@ -14,7 +15,9 @@ export default {
       const messageText = ctx.message?.text;
       if (autoReplyMemory[ctx.from?.id!]) {
         setTimeout(async () => {
-          await ctx.react();
+          await ctx.react(getRandomReactionEmoji()).catch((error) => {
+            console.error("Failed to react:", error);
+          });
         }, 60000);
       }
 
