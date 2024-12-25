@@ -55,7 +55,11 @@ export default function replyHandler(ctx) {
                     //   return ctx.reply("Usage: /reply <message>");
                     // }
                     _a.sent();
-                    return [4 /*yield*/, ctx.reply(msg)];
+                    return [4 /*yield*/, ctx.sendMessage(msg, {
+                            reply_parameters: {
+                                message_id: replyMessage.message_id,
+                            },
+                        })];
                 case 2:
                     _a.sent();
                     return [3 /*break*/, 4];

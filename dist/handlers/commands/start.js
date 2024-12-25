@@ -65,7 +65,7 @@ export default function startHandler(ctx) {
                     return [4 /*yield*/, database.manageToken(userId.toString())];
                 case 3:
                     token = (_a.sent()).token;
-                    return [4 /*yield*/, sendTokenGeneratedMessage(ctx, token)];
+                    return [4 /*yield*/, sendTokenGeneratedMessage(ctx, token).catch(function (error) { return console.error(error); })];
                 case 4: return [2 /*return*/, _a.sent()];
                 case 5:
                     if (!payload) return [3 /*break*/, 11];
@@ -81,7 +81,9 @@ export default function startHandler(ctx) {
                     return [4 /*yield*/, addInviteUser(inviterId, newUserId, user.username || "null")];
                 case 7:
                     _a.sent();
-                    return [4 /*yield*/, sendInviterWelcomeMessage(ctx, inviterId)];
+                    return [4 /*yield*/, sendInviterWelcomeMessage(ctx, inviterId).catch(function (error) {
+                            return console.error(error);
+                        })];
                 case 8: return [2 /*return*/, _a.sent()];
                 case 9: return [3 /*break*/, 11];
                 case 10:
@@ -92,7 +94,9 @@ export default function startHandler(ctx) {
                     _a.label = 11;
                 case 11:
                     if (!!shareId) return [3 /*break*/, 13];
-                    return [4 /*yield*/, sendInviteMessage(ctx, user, userId.toString())];
+                    return [4 /*yield*/, sendInviteMessage(ctx, user, userId.toString()).catch(function (error) {
+                            return console.error(error);
+                        })];
                 case 12: return [2 /*return*/, _a.sent()];
                 case 13:
                     if (!!auth.isAdmin(userId)) return [3 /*break*/, 15];
@@ -107,11 +111,11 @@ export default function startHandler(ctx) {
                 case 16:
                     isValidToken = _a.sent();
                     if (!!isValidToken) return [3 /*break*/, 19];
-                    return [4 /*yield*/, database.getFirstItem()];
+                    return [4 /*yield*/, database.getFirstItem().catch(function (error) { return console.error(error); })];
                 case 17:
                     firstItem = _a.sent();
                     if (!firstItem) return [3 /*break*/, 19];
-                    return [4 /*yield*/, sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload)];
+                    return [4 /*yield*/, sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload).catch(function (error) { return console.error(error); })];
                 case 18: return [2 /*return*/, _a.sent()];
                 case 19: return [4 /*yield*/, database.canRequest(userId.toString())];
                 case 20:
@@ -175,7 +179,9 @@ export default function startHandler(ctx) {
                     console.error("Error saving user data:", error_2);
                     return [3 /*break*/, 36];
                 case 36: return [3 /*break*/, 39];
-                case 37: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString())];
+                case 37: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString()).catch(function (error) {
+                        return console.error(error);
+                    })];
                 case 38: return [2 /*return*/, _a.sent()];
                 case 39: return [3 /*break*/, 41];
                 case 40:

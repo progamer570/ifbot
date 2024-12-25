@@ -50,7 +50,7 @@ app.use(filters.private);
 app.use(commands.reqAIOHandler);
 app.use(useNewReplies());
 app.command("start", commands.startHandler);
-app.command("autoreply", commands.autoReplyHandler);
+app.command("autoreact", commands.autoReplyHandler);
 app.command("reply", commands.replyHandler);
 app.command("myinvites", commands.invitesHandler);
 app.command("totalusers", commands.totalUsersHandler);

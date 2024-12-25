@@ -29,7 +29,7 @@ export default async function startHandler(ctx: CommandContext) {
 
         if (tokenNumber === activeShareId) {
           const { token } = await database.manageToken(userId.toString());
-          return await sendTokenGeneratedMessage(ctx, token);
+          return await sendTokenGeneratedMessage(ctx, token).catch((error) => console.error(error));
         }
       }
     }
@@ -44,7 +44,9 @@ export default async function startHandler(ctx: CommandContext) {
           const isUserExist = await database.isUserExist(newUserId);
           if (!isUserExist) {
             await addInviteUser(inviterId, newUserId, user.username || "null");
-            return await sendInviterWelcomeMessage(ctx, inviterId);
+            return await sendInviterWelcomeMessage(ctx, inviterId).catch((error) =>
+              console.error(error)
+            );
           }
         }
       } else {
@@ -57,7 +59,9 @@ export default async function startHandler(ctx: CommandContext) {
 
     // Default message if no shareId is found
     if (!shareId) {
-      return await sendInviteMessage(ctx, user, userId.toString());
+      return await sendInviteMessage(ctx, user, userId.toString()).catch((error) =>
+        console.error(error)
+      );
     }
 
     // Non-admin users must join chats
@@ -71,9 +75,14 @@ export default async function startHandler(ctx: CommandContext) {
     // Token validation
     const isValidToken = await database.verifyAndValidateToken(userId.toString());
     if (!isValidToken) {
-      const firstItem = await database.getFirstItem();
+      const firstItem = await database.getFirstItem().catch((error) => console.error(error));
       if (firstItem) {
-        return await sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload);
+        return await sendTokenExpiredMessage(
+          ctx,
+          user,
+          firstItem.sort[0].aioShortUrl,
+          payload
+        ).catch((error) => console.error(error));
       }
     }
 
@@ -116,7 +125,9 @@ export default async function startHandler(ctx: CommandContext) {
         console.error("Error saving user data:", error);
       }
     } else {
-      return await sendDailyLimitMessage(ctx, user, userId.toString());
+      return await sendDailyLimitMessage(ctx, user, userId.toString()).catch((error) =>
+        console.error(error)
+      );
     }
   } catch (error) {
     console.error("Error in startHandler:", error);
