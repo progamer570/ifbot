@@ -37,6 +37,7 @@ You can generate a new token once a day, which takes just 30–40 seconds. After
       ],
     },
     parse_mode: "Markdown",
+    link_preview_options: { is_disabled: true },
   });
 }
 
@@ -51,6 +52,7 @@ export async function sendInviteMessage(
 
   await ctx.reply(message, {
     parse_mode: "HTML",
+    link_preview_options: { is_disabled: true },
   });
 }
 
@@ -78,7 +80,7 @@ export async function sendInviterWelcomeMessage(
 Join our main channel for unlimited movies, dramas, and more. Stay updated with the latest releases and exclusive content.
 Click the link to join and start enjoying now!\n${env.join}\n\n`;
 
-  await ctx.reply(message);
+  await ctx.reply(message, { parse_mode: "Markdown", link_preview_options: { is_disabled: true } });
 }
 
 export async function sendTokenGeneratedMessage(ctx: CommandContext, token: string): Promise<void> {

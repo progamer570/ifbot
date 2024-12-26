@@ -66,6 +66,7 @@ export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
                                 ],
                             },
                             parse_mode: "Markdown",
+                            link_preview_options: { is_disabled: true },
                         })];
                 case 1:
                     _b.sent();
@@ -86,6 +87,7 @@ export function sendInviteMessage(ctx, user, userId) {
                     message = "Hello ".concat(firstName, "!\n").concat(env.request, "\n\n\nInvite your friends! Your invite link is:\n").concat(inviteLink);
                     return [4 /*yield*/, ctx.reply(message, {
                             parse_mode: "HTML",
+                            link_preview_options: { is_disabled: true },
                         })];
                 case 1:
                     _b.sent();
@@ -121,7 +123,7 @@ export function sendInviterWelcomeMessage(ctx, inviterId) {
             switch (_a.label) {
                 case 0:
                     message = "Welcome! You were invited by a user with ID ".concat(inviterId, ".\nJoin our main channel for unlimited movies, dramas, and more. Stay updated with the latest releases and exclusive content.\nClick the link to join and start enjoying now!\n").concat(env.join, "\n\n");
-                    return [4 /*yield*/, ctx.reply(message)];
+                    return [4 /*yield*/, ctx.reply(message, { parse_mode: "Markdown", link_preview_options: { is_disabled: true } })];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
