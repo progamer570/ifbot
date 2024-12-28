@@ -43,7 +43,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
             (ctx.session as PageSessionData).next || "",
             (ctx.session as PageSessionData).prev || ""
           ),
-          parse_mode: "MarkdownV2",
+          parse_mode: "Markdown",
         });
         (ctx.session as PageSessionData).selectedShareId = finalResult[0].shareId;
 
@@ -95,7 +95,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
                   (ctx.session as PageSessionData).next || "",
                   (ctx.session as PageSessionData).prev || ""
                 ),
-                parse_mode: "MarkdownV2",
+                parse_mode: "Markdown",
               }
             );
             (ctx.session as PageSessionData).selectedShareId = AIOData[page + 1].shareId;
@@ -122,7 +122,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
                   (ctx.session as PageSessionData).next || "",
                   (ctx.session as PageSessionData).prev || ""
                 ),
-                parse_mode: "MarkdownV2",
+                parse_mode: "Markdown",
               }
             );
             (ctx.session as PageSessionData).selectedShareId = AIOData[page - 1].shareId;
@@ -247,7 +247,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
         if (text.toLowerCase() === "done" && !(ctx.session as PageSessionData).done) {
           const { messageIds, captions } = ctx.session as PageSessionData;
           await ctx.reply(`\`\`\`AIO details and file received.\n 🎉\`\`\``, {
-            parse_mode: "MarkdownV2",
+            parse_mode: "Markdown",
           });
           (ctx.session as PageSessionData).done = true;
           const forwardedMessageIds = await telegram.forwardMessages(

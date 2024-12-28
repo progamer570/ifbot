@@ -71,7 +71,7 @@ var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", 
                 return [4 /*yield*/, ctx.replyWithPhoto(photo, {
                         caption: "```Json\n{".concat(makeAIOCaption(finalResult[0]), "}\n```"),
                         reply_markup: keyboard.makeAdminButtons("https://t.me/".concat(env.botUserName, "?start=").concat(finalResult[0].shareId, "-a"), ctx.session.next || "", ctx.session.prev || ""),
-                        parse_mode: "MarkdownV2",
+                        parse_mode: "Markdown",
                     })];
             case 2:
                 _a.sent();
@@ -123,7 +123,7 @@ var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", 
                 _d.sent();
                 return [4 /*yield*/, ctx.editMessageCaption("```Json\n{".concat(makeAIOCaption(AIOData[page + 1]), "}\n```"), {
                         reply_markup: keyboard.makeAdminButtons("https://t.me/".concat(env.botUserName, "?start=").concat(AIOData[page + 1].shareId, "-a"), ctx.session.next || "", ctx.session.prev || ""),
-                        parse_mode: "MarkdownV2",
+                        parse_mode: "Markdown",
                     })];
             case 2:
                 _d.sent();
@@ -148,7 +148,7 @@ var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", 
                 _d.sent();
                 return [4 /*yield*/, ctx.editMessageCaption("```Json\n {".concat(makeAIOCaption(AIOData[page - 1]), "}\n```"), {
                         reply_markup: keyboard.makeAdminButtons("https://t.me/".concat(env.botUserName, "?start=").concat(AIOData[page - 1].shareId, "-a"), ctx.session.next || "", ctx.session.prev || ""),
-                        parse_mode: "MarkdownV2",
+                        parse_mode: "Markdown",
                     })];
             case 8:
                 _d.sent();
@@ -339,7 +339,7 @@ var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", 
                 if (!(text.toLowerCase() === "done" && !ctx.session.done)) return [3 /*break*/, 29];
                 _c = ctx.session, messageIds = _c.messageIds, captions = _c.captions;
                 return [4 /*yield*/, ctx.reply("```AIO details and file received.\n \uD83C\uDF89```", {
-                        parse_mode: "MarkdownV2",
+                        parse_mode: "Markdown",
                     })];
             case 21:
                 _k.sent();
