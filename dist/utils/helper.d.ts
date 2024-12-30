@@ -7,3 +7,9 @@ export declare function sendInviterWelcomeMessage(ctx: CommandContext, inviterId
 export declare function sendTokenGeneratedMessage(ctx: CommandContext, token: string): Promise<void>;
 export declare const generateInviteLink: (userId: string, sharLink: boolean) => string;
 export declare function getRandomReactionEmoji(): TelegramEmoji | ReactionType;
+export declare function hasReplyToMessage(message: any): message is {
+    reply_to_message: any;
+};
+export declare function isTextMessage(message: any): message is {
+    text: string;
+};

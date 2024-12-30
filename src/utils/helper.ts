@@ -101,3 +101,10 @@ export function getRandomReactionEmoji(): TelegramEmoji | ReactionType {
   const randomIndex = Math.floor(Math.random() * emojis.length);
   return emojis[randomIndex];
 }
+
+export function hasReplyToMessage(message: any): message is { reply_to_message: any } {
+  return message && message.reply_to_message !== undefined;
+}
+export function isTextMessage(message: any): message is { text: string } {
+  return message && typeof message.text === "string";
+}

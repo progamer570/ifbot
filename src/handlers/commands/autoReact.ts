@@ -1,5 +1,6 @@
 import { WizardContext } from "telegraf/typings/scenes";
 import auth from "../../services/auth.js";
+import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
 
 interface AutoReplyEntry {
   userName: string;
@@ -16,14 +17,6 @@ const cleanupMemory = (): void => {
     }
   }
 };
-
-function isTextMessage(message: any): message is { text: string } {
-  return message && typeof message.text === "string";
-}
-
-function hasReplyToMessage(message: any): message is { reply_to_message: any } {
-  return message && message.reply_to_message !== undefined;
-}
 
 export default async function autoReactHandler(ctx: WizardContext): Promise<void> {
   try {

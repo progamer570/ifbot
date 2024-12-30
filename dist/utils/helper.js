@@ -158,3 +158,9 @@ export function getRandomReactionEmoji() {
     var randomIndex = Math.floor(Math.random() * emojis.length);
     return emojis[randomIndex];
 }
+export function hasReplyToMessage(message) {
+    return message && message.reply_to_message !== undefined;
+}
+export function isTextMessage(message) {
+    return message && typeof message.text === "string";
+}

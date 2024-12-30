@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import auth from "../../services/auth.js";
+import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
 export var autoReplyMemory = {};
 var cleanupMemory = function () {
     var now = Date.now();
@@ -44,12 +45,6 @@ var cleanupMemory = function () {
         }
     }
 };
-function isTextMessage(message) {
-    return message && typeof message.text === "string";
-}
-function hasReplyToMessage(message) {
-    return message && message.reply_to_message !== undefined;
-}
 export default function autoReactHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var userId, userName, replyToMessage, replyToUserId, args, duration, match, value, unit, durationMs, _a, error_1;

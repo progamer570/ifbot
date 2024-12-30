@@ -36,37 +36,62 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import auth from "../../services/auth.js";
 import database from "../../services/database.js";
+import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
 export default function addToPremiumHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var userId, firstName, duration, result, err_1;
+        var userId, firstName, args, addToUserToPremium, duration, replyToMessage, result, err_1;
         var _a, _b;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
                     userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
                     firstName = ((_b = ctx.from) === null || _b === void 0 ? void 0 : _b.first_name) || "user";
+                    args = isTextMessage(ctx.message) ? ctx.message.text.split(" ") : null;
+                    addToUserToPremium = "";
+                    duration = "";
                     if (!(!auth.isOwner(userId) || !userId)) return [3 /*break*/, 2];
                     return [4 /*yield*/, ctx.reply("Sorry, you have no permission to do this")];
                 case 1:
                     _c.sent();
                     return [2 /*return*/];
                 case 2:
-                    _c.trys.push([2, 5, , 6]);
-                    duration = ctx.message.text.replace("/addtopremium", "").trim();
-                    return [4 /*yield*/, database.addBotPremium(userId.toString(), duration)];
+                    if (!(!args || args.length < 3)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, ctx.reply("Please specify the time duration (e.g., /addtopremium 1h or /addtopremium userid 1h).")];
                 case 3:
+                    _c.sent();
+                    return [2 /*return*/];
+                case 4:
+                    if (!(args.length === 3)) return [3 /*break*/, 5];
+                    addToUserToPremium = args[1];
+                    duration = args[2];
+                    return [3 /*break*/, 8];
+                case 5:
+                    if (!!hasReplyToMessage(ctx.message)) return [3 /*break*/, 7];
+                    return [4 /*yield*/, ctx.reply("Please reply to a user message to enable autoreply.")];
+                case 6:
+                    _c.sent();
+                    return [2 /*return*/];
+                case 7:
+                    replyToMessage = ctx.message.reply_to_message;
+                    addToUserToPremium = replyToMessage.from.id;
+                    duration = args[1];
+                    _c.label = 8;
+                case 8:
+                    _c.trys.push([8, 11, , 12]);
+                    return [4 /*yield*/, database.addBotPremium(addToUserToPremium.toString(), duration)];
+                case 9:
                     result = _c.sent();
                     return [4 /*yield*/, ctx.reply("[".concat(firstName, "](tg://user?id=").concat(userId, ")").concat(result), {
                             parse_mode: "Markdown",
                         })];
-                case 4:
+                case 10:
                     _c.sent();
-                    return [3 /*break*/, 6];
-                case 5:
+                    return [3 /*break*/, 12];
+                case 11:
                     err_1 = _c.sent();
                     console.log(err_1);
-                    return [3 /*break*/, 6];
-                case 6: return [2 /*return*/];
+                    return [3 /*break*/, 12];
+                case 12: return [2 /*return*/];
             }
         });
     });
