@@ -55,8 +55,8 @@ export default function addToPremiumHandler(ctx) {
                     _c.sent();
                     return [2 /*return*/];
                 case 2:
-                    if (!(!args || args.length < 3)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, ctx.reply("Please specify the time duration (e.g., /addtopremium 1h or /addtopremium userid 1h).")];
+                    if (!(!args || args.length < 3 || args.length > 2)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, ctx.reply("Please specify the day duration (e.g., /addtopremium 1d or /addtopremium userid 1d [for days]).")];
                 case 3:
                     _c.sent();
                     return [2 /*return*/];

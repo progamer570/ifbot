@@ -29,7 +29,7 @@ async function startCopying(ctx: AIOWizardContext) {
     );
     let caption: string = getRandomId().toString();
     const msgId: number = ctx.message.message_id;
-    if ("caption" in ctx.message) {
+    if ("caption" in ctx.message || ("document" in ctx.message && ctx.message.document.file_name)) {
       caption = ctx.message.caption || "????";
       if ("document" in ctx.message) {
         caption = ctx.message.document.file_name || "no caption";

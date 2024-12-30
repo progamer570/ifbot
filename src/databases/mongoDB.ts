@@ -303,8 +303,16 @@ class MongoDB {
       const tokenData = await this.TokenModel.findOne({ userId });
 
       if (!tokenData) {
-        console.error("Token not found in the database");
-        return false;
+        // one day free for new users
+        const newToken = jwt.sign({ userId }, env.jwtSecret, { expiresIn: "24h" });
+        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        const newTokenData = new this.TokenModel({
+          userId,
+          token: newToken,
+          expiresAt,
+        });
+        await newTokenData.save();
+        return true;
       } else {
         const decoded = jwt.verify(tokenData.token, env.jwtSecret) as { userId: string };
 
@@ -340,21 +348,7 @@ class MongoDB {
         existingToken.expiresAt = expiresAt;
         await existingToken.save();
       } else {
-        const oneDayMs = 24 * 60 * 60 * 1000;
-        const expiresAtForPremium = new Date(Date.now() + oneDayMs);
-        const newTokenData = new this.TokenModel({
-          userId,
-          token: newToken,
-          expiresAt,
-          bot_premium: {
-            is_bot_premium: true,
-            subscriptionType: "Gold",
-            duration: 1,
-            expires_at: expiresAtForPremium,
-            activated_at: new Date(),
-            details: "1d",
-          },
-        });
+        const newTokenData = new this.TokenModel({ userId, token: newToken, expiresAt });
         await newTokenData.save();
       }
 

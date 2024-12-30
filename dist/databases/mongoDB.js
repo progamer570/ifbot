@@ -513,28 +513,35 @@ var MongoDB = /** @class */ (function () {
     };
     MongoDB.prototype.verifyAndValidateToken = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var tokenData, decoded, error_7;
+            var tokenData, newToken, expiresAt, newTokenData, decoded, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 5, , 6]);
                         return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
                     case 1:
                         tokenData = _a.sent();
-                        if (!tokenData) {
-                            console.error("Token not found in the database");
+                        if (!!tokenData) return [3 /*break*/, 3];
+                        newToken = jwt.sign({ userId: userId }, env.jwtSecret, { expiresIn: "24h" });
+                        expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+                        newTokenData = new this.TokenModel({
+                            userId: userId,
+                            token: newToken,
+                            expiresAt: expiresAt,
+                        });
+                        return [4 /*yield*/, newTokenData.save()];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, true];
+                    case 3:
+                        decoded = jwt.verify(tokenData.token, env.jwtSecret);
+                        if (new Date() > tokenData.expiresAt) {
+                            console.error("Token has expired");
                             return [2 /*return*/, false];
                         }
-                        else {
-                            decoded = jwt.verify(tokenData.token, env.jwtSecret);
-                            if (new Date() > tokenData.expiresAt) {
-                                console.error("Token has expired");
-                                return [2 /*return*/, false];
-                            }
-                            return [2 /*return*/, true];
-                        }
-                        return [3 /*break*/, 3];
-                    case 2:
+                        return [2 /*return*/, true];
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         error_7 = _a.sent();
                         if (error_7 instanceof jwt.TokenExpiredError) {
                             console.error("Token has expired");
@@ -546,14 +553,14 @@ var MongoDB = /** @class */ (function () {
                             console.error("Unexpected error during token verification:", error_7);
                         }
                         return [2 /*return*/, false];
-                    case 3: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
     };
     MongoDB.prototype.generateNewToken = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var newToken, expiresAt, existingToken, oneDayMs, expiresAtForPremium, newTokenData, error_8;
+            var newToken, expiresAt, existingToken, newTokenData, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -573,21 +580,7 @@ var MongoDB = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 6];
                     case 4:
-                        oneDayMs = 24 * 60 * 60 * 1000;
-                        expiresAtForPremium = new Date(Date.now() + oneDayMs);
-                        newTokenData = new this.TokenModel({
-                            userId: userId,
-                            token: newToken,
-                            expiresAt: expiresAt,
-                            bot_premium: {
-                                is_bot_premium: true,
-                                subscriptionType: "Gold",
-                                duration: 1,
-                                expires_at: expiresAtForPremium,
-                                activated_at: new Date(),
-                                details: "1d",
-                            },
-                        });
+                        newTokenData = new this.TokenModel({ userId: userId, token: newToken, expiresAt: expiresAt });
                         return [4 /*yield*/, newTokenData.save()];
                     case 5:
                         _a.sent();

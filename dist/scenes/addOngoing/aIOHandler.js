@@ -71,7 +71,7 @@ function startCopying(ctx) {
                     _e.sent();
                     caption = getRandomId().toString();
                     msgId = ctx.message.message_id;
-                    if (!("caption" in ctx.message)) return [3 /*break*/, 22];
+                    if (!("caption" in ctx.message || ("document" in ctx.message && ctx.message.document.file_name))) return [3 /*break*/, 22];
                     caption = ctx.message.caption || "????";
                     if ("document" in ctx.message) {
                         caption = ctx.message.document.file_name || "no caption";

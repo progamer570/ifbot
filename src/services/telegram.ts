@@ -46,6 +46,10 @@ class Telegram {
           description: "Admin Command",
         },
         {
+          command: "/addong",
+          description: "To add Ongoing",
+        },
+        {
           command: "/totalusers",
           description: "Admin Command",
         },

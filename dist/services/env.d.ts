@@ -1,7 +1,7 @@
 import "dotenv/config";
 declare const _default: {
     baseUrl: string;
-    ownerId: string | number;
+    ownerId: number;
     collectionAIOBackup: string | number;
     logGroupId: number;
     sortApiKey: string;

@@ -86,6 +86,10 @@ var Telegram = /** @class */ (function () {
                                     description: "Admin Command",
                                 },
                                 {
+                                    command: "/addong",
+                                    description: "To add Ongoing",
+                                },
+                                {
                                     command: "/totalusers",
                                     description: "Admin Command",
                                 },
