@@ -72,11 +72,15 @@ export default async function startHandler(ctx: CommandContext) {
       }
     }
 
+    const haveBotPremium = await database
+      .checkBotPremiumStatus(userId.toString())
+      .catch((error) => console.error(error));
     // Token validation
     const isValidToken = await database.verifyAndValidateToken(userId.toString());
     if (!isValidToken) {
       const firstItem = await database.getFirstItem().catch((error) => console.error(error));
-      if (firstItem) {
+
+      if (firstItem && !haveBotPremium) {
         return await sendTokenExpiredMessage(
           ctx,
           user,
@@ -88,7 +92,7 @@ export default async function startHandler(ctx: CommandContext) {
 
     // Handle content requests
     const canRequest = await database.canRequest(userId.toString());
-    if (canRequest || env.adminIds.includes(userId)) {
+    if (canRequest || env.adminIds.includes(userId) || haveBotPremium) {
       try {
         if (!payload.includes("ong")) {
           await database.useRequest(userId.toString());

@@ -8,8 +8,10 @@ import myBroadcastHandler from "./broadcast.js";
 import addOngoingHandler from "./addOngoing.js";
 import replyHandler from "./reply.js";
 import autoReplyHandler from "./autoReact.js";
+import addToPremiumHandler from "./addToPremium.js";
 export default {
     startHandler: startHandler,
+    addToPremiumHandler: addToPremiumHandler,
     autoReplyHandler: autoReplyHandler,
     replyHandler: replyHandler,
     reqAIOHandler: reqAIOHandler,

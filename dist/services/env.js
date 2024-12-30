@@ -22,6 +22,7 @@ var forceGroupIds = ((_b = env.FORCE_GROUP_IDS) === null || _b === void 0 ? void
 var allowGroups = ((_c = env.ALLOW_GROUPS) === null || _c === void 0 ? void 0 : _c.split(" ").map(Number)) || [];
 var withoutCmd = ((_d = env.ALLOW_GROUPS_WITHOUT_COMMAND) === null || _d === void 0 ? void 0 : _d.split(" ").map(Number)) || [];
 var adminIds = (_e = env.ADMIN_IDS) === null || _e === void 0 ? void 0 : _e.split(" ").map(Number);
+var ownerId = Number(env.OWNER_ID) || "";
 var databaseUrl = env.DATABASE_URL;
 var join = env.JOIN || "";
 var backup = env.BACKUP || "";
@@ -41,6 +42,7 @@ if (!adminIds) {
 }
 export default {
     baseUrl: baseUrl,
+    ownerId: ownerId,
     collectionAIOBackup: collectionAIOBackup,
     logGroupId: logGroupId,
     sortApiKey: sortApiKey,

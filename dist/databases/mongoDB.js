@@ -44,7 +44,7 @@ import AIOModel from "./models/aIOModel.js";
 import OngoingModel from "./models/ongoingModel.js";
 import { HindiDramaModel } from "./models/aIOModel.js";
 import { InviteService } from "./inviteService.js";
-import TokenModel from "./models/tokeModel.js";
+import TokenModel from "./models/tokenModel.js";
 import { sendToLogGroup } from "../utils/sendToCollection.js";
 var MongoDB = /** @class */ (function () {
     function MongoDB() {
@@ -629,10 +629,118 @@ var MongoDB = /** @class */ (function () {
             });
         });
     };
-    // sort link
+    // bot premium
+    MongoDB.prototype.checkBotPremiumStatus = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenData, expiresAt, error_10;
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _c.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
+                    case 1:
+                        tokenData = _c.sent();
+                        if (!tokenData || !((_a = tokenData.bot_premium) === null || _a === void 0 ? void 0 : _a.is_bot_premium)) {
+                            return [2 /*return*/, false];
+                        }
+                        expiresAt = (_b = tokenData.bot_premium) === null || _b === void 0 ? void 0 : _b.expires_at;
+                        if (!(expiresAt && new Date() > expiresAt)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.TokenModel.updateOne({ userId: userId }, { $set: { "bot_premium.is_bot_premium": false } } // Update here
+                            )];
+                    case 2:
+                        _c.sent();
+                        return [2 /*return*/, false];
+                    case 3: return [2 /*return*/, true];
+                    case 4:
+                        error_10 = _c.sent();
+                        console.error("Error checking bot premium status:", error_10);
+                        return [2 /*return*/, false];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MongoDB.prototype.addBotPremium = function (userId, duration) {
+        return __awaiter(this, void 0, void 0, function () {
+            var regex, match, value, unit, durationMs, subscriptionType, expiresAt, tokenData, error_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        regex = /^(\d+)([smhd])$/;
+                        match = duration.match(regex);
+                        if (!match) {
+                            console.error("Invalid duration format. Please use a format like 1h, 2d, etc.");
+                            return [2 /*return*/, "Invalid duration format. Please use a format like 1h, 2d, etc."];
+                        }
+                        value = parseInt(match[1]);
+                        unit = match[2].toLowerCase();
+                        durationMs = void 0;
+                        switch (unit) {
+                            case "s":
+                                durationMs = value * 1000;
+                                break;
+                            case "m":
+                                durationMs = value * 60 * 1000;
+                                break;
+                            case "h":
+                                durationMs = value * 60 * 60 * 1000;
+                                break;
+                            case "d":
+                                durationMs = value * 24 * 60 * 60 * 1000;
+                                break;
+                            default:
+                                console.error("Invalid time unit. Use s, m, h, or d.");
+                                return [2 /*return*/, "Invalid time unit. Use s, m, h, or d."];
+                        }
+                        if (durationMs < 1 * 24 * 60 * 60 * 1000) {
+                            console.error("The minimum duration for premium is 1 day.");
+                            return [2 /*return*/, "The minimum duration for premium is 1 day."];
+                        }
+                        subscriptionType = "Other";
+                        if (durationMs <= 30 * 24 * 60 * 60 * 1000) {
+                            subscriptionType = "Gold";
+                        }
+                        else if (durationMs <= 90 * 24 * 60 * 60 * 1000) {
+                            subscriptionType = "Silver";
+                        }
+                        else {
+                            subscriptionType = "Platinum";
+                        }
+                        expiresAt = new Date(Date.now() + durationMs);
+                        return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
+                    case 1:
+                        tokenData = _a.sent();
+                        if (!tokenData) {
+                            console.error("Token not found for the user.");
+                            return [2 /*return*/, "Token not found for the user."];
+                        }
+                        tokenData.bot_premium = {
+                            is_bot_premium: true,
+                            subscriptionType: subscriptionType ? subscriptionType : "Other",
+                            duration: value,
+                            expires_at: expiresAt,
+                            activated_at: new Date(),
+                            details: "".concat(value, " ").concat(unit),
+                        };
+                        return [4 /*yield*/, tokenData.save()];
+                    case 2:
+                        _a.sent();
+                        console.log("Premium added for ".concat(userId, ", subscription type: ").concat(subscriptionType, ", expires at ").concat(expiresAt));
+                        return [2 /*return*/, "Premium successfully added for ".concat(userId, ". Subscription type: ").concat(subscriptionType, ". Premium will expire on ").concat(expiresAt.toLocaleString(), ".")];
+                    case 3:
+                        error_11 = _a.sent();
+                        console.error("Error adding bot premium:", error_11);
+                        return [2 /*return*/, "Error adding bot premium:  + ".concat(error_11)];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     MongoDB.prototype.addLinkToFirstSort = function (newLink) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_10;
+            var result, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -642,8 +750,8 @@ var MongoDB = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
-                        error_10 = _a.sent();
-                        console.error("Error adding link to first sort:", error_10);
+                        error_12 = _a.sent();
+                        console.error("Error adding link to first sort:", error_12);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -653,7 +761,7 @@ var MongoDB = /** @class */ (function () {
     // Function to get the first item in the sort array
     MongoDB.prototype.getFirstSortItem = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var document_2, error_11;
+            var document_2, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -667,8 +775,8 @@ var MongoDB = /** @class */ (function () {
                         }
                         return [2 /*return*/, document_2];
                     case 2:
-                        error_11 = _a.sent();
-                        console.error("Error retrieving first sort item:", error_11);
+                        error_13 = _a.sent();
+                        console.error("Error retrieving first sort item:", error_13);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -678,7 +786,7 @@ var MongoDB = /** @class */ (function () {
     // Function to set the current active share ID
     MongoDB.prototype.setActiveShareId = function (newActiveShareId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_12;
+            var result, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -688,8 +796,8 @@ var MongoDB = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
-                        error_12 = _a.sent();
-                        console.error("Error setting active share ID:", error_12);
+                        error_14 = _a.sent();
+                        console.error("Error setting active share ID:", error_14);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -699,7 +807,7 @@ var MongoDB = /** @class */ (function () {
     // Function to update both the first sort and the current active path atomically
     MongoDB.prototype.updateFirstSortAndActivePath = function (newLink, newActiveShareId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_13;
+            var result, error_15;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -712,8 +820,8 @@ var MongoDB = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
-                        error_13 = _a.sent();
-                        console.error("Error updating first sort and active path:", error_13);
+                        error_15 = _a.sent();
+                        console.error("Error updating first sort and active path:", error_15);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }

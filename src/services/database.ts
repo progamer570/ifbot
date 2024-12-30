@@ -119,6 +119,14 @@ class Database {
   async manageToken(userId: string): Promise<{ token: string; message: string }> {
     return await this.client.manageToken(userId);
   }
+  // premium
+  async checkBotPremiumStatus(userId: string): Promise<boolean> {
+    return await this.client.checkBotPremiumStatus(userId);
+  }
+  async addBotPremium(userId: string, duration: string): Promise<string> {
+    return await this.client.addBotPremium(userId, duration);
+  }
+
   async addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean> {
     return await this.client.addLinkToFirstSort(newLink);
   }

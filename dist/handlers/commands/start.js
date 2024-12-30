@@ -41,7 +41,7 @@ import telegram from "../../services/telegram.js";
 import { sendDailyLimitMessage, sendInviteMessage, sendInviterWelcomeMessage, sendTokenExpiredMessage, sendTokenGeneratedMessage, } from "../../utils/helper.js";
 export default function startHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var chatId, user, userId, payload, shareId, tokenNumber, firstSortItem, activeShareId, token, inviteParts, inviterId, newUserId, isUserExist, parts, chatsUserHasNotJoined, isValidToken, firstItem, canRequest, error_1, messageIds, channel, error_2, error_3;
+        var chatId, user, userId, payload, shareId, tokenNumber, firstSortItem, activeShareId, token, inviteParts, inviterId, newUserId, isUserExist, parts, chatsUserHasNotJoined, haveBotPremium, isValidToken, firstItem, canRequest, error_1, messageIds, channel, error_2, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -53,7 +53,7 @@ export default function startHandler(ctx) {
                     console.log(payload);
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 40, , 41]);
+                    _a.trys.push([1, 41, , 42]);
                     if (!(payload && payload.includes("token-"))) return [3 /*break*/, 5];
                     tokenNumber = payload.replace("token-", "");
                     return [4 /*yield*/, database.getFirstSortItem()];
@@ -107,57 +107,62 @@ export default function startHandler(ctx) {
                         return [2 /*return*/, telegram.sendForceJoinMessage(shareId, chatId, user, chatsUserHasNotJoined)];
                     }
                     _a.label = 15;
-                case 15: return [4 /*yield*/, database.verifyAndValidateToken(userId.toString())];
+                case 15: return [4 /*yield*/, database
+                        .checkBotPremiumStatus(userId.toString())
+                        .catch(function (error) { return console.error(error); })];
                 case 16:
-                    isValidToken = _a.sent();
-                    if (!!isValidToken) return [3 /*break*/, 19];
-                    return [4 /*yield*/, database.getFirstItem().catch(function (error) { return console.error(error); })];
+                    haveBotPremium = _a.sent();
+                    return [4 /*yield*/, database.verifyAndValidateToken(userId.toString())];
                 case 17:
+                    isValidToken = _a.sent();
+                    if (!!isValidToken) return [3 /*break*/, 20];
+                    return [4 /*yield*/, database.getFirstItem().catch(function (error) { return console.error(error); })];
+                case 18:
                     firstItem = _a.sent();
-                    if (!firstItem) return [3 /*break*/, 19];
+                    if (!(firstItem && !haveBotPremium)) return [3 /*break*/, 20];
                     return [4 /*yield*/, sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload).catch(function (error) { return console.error(error); })];
-                case 18: return [2 /*return*/, _a.sent()];
-                case 19: return [4 /*yield*/, database.canRequest(userId.toString())];
-                case 20:
-                    canRequest = _a.sent();
-                    if (!(canRequest || env.adminIds.includes(userId))) return [3 /*break*/, 37];
-                    _a.label = 21;
+                case 19: return [2 /*return*/, _a.sent()];
+                case 20: return [4 /*yield*/, database.canRequest(userId.toString())];
                 case 21:
-                    _a.trys.push([21, 24, , 25]);
-                    if (!!payload.includes("ong")) return [3 /*break*/, 23];
-                    return [4 /*yield*/, database.useRequest(userId.toString())];
+                    canRequest = _a.sent();
+                    if (!(canRequest || env.adminIds.includes(userId) || haveBotPremium)) return [3 /*break*/, 38];
+                    _a.label = 22;
                 case 22:
+                    _a.trys.push([22, 25, , 26]);
+                    if (!!payload.includes("ong")) return [3 /*break*/, 24];
+                    return [4 /*yield*/, database.useRequest(userId.toString())];
+                case 23:
                     _a.sent();
-                    _a.label = 23;
-                case 23: return [3 /*break*/, 25];
-                case 24:
+                    _a.label = 24;
+                case 24: return [3 /*break*/, 26];
+                case 25:
                     error_1 = _a.sent();
                     console.error("Error updating request count:", error_1);
-                    return [3 /*break*/, 25];
-                case 25:
+                    return [3 /*break*/, 26];
+                case 26:
                     messageIds = void 0;
                     channel = void 0;
-                    if (!payload.includes("eng")) return [3 /*break*/, 27];
+                    if (!payload.includes("eng")) return [3 /*break*/, 28];
                     return [4 /*yield*/, database.getAIOMessages(Number(shareId))];
-                case 26:
-                    messageIds = _a.sent();
-                    channel = env.dbAIOChannelId;
-                    return [3 /*break*/, 31];
                 case 27:
-                    if (!payload.includes("hindi")) return [3 /*break*/, 29];
-                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
-                case 28:
                     messageIds = _a.sent();
                     channel = env.dbAIOChannelId;
-                    return [3 /*break*/, 31];
+                    return [3 /*break*/, 32];
+                case 28:
+                    if (!payload.includes("hindi")) return [3 /*break*/, 30];
+                    return [4 /*yield*/, database.getHindiMessages(Number(shareId))];
                 case 29:
-                    if (!payload.includes("ong")) return [3 /*break*/, 31];
-                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                    messageIds = _a.sent();
+                    channel = env.dbAIOChannelId;
+                    return [3 /*break*/, 32];
                 case 30:
+                    if (!payload.includes("ong")) return [3 /*break*/, 32];
+                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId))];
+                case 31:
                     messageIds = _a.sent();
                     channel = env.dbOngoingChannelId;
-                    _a.label = 31;
-                case 31:
+                    _a.label = 32;
+                case 32:
                     if (!messageIds) {
                         return [2 /*return*/, ctx.reply("Message not found, try another link")];
                     }
@@ -165,30 +170,30 @@ export default function startHandler(ctx) {
                         throw new Error("Missing DB_CHANNEL_ID or DB_MOVIE_CHANNEL_ID");
                     }
                     return [4 /*yield*/, telegram.forwardMessages(chatId, channel, messageIds, true)];
-                case 32:
-                    _a.sent();
-                    _a.label = 33;
                 case 33:
-                    _a.trys.push([33, 35, , 36]);
-                    return [4 /*yield*/, database.saveUser(user)];
-                case 34:
                     _a.sent();
-                    return [3 /*break*/, 36];
+                    _a.label = 34;
+                case 34:
+                    _a.trys.push([34, 36, , 37]);
+                    return [4 /*yield*/, database.saveUser(user)];
                 case 35:
+                    _a.sent();
+                    return [3 /*break*/, 37];
+                case 36:
                     error_2 = _a.sent();
                     console.error("Error saving user data:", error_2);
-                    return [3 /*break*/, 36];
-                case 36: return [3 /*break*/, 39];
-                case 37: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString()).catch(function (error) {
+                    return [3 /*break*/, 37];
+                case 37: return [3 /*break*/, 40];
+                case 38: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString()).catch(function (error) {
                         return console.error(error);
                     })];
-                case 38: return [2 /*return*/, _a.sent()];
-                case 39: return [3 /*break*/, 41];
-                case 40:
+                case 39: return [2 /*return*/, _a.sent()];
+                case 40: return [3 /*break*/, 42];
+                case 41:
                     error_3 = _a.sent();
                     console.error("Error in startHandler:", error_3);
-                    return [3 /*break*/, 41];
-                case 41: return [2 /*return*/];
+                    return [3 /*break*/, 42];
+                case 42: return [2 /*return*/];
             }
         });
     });

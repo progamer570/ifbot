@@ -23,6 +23,7 @@ const forceGroupIds = env.FORCE_GROUP_IDS?.split(" ").map(Number) || [];
 const allowGroups = env.ALLOW_GROUPS?.split(" ").map(Number) || [];
 const withoutCmd = env.ALLOW_GROUPS_WITHOUT_COMMAND?.split(" ").map(Number) || [];
 const adminIds = env.ADMIN_IDS?.split(" ").map(Number);
+const ownerId = Number(env.OWNER_ID) || "";
 const databaseUrl = env.DATABASE_URL;
 const join = env.JOIN || "";
 const backup = env.BACKUP || "";
@@ -44,6 +45,7 @@ if (!adminIds) {
 }
 export default {
   baseUrl,
+  ownerId,
   collectionAIOBackup,
   logGroupId,
   sortApiKey,

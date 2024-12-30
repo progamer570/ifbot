@@ -2,8 +2,6 @@
 import { model, Schema, Model, Document } from "mongoose";
 import { User } from "telegraf/typings/core/types/typegram";
 
-  
-
 export type UserDocument = User & Document;
 
 const userSchema: Schema<UserDocument> = new Schema<UserDocument>({

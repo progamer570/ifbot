@@ -16,7 +16,7 @@ import { AIOSearchCriteria } from "./interfaces/searchCriteria.js";
 import { InviteService } from "./inviteService.js";
 import { InviteUser } from "./interfaces/inviteUser.js";
 import { OngoingDocument } from "./interfaces/ongoingDocument.js";
-import TokenModel from "./models/tokeModel.js";
+import TokenModel from "./models/tokenModel.js";
 import { ITokenDocument } from "./interfaces/token.js";
 import { sendToLogGroup } from "../utils/sendToCollection.js";
 
@@ -376,7 +376,108 @@ class MongoDB {
       throw error;
     }
   }
-  // sort link
+
+  // bot premium
+  async checkBotPremiumStatus(userId: string): Promise<boolean> {
+    try {
+      const tokenData = await this.TokenModel.findOne({ userId });
+
+      if (!tokenData || !tokenData.bot_premium?.is_bot_premium) {
+        return false;
+      }
+
+      const expiresAt = tokenData.bot_premium?.expires_at;
+      if (expiresAt && new Date() > expiresAt) {
+        await this.TokenModel.updateOne(
+          { userId },
+          { $set: { "bot_premium.is_bot_premium": false } } // Update here
+        );
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error checking bot premium status:", error);
+      return false;
+    }
+  }
+
+  async addBotPremium(userId: string, duration: string): Promise<string> {
+    try {
+      const regex = /^(\d+)([smhd])$/;
+      const match = duration.match(regex);
+
+      if (!match) {
+        console.error("Invalid duration format. Please use a format like 1h, 2d, etc.");
+        return "Invalid duration format. Please use a format like 1h, 2d, etc.";
+      }
+
+      const value = parseInt(match[1]);
+      const unit = match[2].toLowerCase();
+
+      let durationMs: number;
+      switch (unit) {
+        case "s":
+          durationMs = value * 1000;
+          break;
+        case "m":
+          durationMs = value * 60 * 1000;
+          break;
+        case "h":
+          durationMs = value * 60 * 60 * 1000;
+          break;
+        case "d":
+          durationMs = value * 24 * 60 * 60 * 1000;
+          break;
+        default:
+          console.error("Invalid time unit. Use s, m, h, or d.");
+          return "Invalid time unit. Use s, m, h, or d.";
+      }
+
+      if (durationMs < 1 * 24 * 60 * 60 * 1000) {
+        console.error("The minimum duration for premium is 1 day.");
+        return "The minimum duration for premium is 1 day.";
+      }
+
+      let subscriptionType: "Gold" | "Silver" | "Platinum" | "Other" = "Other";
+      if (durationMs <= 30 * 24 * 60 * 60 * 1000) {
+        subscriptionType = "Gold";
+      } else if (durationMs <= 90 * 24 * 60 * 60 * 1000) {
+        subscriptionType = "Silver";
+      } else {
+        subscriptionType = "Platinum";
+      }
+
+      const expiresAt = new Date(Date.now() + durationMs);
+
+      const tokenData = await this.TokenModel.findOne({ userId });
+
+      if (!tokenData) {
+        console.error("Token not found for the user.");
+        return "Token not found for the user.";
+      }
+
+      tokenData.bot_premium = {
+        is_bot_premium: true,
+        subscriptionType: subscriptionType ? subscriptionType : "Other",
+        duration: value,
+        expires_at: expiresAt,
+        activated_at: new Date(),
+        details: `${value} ${unit}`,
+      };
+
+      await tokenData.save();
+      console.log(
+        `Premium added for ${userId}, subscription type: ${subscriptionType}, expires at ${expiresAt}`
+      );
+
+      return `Premium successfully added for ${userId}. Subscription type: ${subscriptionType}. Premium will expire on ${expiresAt.toLocaleString()}.`;
+    } catch (error) {
+      console.error("Error adding bot premium:", error);
+      return `Error adding bot premium:  + ${error}`;
+    }
+  }
+
   async addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean> {
     try {
       const result = await SortModel.updateOne(

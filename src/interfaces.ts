@@ -58,6 +58,9 @@ export interface DatabaseClient {
   verifyAndValidateToken(userId: string): Promise<boolean>;
   generateNewToken(userId: string): Promise<string>;
   manageToken(userId: string): Promise<{ token: string; message: string }>;
+  // premium
+  checkBotPremiumStatus(userId: string): Promise<boolean>;
+  addBotPremium(userId: string, duration: string): Promise<string>;
 
   //sort
   addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean>;
