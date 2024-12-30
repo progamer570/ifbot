@@ -340,7 +340,21 @@ class MongoDB {
         existingToken.expiresAt = expiresAt;
         await existingToken.save();
       } else {
-        const newTokenData = new this.TokenModel({ userId, token: newToken, expiresAt });
+        const oneDayMs = 24 * 60 * 60 * 1000;
+        const expiresAtForPremium = new Date(Date.now() + oneDayMs);
+        const newTokenData = new this.TokenModel({
+          userId,
+          token: newToken,
+          expiresAt,
+          bot_premium: {
+            is_bot_premium: true,
+            subscriptionType: "Gold",
+            duration: 1,
+            expires_at: expiresAtForPremium,
+            activated_at: new Date(),
+            details: "1d",
+          },
+        });
         await newTokenData.save();
       }
 

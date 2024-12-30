@@ -553,7 +553,7 @@ var MongoDB = /** @class */ (function () {
     };
     MongoDB.prototype.generateNewToken = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var newToken, expiresAt, existingToken, newTokenData, error_8;
+            var newToken, expiresAt, existingToken, oneDayMs, expiresAtForPremium, newTokenData, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -573,7 +573,21 @@ var MongoDB = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 6];
                     case 4:
-                        newTokenData = new this.TokenModel({ userId: userId, token: newToken, expiresAt: expiresAt });
+                        oneDayMs = 24 * 60 * 60 * 1000;
+                        expiresAtForPremium = new Date(Date.now() + oneDayMs);
+                        newTokenData = new this.TokenModel({
+                            userId: userId,
+                            token: newToken,
+                            expiresAt: expiresAt,
+                            bot_premium: {
+                                is_bot_premium: true,
+                                subscriptionType: "Gold",
+                                duration: 1,
+                                expires_at: expiresAtForPremium,
+                                activated_at: new Date(),
+                                details: "1d",
+                            },
+                        });
                         return [4 /*yield*/, newTokenData.save()];
                     case 5:
                         _a.sent();
