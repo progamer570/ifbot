@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-// Define the Token Schema
 var TokenSchema = new Schema({
     userId: { type: String, required: true },
     token: { type: String, required: true },
@@ -11,11 +10,10 @@ var TokenSchema = new Schema({
             enum: ["Gold", "Silver", "Platinum", "Other"],
             required: false,
         },
-        duration: { type: Number, required: false },
-        expires_at: { type: Date, required: false },
+        duration: { type: Number, required: false }, // Optional field
+        expires_at: { type: Date, required: false }, // Optional field
         activated_at: { type: Date, default: Date.now },
-        details: { type: String, required: false },
-        required: false,
+        details: { type: String, required: false }, // Optional field
     },
 });
 export default mongoose.model("Token", TokenSchema);
