@@ -745,9 +745,43 @@ var MongoDB = /** @class */ (function () {
             });
         });
     };
+    MongoDB.prototype.getPremiumDetails = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var tokenData, _a, subscriptionType, duration, expires_at, activated_at, details, currentTime, remainingTimeMs, remainingDays, error_12;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
+                    case 1:
+                        tokenData = _b.sent();
+                        if (!tokenData || !tokenData.bot_premium || !tokenData.bot_premium.is_bot_premium) {
+                            return [2 /*return*/, "You do not have an active premium subscription."];
+                        }
+                        _a = tokenData.bot_premium, subscriptionType = _a.subscriptionType, duration = _a.duration, expires_at = _a.expires_at, activated_at = _a.activated_at, details = _a.details;
+                        if (!expires_at) {
+                            return [2 /*return*/, "Premium subscription details are incomplete."];
+                        }
+                        currentTime = new Date();
+                        remainingTimeMs = new Date(expires_at).getTime() - currentTime.getTime();
+                        remainingDays = Math.ceil(remainingTimeMs / (24 * 60 * 60 * 1000));
+                        if (remainingTimeMs <= 0) {
+                            return [2 /*return*/, "Your premium subscription of type '".concat(subscriptionType, "' has expired. Duration was ").concat(duration, " days.")];
+                        }
+                        return [2 /*return*/, "Premium Details:\n    - Subscription Type: ".concat(subscriptionType, "\n    - Total Duration: ").concat(duration, " days\n    - Remaining Time: ").concat(remainingDays, " day(s)\n    - Activated At: ").concat(activated_at.toLocaleDateString(), "\n    - Expires At: ").concat(new Date(expires_at).toLocaleDateString(), "\n    - Additional Details: ").concat(details)];
+                    case 2:
+                        error_12 = _b.sent();
+                        console.error("Error fetching premium details:", error_12);
+                        return [2 /*return*/, "An error occurred while retrieving premium details. Please try again."];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //////////////////////////
     MongoDB.prototype.addLinkToFirstSort = function (newLink) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_12;
+            var result, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -757,8 +791,8 @@ var MongoDB = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
-                        error_12 = _a.sent();
-                        console.error("Error adding link to first sort:", error_12);
+                        error_13 = _a.sent();
+                        console.error("Error adding link to first sort:", error_13);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -768,7 +802,7 @@ var MongoDB = /** @class */ (function () {
     // Function to get the first item in the sort array
     MongoDB.prototype.getFirstSortItem = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var document_2, error_13;
+            var document_2, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -782,8 +816,8 @@ var MongoDB = /** @class */ (function () {
                         }
                         return [2 /*return*/, document_2];
                     case 2:
-                        error_13 = _a.sent();
-                        console.error("Error retrieving first sort item:", error_13);
+                        error_14 = _a.sent();
+                        console.error("Error retrieving first sort item:", error_14);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -793,7 +827,7 @@ var MongoDB = /** @class */ (function () {
     // Function to set the current active share ID
     MongoDB.prototype.setActiveShareId = function (newActiveShareId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_14;
+            var result, error_15;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -803,8 +837,8 @@ var MongoDB = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
-                        error_14 = _a.sent();
-                        console.error("Error setting active share ID:", error_14);
+                        error_15 = _a.sent();
+                        console.error("Error setting active share ID:", error_15);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -814,7 +848,7 @@ var MongoDB = /** @class */ (function () {
     // Function to update both the first sort and the current active path atomically
     MongoDB.prototype.updateFirstSortAndActivePath = function (newLink, newActiveShareId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, error_15;
+            var result, error_16;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -827,8 +861,8 @@ var MongoDB = /** @class */ (function () {
                         result = _a.sent();
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
-                        error_15 = _a.sent();
-                        console.error("Error updating first sort and active path:", error_15);
+                        error_16 = _a.sent();
+                        console.error("Error updating first sort and active path:", error_16);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }

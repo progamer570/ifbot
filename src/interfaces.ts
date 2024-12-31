@@ -61,6 +61,7 @@ export interface DatabaseClient {
   // premium
   checkBotPremiumStatus(userId: string): Promise<boolean>;
   addBotPremium(userId: string, duration: string): Promise<string>;
+  getPremiumDetails(userId: string): Promise<string>;
 
   //sort
   addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean>;

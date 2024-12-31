@@ -40,6 +40,7 @@ declare class Database {
     }>;
     checkBotPremiumStatus(userId: string): Promise<boolean>;
     addBotPremium(userId: string, duration: string): Promise<string>;
+    getPremiumDetails(userId: string): Promise<string>;
     addLinkToFirstSort(newLink: {
         shareId: number;
         aioShortUrl: string;

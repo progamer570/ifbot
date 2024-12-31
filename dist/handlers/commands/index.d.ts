@@ -9,9 +9,11 @@ import addOngoingHandler from "./addOngoing.js";
 import replyHandler from "./reply.js";
 import autoReplyHandler from "./autoReact.js";
 import addToPremiumHandler from "./addToPremium.js";
+import premiumHandler from "./premium.js";
 declare const _default: {
     startHandler: typeof startHandler;
     addToPremiumHandler: typeof addToPremiumHandler;
+    premiumHandler: typeof premiumHandler;
     autoReplyHandler: typeof autoReplyHandler;
     replyHandler: typeof replyHandler;
     reqAIOHandler: typeof reqAIOHandler;

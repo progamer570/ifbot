@@ -34,64 +34,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import auth from "../../services/auth.js";
 import database from "../../services/database.js";
-import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
-export default function addToPremiumHandler(ctx) {
+export default function replyHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var userId, firstName, args, addUserToPremium, duration, replyToMessage, result, err_1;
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var userId, premiumDetails, err_1;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
+                    _b.trys.push([0, 2, , 3]);
                     userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
-                    firstName = ((_b = ctx.from) === null || _b === void 0 ? void 0 : _b.first_name) || "user";
-                    args = isTextMessage(ctx.message) ? ctx.message.text.split(" ") : null;
-                    addUserToPremium = "";
-                    duration = "";
-                    if (!(!auth.isOwner(userId) || !userId)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, ctx.reply("Sorry, you have no permission to do this")];
+                    premiumDetails = database.getPremiumDetails(userId.toString());
+                    return [4 /*yield*/, ctx.reply("".concat(premiumDetails))];
                 case 1:
-                    _c.sent();
-                    return [2 /*return*/];
+                    _b.sent();
+                    return [3 /*break*/, 3];
                 case 2:
-                    if (!(!args || args.length < 1)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, ctx.reply("Please specify the day duration (e.g., /addtopremium 1d or /addtopremium userid 1d [for days]).")];
-                case 3:
-                    _c.sent();
-                    return [2 /*return*/];
-                case 4:
-                    if (!(args.length === 3)) return [3 /*break*/, 5];
-                    addUserToPremium = args[1];
-                    duration = args[2];
-                    return [3 /*break*/, 8];
-                case 5:
-                    if (!!hasReplyToMessage(ctx.message)) return [3 /*break*/, 7];
-                    return [4 /*yield*/, ctx.reply("Please reply to a user message to enable autoreply.")];
-                case 6:
-                    _c.sent();
-                    return [2 /*return*/];
-                case 7:
-                    replyToMessage = ctx.message.reply_to_message;
-                    addUserToPremium = replyToMessage.from.id;
-                    duration = args[1];
-                    _c.label = 8;
-                case 8:
-                    _c.trys.push([8, 11, , 12]);
-                    return [4 /*yield*/, database.addBotPremium(addUserToPremium.toString(), duration)];
-                case 9:
-                    result = _c.sent();
-                    return [4 /*yield*/, ctx.reply("[".concat(firstName, "](tg://user?id=").concat(addUserToPremium, ")\n").concat(result), {
-                            parse_mode: "Markdown",
-                        })];
-                case 10:
-                    _c.sent();
-                    return [3 /*break*/, 12];
-                case 11:
-                    err_1 = _c.sent();
-                    console.log(err_1);
-                    return [3 /*break*/, 12];
-                case 12: return [2 /*return*/];
+                    err_1 = _b.sent();
+                    console.error("Error handling reply command:", err_1);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });

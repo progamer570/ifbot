@@ -486,6 +486,44 @@ class MongoDB {
     }
   }
 
+  async getPremiumDetails(userId: string): Promise<string> {
+    try {
+      const tokenData = await this.TokenModel.findOne({ userId });
+
+      if (!tokenData || !tokenData.bot_premium || !tokenData.bot_premium.is_bot_premium) {
+        return "You do not have an active premium subscription.";
+      }
+
+      const { subscriptionType, duration, expires_at, activated_at, details } =
+        tokenData.bot_premium;
+
+      if (!expires_at) {
+        return "Premium subscription details are incomplete.";
+      }
+
+      const currentTime = new Date();
+      const remainingTimeMs = new Date(expires_at).getTime() - currentTime.getTime();
+      const remainingDays = Math.ceil(remainingTimeMs / (24 * 60 * 60 * 1000)); // Convert ms to days
+
+      if (remainingTimeMs <= 0) {
+        return `Your premium subscription of type '${subscriptionType}' has expired. Duration was ${duration} days.`;
+      }
+
+      return `Premium Details:
+    - Subscription Type: ${subscriptionType}
+    - Total Duration: ${duration} days
+    - Remaining Time: ${remainingDays} day(s)
+    - Activated At: ${activated_at.toLocaleDateString()}
+    - Expires At: ${new Date(expires_at).toLocaleDateString()}
+    - Additional Details: ${details}`;
+    } catch (error) {
+      console.error("Error fetching premium details:", error);
+      return "An error occurred while retrieving premium details. Please try again.";
+    }
+  }
+
+  //////////////////////////
+
   async addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean> {
     try {
       const result = await SortModel.updateOne(

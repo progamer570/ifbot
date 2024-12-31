@@ -19,6 +19,7 @@ app.use(useNewReplies());
 
 app.command("start", commands.startHandler);
 app.command("addtopremium", commands.addToPremiumHandler);
+app.command("premium", commands.premiumHandler);
 app.command("autoreact", commands.autoReplyHandler);
 app.command("reply", commands.replyHandler);
 app.command("myinvites", commands.invitesHandler);

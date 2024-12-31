@@ -126,6 +126,9 @@ class Database {
   async addBotPremium(userId: string, duration: string): Promise<string> {
     return await this.client.addBotPremium(userId, duration);
   }
+  async getPremiumDetails(userId: string): Promise<string> {
+    return await this.client.getPremiumDetails(userId);
+  }
 
   async addLinkToFirstSort(newLink: { shareId: number; aioShortUrl: string }): Promise<boolean> {
     return await this.client.addLinkToFirstSort(newLink);
