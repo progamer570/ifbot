@@ -37,24 +37,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import database from "../../services/database.js";
 export default function replyHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var userId, premiumDetails, premiumDetailsString, err_1;
+        var userId, premiumDetails, err_1;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
+                    _b.trys.push([0, 3, , 4]);
                     userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
-                    premiumDetails = database.getPremiumDetails(userId.toString());
-                    premiumDetailsString = JSON.stringify(premiumDetails, null, 2);
-                    return [4 /*yield*/, ctx.reply("".concat(premiumDetailsString))];
+                    return [4 /*yield*/, database.getPremiumDetails(userId.toString())];
                 case 1:
-                    _b.sent();
-                    return [3 /*break*/, 3];
+                    premiumDetails = _b.sent();
+                    return [4 /*yield*/, ctx.reply("".concat(premiumDetails), {
+                            parse_mode: "Markdown",
+                        })];
                 case 2:
+                    _b.sent();
+                    return [3 /*break*/, 4];
+                case 3:
                     err_1 = _b.sent();
                     console.error("Error handling reply command:", err_1);
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     });

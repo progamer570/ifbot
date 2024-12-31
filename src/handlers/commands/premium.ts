@@ -5,9 +5,10 @@ export default async function replyHandler(ctx: CommandContext) {
   try {
     const userId = ctx.from?.id;
 
-    const premiumDetails = database.getPremiumDetails(userId.toString());
-    const premiumDetailsString = JSON.stringify(premiumDetails, null, 2);
-    await ctx.reply(`${premiumDetailsString}`);
+    const premiumDetails = await database.getPremiumDetails(userId.toString());
+    await ctx.reply(`${premiumDetails}`, {
+      parse_mode: "Markdown",
+    });
   } catch (err) {
     console.error("Error handling reply command:", err);
   }
