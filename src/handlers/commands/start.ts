@@ -77,10 +77,9 @@ export default async function startHandler(ctx: CommandContext) {
       .catch((error) => console.error(error));
     // Token validation
     const isValidToken = await database.verifyAndValidateToken(userId.toString());
-    if (!isValidToken) {
+    if (!isValidToken || !haveBotPremium) {
       const firstItem = await database.getFirstItem().catch((error) => console.error(error));
-
-      if (firstItem && !haveBotPremium) {
+      if (firstItem) {
         return await sendTokenExpiredMessage(
           ctx,
           user,

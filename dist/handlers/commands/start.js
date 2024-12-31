@@ -115,11 +115,11 @@ export default function startHandler(ctx) {
                     return [4 /*yield*/, database.verifyAndValidateToken(userId.toString())];
                 case 17:
                     isValidToken = _a.sent();
-                    if (!!isValidToken) return [3 /*break*/, 20];
+                    if (!(!isValidToken || !haveBotPremium)) return [3 /*break*/, 20];
                     return [4 /*yield*/, database.getFirstItem().catch(function (error) { return console.error(error); })];
                 case 18:
                     firstItem = _a.sent();
-                    if (!(firstItem && !haveBotPremium)) return [3 /*break*/, 20];
+                    if (!firstItem) return [3 /*break*/, 20];
                     return [4 /*yield*/, sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload).catch(function (error) { return console.error(error); })];
                 case 19: return [2 /*return*/, _a.sent()];
                 case 20: return [4 /*yield*/, database.canRequest(userId.toString())];

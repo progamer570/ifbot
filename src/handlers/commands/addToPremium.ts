@@ -14,7 +14,7 @@ export default async function addToPremiumHandler(ctx: CommandContext) {
     await ctx.reply("Sorry, you have no permission to do this");
     return;
   }
-  if (!args || args.length < 3 || args.length > 2) {
+  if (!args || args.length > 2) {
     await ctx.reply(
       "Please specify the day duration (e.g., /addtopremium 1d or /addtopremium userid 1d [for days])."
     );
