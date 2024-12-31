@@ -35,7 +35,7 @@ export default async function addToPremiumHandler(ctx: CommandContext) {
 
   try {
     const result = await database.addBotPremium(addUserToPremium.toString(), duration);
-    await ctx.reply(`[${firstName}](tg://user?id=${addUserToPremium})\n${result}`, {
+    await ctx.reply(`[${addUserToPremium}](tg://user?id=${addUserToPremium})\n${result}`, {
       parse_mode: "Markdown",
     });
   } catch (err) {

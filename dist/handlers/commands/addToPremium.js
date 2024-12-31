@@ -81,7 +81,7 @@ export default function addToPremiumHandler(ctx) {
                     return [4 /*yield*/, database.addBotPremium(addUserToPremium.toString(), duration)];
                 case 9:
                     result = _c.sent();
-                    return [4 /*yield*/, ctx.reply("[".concat(firstName, "](tg://user?id=").concat(addUserToPremium, ")\n").concat(result), {
+                    return [4 /*yield*/, ctx.reply("[".concat(addUserToPremium, "](tg://user?id=").concat(addUserToPremium, ")\n").concat(result), {
                             parse_mode: "Markdown",
                         })];
                 case 10:
