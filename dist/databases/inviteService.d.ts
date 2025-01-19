@@ -4,4 +4,9 @@ export declare class InviteService {
     getInviteUser(userId: string): Promise<IUserDocument | null>;
     canRequest(userId: string): Promise<boolean>;
     useRequest(userId: string): Promise<void>;
+    getTopInviters(): Promise<{
+        userId: string;
+        username: string;
+        inviteCount: number;
+    }[]>;
 }

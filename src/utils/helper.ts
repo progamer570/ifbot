@@ -48,7 +48,15 @@ export async function sendInviteMessage(
 ): Promise<void> {
   const firstName = (user.first_name?.replace(/[^a-zA-Z0-9]/g, "") || "User").trim();
   const inviteLink = generateInviteLink(userId, false);
-  const message = `Hello ${firstName}!\n${env.request}\n\n\nInvite your friends! Your invite link is:\n${inviteLink}`;
+  const message = `Hello ${firstName}!
+
+${env.request}
+
+Invite your friends! Your invite link is:
+${inviteLink}
+
+You can check your invite progress using the command: /myinvites  
+To see who has invited the most people, use the command: /topinvites`;
 
   await ctx.reply(message, {
     parse_mode: "HTML",

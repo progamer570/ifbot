@@ -6,6 +6,7 @@ import { SortDocument } from "./databases/interfaces/sort.js";
 import { AIODocument } from "./databases/interfaces/aIO.js";
 import { InviteUser } from "./databases/interfaces/inviteUser.js";
 import { OngoingDocument } from "./databases/interfaces/ongoingDocument.js";
+import { IUserDocument } from "./databases/models/inviteModel.js";
 
 export type CommandContext = NarrowedContext<
   WizardContext<WizardSessionData>,
@@ -52,6 +53,7 @@ export interface DatabaseClient {
   getInviteUser(userId: string): Promise<InviteUser | null>;
   canRequest(userId: string): Promise<boolean>;
   useRequest(userId: string): Promise<void>;
+  getTopInviters(): Promise<{ userId: string; username: string; inviteCount: number }[]>;
 
   //token
   hasGeneratedToken(userId: string): Promise<boolean>;

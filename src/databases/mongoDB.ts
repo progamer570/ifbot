@@ -19,6 +19,7 @@ import { OngoingDocument } from "./interfaces/ongoingDocument.js";
 import TokenModel from "./models/tokenModel.js";
 import { ITokenDocument } from "./interfaces/token.js";
 import { sendToLogGroup } from "../utils/sendToCollection.js";
+import { IUserDocument } from "./models/inviteModel.js";
 
 class MongoDB {
   db: typeof mongoose;
@@ -285,6 +286,9 @@ class MongoDB {
 
   async useRequest(userId: string): Promise<void> {
     await this.inviteService.useRequest(userId);
+  }
+  async getTopInviters(): Promise<{ userId: string; username: string; inviteCount: number }[]> {
+    return await this.inviteService.getTopInviters();
   }
 
   // token

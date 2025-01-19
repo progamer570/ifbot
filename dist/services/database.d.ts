@@ -31,6 +31,11 @@ declare class Database {
     getInviteUser(userId: string): Promise<InviteUser | null>;
     canRequest(userId: string): Promise<boolean>;
     useRequest(userId: string): Promise<void>;
+    getTopInviters(): Promise<{
+        userId: string;
+        username: string;
+        inviteCount: number;
+    }[]>;
     hasGeneratedToken(userId: string): Promise<boolean>;
     verifyAndValidateToken(userId: string): Promise<boolean>;
     generateNewToken(userId: string): Promise<string>;

@@ -29,6 +29,7 @@ app.command("add", commands.addAIOHandler);
 app.command("addh", commands.addAIOHandler);
 app.command("addong", commands.addOngoingHandler);
 app.command("edit", commands.editAIOHandler);
+app.command("topinvites", commands.topInvitesHandler);
 
 app.catch(async (err, ctx) => {
   console.error(`Error in ${ctx.updateType}`, err);

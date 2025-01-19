@@ -11,11 +11,14 @@ import replyHandler from "./reply.js";
 import autoReplyHandler from "./autoReact.js";
 import addToPremiumHandler from "./addToPremium.js";
 import premiumHandler from "./premium.js";
+import topInvitesHandler from "./topInvites.js";
 
 export default {
   startHandler,
 
   addToPremiumHandler,
+
+  topInvitesHandler,
 
   premiumHandler,
 

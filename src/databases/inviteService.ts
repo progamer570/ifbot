@@ -60,4 +60,26 @@ export class InviteService {
     user.dailyRequests -= 1;
     await user.save();
   }
+
+  async getTopInviters(): Promise<{ userId: string; username: string; inviteCount: number }[]> {
+    try {
+      // Aggregate pipeline to calculate and fetch top inviters
+      const topInviters = await UserModel.aggregate([
+        {
+          $project: {
+            userId: 1,
+            username: { $ifNull: [{ $arrayElemAt: ["$invites.username", 0] }, "Unknown User"] },
+            inviteCount: { $size: "$invites" }, // Calculate the number of invites
+          },
+        },
+        { $sort: { inviteCount: -1 } }, // Sort by inviteCount in descending order
+        { $limit: 10 },
+      ]);
+
+      return topInviters;
+    } catch (error) {
+      console.error("Error fetching top inviters:", error);
+      throw new Error("Failed to fetch top inviters.");
+    }
+  }
 }

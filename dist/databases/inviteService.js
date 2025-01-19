@@ -128,6 +128,36 @@ var InviteService = /** @class */ (function () {
             });
         });
     };
+    InviteService.prototype.getTopInviters = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var topInviters, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, UserModel.aggregate([
+                                {
+                                    $project: {
+                                        userId: 1,
+                                        username: { $ifNull: [{ $arrayElemAt: ["$invites.username", 0] }, "Unknown User"] },
+                                        inviteCount: { $size: "$invites" }, // Calculate the number of invites
+                                    },
+                                },
+                                { $sort: { inviteCount: -1 } }, // Sort by inviteCount in descending order
+                                { $limit: 10 },
+                            ])];
+                    case 1:
+                        topInviters = _a.sent();
+                        return [2 /*return*/, topInviters];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error("Error fetching top inviters:", error_1);
+                        throw new Error("Failed to fetch top inviters.");
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return InviteService;
 }());
 export { InviteService };

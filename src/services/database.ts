@@ -8,6 +8,7 @@ import { AIODocument } from "../databases/interfaces/aIO.js";
 import { SortDocument } from "../databases/interfaces/sort.js";
 import { InviteUser } from "../databases/interfaces/inviteUser.js";
 import { OngoingDocument } from "../databases/interfaces/ongoingDocument.js";
+import { IUserDocument } from "../databases/models/inviteModel.js";
 
 class Database {
   client: DatabaseClient;
@@ -105,6 +106,9 @@ class Database {
 
   async useRequest(userId: string) {
     return await this.client.useRequest(userId);
+  }
+  async getTopInviters(): Promise<{ userId: string; username: string; inviteCount: number }[]> {
+    return await this.client.getTopInviters();
   }
   //token
   async hasGeneratedToken(userId: string): Promise<boolean> {

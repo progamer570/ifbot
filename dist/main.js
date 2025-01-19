@@ -61,6 +61,7 @@ app.command("add", commands.addAIOHandler);
 app.command("addh", commands.addAIOHandler);
 app.command("addong", commands.addOngoingHandler);
 app.command("edit", commands.editAIOHandler);
+app.command("topinvites", commands.topInvitesHandler);
 app.catch(function (err, ctx) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         console.error("Error in ".concat(ctx.updateType), err);
