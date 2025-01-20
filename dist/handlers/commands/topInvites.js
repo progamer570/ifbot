@@ -54,11 +54,11 @@ export default function addAIOHandler(ctx) {
                     topInvitersString = topInviters
                         .map(function (inviter, index) {
                         var userId = inviter.userId, inviteCount = inviter.inviteCount;
-                        return "".concat(index + 1, ". ").concat(userId || "Unknown User", " (Invites: ").concat(inviteCount, ")");
+                        return "\u0398 User Id: ".concat(userId || "Unknown User", ", Invites: ").concat(inviteCount);
                     })
                         .join("\n");
                     resultString = "\uD83C\uDFC6 Top Inviters \uD83C\uDFC6\n\n".concat(topInvitersString, "\n\n");
-                    return [4 /*yield*/, ctx.reply("```swift\n".concat(resultString, "\n```"), { parse_mode: "Markdown" })];
+                    return [4 /*yield*/, ctx.reply("```swift\n".concat(resultString, "\n```"), { parse_mode: "HTML" })];
                 case 4:
                     _a.sent();
                     return [3 /*break*/, 7];

@@ -17,13 +17,13 @@ export default async function addAIOHandler(ctx: WizardContext) {
       .map((inviter, index) => {
         const { userId, inviteCount } = inviter;
 
-        return `${index + 1}. ${userId || "Unknown User"} (Invites: ${inviteCount})`;
+        return `Θ User Id: ${userId || "Unknown User"}, Invites: ${inviteCount}`;
       })
       .join("\n");
 
     const resultString = `🏆 Top Inviters 🏆\n\n${topInvitersString}\n\n`;
 
-    await ctx.reply(`\`\`\`swift\n${resultString}\n\`\`\``, { parse_mode: "Markdown" });
+    await ctx.reply(`\`\`\`swift\n${resultString}\n\`\`\``, { parse_mode: "HTML" });
   } catch (error) {
     console.error("Error displaying top inviters:", error);
     await ctx.reply("❌ An error occurred while fetching the leaderboard.");
