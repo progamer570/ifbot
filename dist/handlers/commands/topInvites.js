@@ -65,7 +65,7 @@ export default function addAIOHandler(ctx) {
                         .join("\n");
                     resultString = "\uD83C\uDFC6 Top Inviters \uD83C\uDFC6\n\n".concat(topInvitersString, "\n\n");
                     return [4 /*yield*/, ctx.reply("```swift\n".concat(resultString, "\n```"), {
-                            parse_mode: "Markdown",
+                            parse_mode: "MarkdownV2",
                             reply_markup: {
                                 inline_keyboard: [
                                     [
