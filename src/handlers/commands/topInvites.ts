@@ -28,8 +28,8 @@ export default async function addAIOHandler(ctx: WizardContext) {
 
     const resultString = `🏆 Top Inviters 🏆\n\n${topInvitersString}\n\n`;
 
-    await ctx.reply(`\`\`\`swift\n${resultString}\n\`\`\``, {
-      parse_mode: "MarkdownV2",
+    await ctx.reply(`${resultString}`, {
+      parse_mode: "Markdown",
       reply_markup: {
         inline_keyboard: [
           [

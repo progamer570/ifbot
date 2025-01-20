@@ -143,7 +143,7 @@ var InviteService = /** @class */ (function () {
                                     },
                                 },
                                 { $sort: { inviteCount: -1 } }, // Sort by inviteCount in descending order
-                                { $limit: 20 },
+                                { $limit: 15 },
                             ])];
                     case 1:
                         topInviters = _a.sent();

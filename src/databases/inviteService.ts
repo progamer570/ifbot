@@ -72,7 +72,7 @@ export class InviteService {
           },
         },
         { $sort: { inviteCount: -1 } }, // Sort by inviteCount in descending order
-        { $limit: 20 },
+        { $limit: 15 },
       ]);
 
       return topInviters;
