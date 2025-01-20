@@ -84,7 +84,7 @@ export function sendInviteMessage(ctx, user, userId) {
                 case 0:
                     firstName = (((_a = user.first_name) === null || _a === void 0 ? void 0 : _a.replace(/[^a-zA-Z0-9]/g, "")) || "User").trim();
                     inviteLink = generateInviteLink(userId, false);
-                    message = "Hello ".concat(firstName, "!\n\n").concat(env.request, "\n\nInvite your friends! Your invite link is:\n").concat(inviteLink, "\n\nYou can check your invite progress using the command: /myinvites  \nTo see who has invited the most people, use the command: /topinvites");
+                    message = "Hello ".concat(firstName, "!\n\n").concat(env.request, "\n\nInvite your friends! Your invite link is:\n").concat(inviteLink, "\n\nYou can check your invite progress using the command: /myinvites, \nTo see who has invited the most people, use the command: /myinvitestatus");
                     return [4 /*yield*/, ctx.reply(message, {
                             parse_mode: "HTML",
                             link_preview_options: { is_disabled: true },

@@ -51,6 +51,7 @@ export default async function inviteStatusHandler(ctx: WizardContext): Promise<v
 
     await ctx.reply(responseMessage.trim(), {
       parse_mode: "HTML",
+      link_preview_options: { is_disabled: true },
       reply_markup: {
         inline_keyboard: [
           [

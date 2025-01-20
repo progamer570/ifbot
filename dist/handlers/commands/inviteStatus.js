@@ -66,6 +66,7 @@ export default function inviteStatusHandler(ctx) {
                     responseMessage = "\n\uD83D\uDCCA  Invite Status for ".concat(userName, ":\n-   Total Invites: ").concat(totalInvites, "\n-   Used Invites: ").concat(usedInvites, "\n-   Remaining Invites: ").concat(remainingInvites, "\n-   your invite link: ").concat(inviteLink, "\n");
                     return [4 /*yield*/, ctx.reply(responseMessage.trim(), {
                             parse_mode: "HTML",
+                            link_preview_options: { is_disabled: true },
                             reply_markup: {
                                 inline_keyboard: [
                                     [

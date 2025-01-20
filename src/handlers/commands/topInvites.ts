@@ -22,20 +22,20 @@ export default async function addAIOHandler(ctx: WizardContext) {
       .map((inviter, index) => {
         const { userId, inviteCount } = inviter;
 
-        return `Θ User Id: ${userId || "Unknown User"}, Invites: ${inviteCount}`;
+        return `- User Id: [${userId}](tg://user?id=${userId}), Invites: ${inviteCount}`;
       })
       .join("\n");
 
     const resultString = `🏆 Top Inviters 🏆\n\n${topInvitersString}\n\n`;
 
     await ctx.reply(`\`\`\`swift\n${resultString}\n\`\`\``, {
-      parse_mode: "HTML",
+      parse_mode: "Markdown",
       reply_markup: {
         inline_keyboard: [
           [
             {
               text: "Invite Your Friends",
-              callback_data: generateInviteLink(userId.toString(), true),
+              url: generateInviteLink(userId.toString(), true),
             },
           ],
         ],

@@ -55,8 +55,8 @@ ${env.request}
 Invite your friends! Your invite link is:
 ${inviteLink}
 
-You can check your invite progress using the command: /myinvites  
-To see who has invited the most people, use the command: /topinvites`;
+You can check your invite progress using the command: /myinvites, 
+To see who has invited the most people, use the command: /myinvitestatus`;
 
   await ctx.reply(message, {
     parse_mode: "HTML",
