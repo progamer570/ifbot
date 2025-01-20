@@ -47,7 +47,7 @@ export default async function inviteStatusHandler(ctx: WizardContext): Promise<v
 `;
 
     await ctx.reply(responseMessage.trim(), {
-      parse_mode: "Markdown",
+      parse_mode: "HTML",
       reply_markup: {
         inline_keyboard: [
           [
@@ -60,7 +60,6 @@ export default async function inviteStatusHandler(ctx: WizardContext): Promise<v
       },
     });
   } catch (error) {
-    console.error("❌ Error in inviteStatusHandler:", error);
     await ctx.reply("⚠️ An unexpected error occurred. Please try again later.");
   }
 }

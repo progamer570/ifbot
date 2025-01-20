@@ -126,7 +126,13 @@ export default {
               (ctx.from?.id || 0).toString(),
               remainingInvites
             );
-
+            const result = await database.addBotPremium(
+              ctx.from?.id.toString() || "0",
+              `${remainingInvites}d`
+            );
+            await ctx.reply(`[${ctx.from?.first_name}](tg://user?id=${ctx.from?.id})\n${result}`, {
+              parse_mode: "Markdown",
+            });
             if (success) {
               await ctx.reply(
                 `You have successfully unlocked premium features for ${remainingInvites} days.`

@@ -62,7 +62,7 @@ export default function inviteStatusHandler(ctx) {
                     totalInvites = inviteStatus.totalInvites, usedInvites = inviteStatus.usedInvites, remainingInvites = inviteStatus.remainingInvites;
                     responseMessage = "\n\uD83D\uDCCA  Invite Status for ".concat(userName, ":\n-   Total Invites: ").concat(totalInvites, "\n-   Used Invites: ").concat(usedInvites, "\n-   Remaining Invites: ").concat(remainingInvites, "\n");
                     return [4 /*yield*/, ctx.reply(responseMessage.trim(), {
-                            parse_mode: "Markdown",
+                            parse_mode: "HTML",
                             reply_markup: {
                                 inline_keyboard: [
                                     [
@@ -79,7 +79,6 @@ export default function inviteStatusHandler(ctx) {
                     return [3 /*break*/, 9];
                 case 7:
                     error_1 = _e.sent();
-                    console.error("❌ Error in inviteStatusHandler:", error_1);
                     return [4 /*yield*/, ctx.reply("⚠️ An unexpected error occurred. Please try again later.")];
                 case 8:
                     _e.sent();
