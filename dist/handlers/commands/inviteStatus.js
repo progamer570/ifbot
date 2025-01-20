@@ -67,7 +67,7 @@ export default function inviteStatusHandler(ctx) {
                                 inline_keyboard: [
                                     [
                                         {
-                                            text: "Unlock premium with your remaining invites!",
+                                            text: "Unlock premium with your invites!",
                                             callback_data: "unlockpremium-".concat(remainingInvites),
                                         },
                                     ],

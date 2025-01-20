@@ -134,12 +134,12 @@ export default {
                                 console.error("Unexpected error while deleting message:", error);
                             }
                         }
-                        if (!auth.isAdmin((_k = (_j = ctx.from) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : 0)) return [3 /*break*/, 20];
-                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 20];
+                        if (!auth.isAdmin((_k = (_j = ctx.from) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : 0)) return [3 /*break*/, 21];
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 21];
                         callbackData = ctx.callbackQuery.data;
                         _m.label = 17;
                     case 17:
-                        _m.trys.push([17, 19, , 20]);
+                        _m.trys.push([17, 20, , 21]);
                         message = void 0;
                         switch (callbackData) {
                             case "addDrama":
@@ -164,50 +164,52 @@ export default {
                                 message = "reply to the message /broadcast that you want to broadcast to your user";
                                 break;
                             default:
-                                message = "Unknown topic. Please try again.";
+                                message = "";
                         }
+                        if (!message) return [3 /*break*/, 19];
                         return [4 /*yield*/, ctx.reply(message)];
                     case 18:
                         _m.sent();
-                        return [3 /*break*/, 20];
-                    case 19:
+                        _m.label = 19;
+                    case 19: return [3 /*break*/, 21];
+                    case 20:
                         err_1 = _m.sent();
                         console.log("Error handling callback:", err_1);
-                        return [3 /*break*/, 20];
-                    case 20:
-                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 30];
-                        callbackData = ctx.callbackQuery.data;
-                        _m.label = 21;
+                        return [3 /*break*/, 21];
                     case 21:
-                        _m.trys.push([21, 29, , 30]);
-                        if (!callbackData.startsWith("unlockpremium")) return [3 /*break*/, 28];
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 31];
+                        callbackData = ctx.callbackQuery.data;
+                        _m.label = 22;
+                    case 22:
+                        _m.trys.push([22, 30, , 31]);
+                        if (!callbackData.startsWith("unlockpremium")) return [3 /*break*/, 29];
                         regex = /unlockpremium-(\d+)/;
                         match = callbackData.match(regex);
-                        if (!match) return [3 /*break*/, 27];
+                        if (!match) return [3 /*break*/, 28];
                         remainingInvites = parseInt(match[1], 10);
-                        if (!(remainingInvites <= 7)) return [3 /*break*/, 23];
+                        if (!(remainingInvites <= 7)) return [3 /*break*/, 24];
                         return [4 /*yield*/, ctx.reply("You don't have enough invites to unlock premium features. minimum 7 invites required to unlock premium features.")];
-                    case 22:
+                    case 23:
                         _m.sent();
                         return [2 /*return*/];
-                    case 23: return [4 /*yield*/, database.updateInviteUsed((((_l = ctx.from) === null || _l === void 0 ? void 0 : _l.id) || 0).toString(), remainingInvites)];
-                    case 24:
-                        success = _m.sent();
-                        if (!success) return [3 /*break*/, 26];
-                        return [4 /*yield*/, ctx.reply("You have successfully unlocked premium features for ".concat(remainingInvites, " days."))];
+                    case 24: return [4 /*yield*/, database.updateInviteUsed((((_l = ctx.from) === null || _l === void 0 ? void 0 : _l.id) || 0).toString(), remainingInvites)];
                     case 25:
+                        success = _m.sent();
+                        if (!success) return [3 /*break*/, 27];
+                        return [4 /*yield*/, ctx.reply("You have successfully unlocked premium features for ".concat(remainingInvites, " days."))];
+                    case 26:
                         _m.sent();
-                        _m.label = 26;
-                    case 26: return [3 /*break*/, 28];
-                    case 27:
+                        _m.label = 27;
+                    case 27: return [3 /*break*/, 29];
+                    case 28:
                         console.log("No valid invite data found");
-                        _m.label = 28;
-                    case 28: return [3 /*break*/, 30];
-                    case 29:
+                        _m.label = 29;
+                    case 29: return [3 /*break*/, 31];
+                    case 30:
                         error_2 = _m.sent();
                         console.error("Error occurred:", error_2);
-                        return [3 /*break*/, 30];
-                    case 30: return [2 /*return*/];
+                        return [3 /*break*/, 31];
+                    case 31: return [2 /*return*/];
                 }
             });
         });

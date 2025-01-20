@@ -52,7 +52,7 @@ export default async function inviteStatusHandler(ctx: WizardContext): Promise<v
         inline_keyboard: [
           [
             {
-              text: "Unlock premium with your remaining invites!",
+              text: "Unlock premium with your invites!",
               callback_data: `unlockpremium-${remainingInvites}`,
             },
           ],

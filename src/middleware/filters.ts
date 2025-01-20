@@ -96,10 +96,9 @@ export default {
               break;
 
             default:
-              message = "Unknown topic. Please try again.";
+              message = "";
           }
-
-          await ctx.reply(message);
+          if (message) await ctx.reply(message);
         } catch (err) {
           console.log("Error handling callback:", err);
         }
@@ -127,6 +126,7 @@ export default {
               (ctx.from?.id || 0).toString(),
               remainingInvites
             );
+
             if (success) {
               await ctx.reply(
                 `You have successfully unlocked premium features for ${remainingInvites} days.`
