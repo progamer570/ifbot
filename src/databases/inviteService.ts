@@ -142,7 +142,8 @@ export class InviteService {
 
       const totalInvites = user.invites.length;
       const usedInvites = user.inviteUsed || 0;
-      const remainingInvites = totalInvites - usedInvites;
+
+      const remainingInvites = Math.max(0, totalInvites - usedInvites);
 
       return { totalInvites, usedInvites, remainingInvites };
     } catch (error) {

@@ -238,7 +238,7 @@ var InviteService = /** @class */ (function () {
                         }
                         totalInvites = user.invites.length;
                         usedInvites = user.inviteUsed || 0;
-                        remainingInvites = totalInvites - usedInvites;
+                        remainingInvites = Math.max(0, totalInvites - usedInvites);
                         return [2 /*return*/, { totalInvites: totalInvites, usedInvites: usedInvites, remainingInvites: remainingInvites }];
                     case 2:
                         error_4 = _a.sent();
