@@ -107,8 +107,16 @@ class Database {
   async useRequest(userId: string) {
     return await this.client.useRequest(userId);
   }
-  async getTopInviters(): Promise<{ userId: string; username: string; inviteCount: number }[]> {
+  async getTopInviters(): Promise<{ userId: string; inviteCount: number }[]> {
     return await this.client.getTopInviters();
+  }
+  async updateInviteUsed(userId: string, newUsedInvites: number): Promise<boolean> {
+    return await this.client.updateInviteUsed(userId, newUsedInvites);
+  }
+  async getInviteStatus(
+    userId: string
+  ): Promise<{ totalInvites: number; usedInvites: number; remainingInvites: number } | null> {
+    return await this.client.getInviteStatus(userId);
   }
   //token
   async hasGeneratedToken(userId: string): Promise<boolean> {

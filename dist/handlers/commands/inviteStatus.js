@@ -35,41 +35,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import database from "../../services/database.js";
-export default function addAIOHandler(ctx) {
+export default function inviteStatusHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var topInviters, topInvitersString, resultString, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var userId, userName, inviteStatus, totalInvites, usedInvites, remainingInvites, responseMessage, error_1;
+        var _a, _b, _c, _d;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
                 case 0:
-                    _a.trys.push([0, 5, , 7]);
-                    return [4 /*yield*/, database.getTopInviters()];
+                    _e.trys.push([0, 7, , 9]);
+                    userId = (_b = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id) === null || _b === void 0 ? void 0 : _b.toString();
+                    userName = ((_c = ctx.from) === null || _c === void 0 ? void 0 : _c.username) || ((_d = ctx.from) === null || _d === void 0 ? void 0 : _d.first_name) || "Unknown User";
+                    if (!!userId) return [3 /*break*/, 2];
+                    return [4 /*yield*/, ctx.reply("❌ Unable to retrieve your user information. Please try again.")];
                 case 1:
-                    topInviters = _a.sent();
-                    if (!(!topInviters || topInviters.length === 0)) return [3 /*break*/, 3];
-                    return [4 /*yield*/, ctx.reply("❌ No invites found.")];
-                case 2:
-                    _a.sent();
+                    _e.sent();
                     return [2 /*return*/];
+                case 2: return [4 /*yield*/, database.getInviteStatus(userId.toString())];
                 case 3:
-                    topInvitersString = topInviters
-                        .map(function (inviter, index) {
-                        var userId = inviter.userId, inviteCount = inviter.inviteCount;
-                        return "".concat(index + 1, ". ").concat(userId || "Unknown User", " (Invites: ").concat(inviteCount, ")");
-                    })
-                        .join("\n");
-                    resultString = "\uD83C\uDFC6 Top Inviters \uD83C\uDFC6\n\n".concat(topInvitersString, "\n\n");
-                    return [4 /*yield*/, ctx.reply("```\n".concat(resultString, "\n```"), { parse_mode: "Markdown" })];
+                    inviteStatus = _e.sent();
+                    if (!!inviteStatus) return [3 /*break*/, 5];
+                    return [4 /*yield*/, ctx.reply("\u2139\uFE0F Invite status not found for the user.")];
                 case 4:
-                    _a.sent();
-                    return [3 /*break*/, 7];
+                    _e.sent();
+                    return [2 /*return*/];
                 case 5:
-                    error_1 = _a.sent();
-                    console.error("Error displaying top inviters:", error_1);
-                    return [4 /*yield*/, ctx.reply("❌ An error occurred while fetching the leaderboard.")];
+                    totalInvites = inviteStatus.totalInvites, usedInvites = inviteStatus.usedInvites, remainingInvites = inviteStatus.remainingInvites;
+                    responseMessage = "\n\uD83D\uDCCA  Invite Status for ".concat(userName, ":\n-   Total Invites: ").concat(totalInvites, "\n-   Used Invites: ").concat(usedInvites, "\n-   Remaining Invites: ").concat(remainingInvites, "\n");
+                    return [4 /*yield*/, ctx.reply(responseMessage.trim(), {
+                            parse_mode: "Markdown",
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        {
+                                            text: "Unlock premium with your remaining invites!",
+                                            callback_data: "unlockpremium-".concat(remainingInvites),
+                                        },
+                                    ],
+                                ],
+                            },
+                        })];
                 case 6:
-                    _a.sent();
-                    return [3 /*break*/, 7];
-                case 7: return [2 /*return*/];
+                    _e.sent();
+                    return [3 /*break*/, 9];
+                case 7:
+                    error_1 = _e.sent();
+                    console.error("❌ Error in inviteStatusHandler:", error_1);
+                    return [4 /*yield*/, ctx.reply("⚠️ An unexpected error occurred. Please try again later.")];
+                case 8:
+                    _e.sent();
+                    return [3 /*break*/, 9];
+                case 9: return [2 /*return*/];
             }
         });
     });

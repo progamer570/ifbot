@@ -1,6 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 var userSchema = new Schema({
     userId: { type: String, required: true },
+    inviteUsed: {
+        type: Number,
+        default: 0,
+    },
     invites: [
         {
             username: { type: String, required: true },

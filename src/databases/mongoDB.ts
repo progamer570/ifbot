@@ -287,8 +287,16 @@ class MongoDB {
   async useRequest(userId: string): Promise<void> {
     await this.inviteService.useRequest(userId);
   }
-  async getTopInviters(): Promise<{ userId: string; username: string; inviteCount: number }[]> {
+  async getTopInviters(): Promise<{ userId: string; inviteCount: number }[]> {
     return await this.inviteService.getTopInviters();
+  }
+  async updateInviteUsed(userId: string, newUsedInvites: number): Promise<boolean> {
+    return await this.inviteService.updateInviteUsed(userId, newUsedInvites);
+  }
+  async getInviteStatus(
+    userId: string
+  ): Promise<{ totalInvites: number; usedInvites: number; remainingInvites: number } | null> {
+    return await this.inviteService.getInviteStatus(userId);
   }
 
   // token

@@ -57,6 +57,14 @@ class Telegram {
           command: "/myinvites",
           description: "To Check Your Invites",
         },
+        {
+          command: "/myinvitestatus",
+          description: "To Check Your Invites",
+        },
+        {
+          command: "/topinviters",
+          description: "To Check Your Invites",
+        },
       ]);
     } catch (e) {}
     const forceChatIds = [...env.forceChannelIds, ...env.forceGroupIds];

@@ -11,6 +11,7 @@ import autoReplyHandler from "./autoReact.js";
 import addToPremiumHandler from "./addToPremium.js";
 import premiumHandler from "./premium.js";
 import topInvitesHandler from "./topInvites.js";
+import inviteStatusHandler from "./inviteStatus.js";
 export default {
     startHandler: startHandler,
     addToPremiumHandler: addToPremiumHandler,
@@ -23,6 +24,7 @@ export default {
     editAIOHandler: editAIOHandler,
     invitesHandler: invitesHandler,
     addOngoingHandler: addOngoingHandler,
+    inviteStatusHandler: inviteStatusHandler,
     totalUsersHandler: totalUsersHandler,
     myBroadcastHandler: myBroadcastHandler,
 };

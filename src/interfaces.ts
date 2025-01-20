@@ -53,8 +53,13 @@ export interface DatabaseClient {
   getInviteUser(userId: string): Promise<InviteUser | null>;
   canRequest(userId: string): Promise<boolean>;
   useRequest(userId: string): Promise<void>;
-  getTopInviters(): Promise<{ userId: string; username: string; inviteCount: number }[]>;
-
+  getTopInviters(): Promise<{ userId: string; inviteCount: number }[]>;
+  updateInviteUsed(userId: string, newUsedInvites: number): Promise<boolean>;
+  getInviteStatus(userId: string): Promise<{
+    totalInvites: number;
+    usedInvites: number;
+    remainingInvites: number;
+  } | null>;
   //token
   hasGeneratedToken(userId: string): Promise<boolean>;
   verifyAndValidateToken(userId: string): Promise<boolean>;

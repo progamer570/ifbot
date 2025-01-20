@@ -5,6 +5,10 @@ export interface IUserDocument extends InviteUser, Document {}
 
 const userSchema: Schema<IUserDocument> = new Schema({
   userId: { type: String, required: true },
+  inviteUsed: {
+    type: Number,
+    default: 0,
+  },
   invites: [
     {
       username: { type: String, required: true },

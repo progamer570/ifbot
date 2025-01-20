@@ -5,6 +5,7 @@ export interface Invite {
 
 export interface InviteUser {
   userId: string;
+  inviteUsed?: number;
   invites: Invite[];
   lastRequestDate: Date;
   dailyRequests: number;

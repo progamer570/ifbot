@@ -97,6 +97,14 @@ var Telegram = /** @class */ (function () {
                                     command: "/myinvites",
                                     description: "To Check Your Invites",
                                 },
+                                {
+                                    command: "/myinvitestatus",
+                                    description: "To Check Your Invites",
+                                },
+                                {
+                                    command: "/topinviters",
+                                    description: "To Check Your Invites",
+                                },
                             ])];
                     case 1:
                         _a.sent();

@@ -43,19 +43,19 @@ import { getRandomReactionEmoji } from "../utils/helper.js";
 export default {
     private: function (ctx, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var messageText, _a, command, args, _b, error_1, callbackData, message, err_1;
+            var messageText, _a, command, args, _b, error_1, callbackData, message, err_1, callbackData, regex, match, remainingInvites, success, error_2;
             var _this = this;
-            var _c, _d, _e, _f, _g, _h, _j, _k;
-            return __generator(this, function (_l) {
-                switch (_l.label) {
+            var _c, _d, _e, _f, _g, _h, _j, _k, _l;
+            return __generator(this, function (_m) {
+                switch (_m.label) {
                     case 0:
                         console.log((_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.id);
                         if (!(ctx.message && "text" in ctx.message && auth.isAdmin((_e = (_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id) !== null && _e !== void 0 ? _e : 0))) return [3 /*break*/, 16];
                         messageText = (_f = ctx.message) === null || _f === void 0 ? void 0 : _f.text;
                         _a = messageText.split(" "), command = _a[0], args = _a.slice(1);
-                        _l.label = 1;
+                        _m.label = 1;
                     case 1:
-                        _l.trys.push([1, 14, , 16]);
+                        _m.trys.push([1, 14, , 16]);
                         _b = command;
                         switch (_b) {
                             case "/setLink": return [3 /*break*/, 2];
@@ -67,32 +67,32 @@ export default {
                         return [3 /*break*/, 12];
                     case 2: return [4 /*yield*/, handleSetLink(ctx, args)];
                     case 3:
-                        _l.sent();
+                        _m.sent();
                         return [3 /*break*/, 13];
                     case 4: return [4 /*yield*/, handleGetFirstItem(ctx)];
                     case 5:
-                        _l.sent();
+                        _m.sent();
                         return [3 /*break*/, 13];
                     case 6: return [4 /*yield*/, handleSetActive(ctx, args)];
                     case 7:
-                        _l.sent();
+                        _m.sent();
                         return [3 /*break*/, 13];
                     case 8: return [4 /*yield*/, handleUpdateFirstAndActive(ctx, args)];
                     case 9:
-                        _l.sent();
+                        _m.sent();
                         return [3 /*break*/, 13];
                     case 10: return [4 /*yield*/, handleSystemUses(ctx)];
                     case 11:
-                        _l.sent();
+                        _m.sent();
                         return [3 /*break*/, 13];
                     case 12: return [3 /*break*/, 13];
                     case 13: return [3 /*break*/, 16];
                     case 14:
-                        error_1 = _l.sent();
+                        error_1 = _m.sent();
                         console.error("Error handling command:", error_1);
                         return [4 /*yield*/, ctx.reply("An error occurred while processing your request.")];
                     case 15:
-                        _l.sent();
+                        _m.sent();
                         return [3 /*break*/, 16];
                     case 16:
                         if (autoReplyMemory[(_g = ctx.from) === null || _g === void 0 ? void 0 : _g.id]) {
@@ -137,9 +137,9 @@ export default {
                         if (!auth.isAdmin((_k = (_j = ctx.from) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : 0)) return [3 /*break*/, 20];
                         if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 20];
                         callbackData = ctx.callbackQuery.data;
-                        _l.label = 17;
+                        _m.label = 17;
                     case 17:
-                        _l.trys.push([17, 19, , 20]);
+                        _m.trys.push([17, 19, , 20]);
                         message = void 0;
                         switch (callbackData) {
                             case "addDrama":
@@ -168,13 +168,46 @@ export default {
                         }
                         return [4 /*yield*/, ctx.reply(message)];
                     case 18:
-                        _l.sent();
+                        _m.sent();
                         return [3 /*break*/, 20];
                     case 19:
-                        err_1 = _l.sent();
+                        err_1 = _m.sent();
                         console.log("Error handling callback:", err_1);
                         return [3 /*break*/, 20];
-                    case 20: return [2 /*return*/];
+                    case 20:
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 30];
+                        callbackData = ctx.callbackQuery.data;
+                        _m.label = 21;
+                    case 21:
+                        _m.trys.push([21, 29, , 30]);
+                        if (!callbackData.startsWith("unlockpremium")) return [3 /*break*/, 28];
+                        regex = /unlockpremium-(\d+)/;
+                        match = callbackData.match(regex);
+                        if (!match) return [3 /*break*/, 27];
+                        remainingInvites = parseInt(match[1], 10);
+                        if (!(remainingInvites <= 7)) return [3 /*break*/, 23];
+                        return [4 /*yield*/, ctx.reply("You don't have enough invites to unlock premium features. minimum 7 invites required to unlock premium features.")];
+                    case 22:
+                        _m.sent();
+                        return [2 /*return*/];
+                    case 23: return [4 /*yield*/, database.updateInviteUsed((((_l = ctx.from) === null || _l === void 0 ? void 0 : _l.id) || 0).toString(), remainingInvites)];
+                    case 24:
+                        success = _m.sent();
+                        if (!success) return [3 /*break*/, 26];
+                        return [4 /*yield*/, ctx.reply("You have successfully unlocked premium features for ".concat(remainingInvites, " days."))];
+                    case 25:
+                        _m.sent();
+                        _m.label = 26;
+                    case 26: return [3 /*break*/, 28];
+                    case 27:
+                        console.log("No valid invite data found");
+                        _m.label = 28;
+                    case 28: return [3 /*break*/, 30];
+                    case 29:
+                        error_2 = _m.sent();
+                        console.error("Error occurred:", error_2);
+                        return [3 /*break*/, 30];
+                    case 30: return [2 /*return*/];
                 }
             });
         });
@@ -281,7 +314,7 @@ function handleUpdateFirstAndActive(ctx, args) {
 // Handle the "/systemuses" command
 function handleSystemUses(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var error_2;
+        var error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -289,8 +322,8 @@ function handleSystemUses(ctx) {
                     ctx.reply("System uses by: " + getSystemUsageDetails() + "\nSystem uses by machine: " + getSystemUsage());
                     return [3 /*break*/, 3];
                 case 1:
-                    error_2 = _a.sent();
-                    console.error("Error fetching system usage:", error_2);
+                    error_3 = _a.sent();
+                    console.error("Error fetching system usage:", error_3);
                     return [4 /*yield*/, ctx.reply("Failed to retrieve system usage information.")];
                 case 2:
                     _a.sent();

@@ -105,8 +105,44 @@ export default {
         }
       }
     }
+
+    // invite premium users
+    if (ctx.callbackQuery && "data" in ctx.callbackQuery) {
+      const callbackData = ctx.callbackQuery.data;
+
+      try {
+        if (callbackData.startsWith("unlockpremium")) {
+          let regex = /unlockpremium-(\d+)/;
+
+          let match = callbackData.match(regex);
+          if (match) {
+            let remainingInvites = parseInt(match[1], 10);
+            if (remainingInvites <= 7) {
+              await ctx.reply(
+                "You don't have enough invites to unlock premium features. minimum 7 invites required to unlock premium features."
+              );
+              return;
+            }
+            const success = await database.updateInviteUsed(
+              (ctx.from?.id || 0).toString(),
+              remainingInvites
+            );
+            if (success) {
+              await ctx.reply(
+                `You have successfully unlocked premium features for ${remainingInvites} days.`
+              );
+            }
+          } else {
+            console.log("No valid invite data found");
+          }
+        }
+      } catch (error) {
+        console.error("Error occurred:", error);
+      }
+    }
   },
 };
+
 function containsSGD(message: Message): boolean {
   return (
     (message as Message.AnimationMessage).animation !== undefined ||

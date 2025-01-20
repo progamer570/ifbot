@@ -11,6 +11,7 @@ import autoReplyHandler from "./autoReact.js";
 import addToPremiumHandler from "./addToPremium.js";
 import premiumHandler from "./premium.js";
 import topInvitesHandler from "./topInvites.js";
+import inviteStatusHandler from "./inviteStatus.js";
 declare const _default: {
     startHandler: typeof startHandler;
     addToPremiumHandler: typeof addToPremiumHandler;
@@ -23,6 +24,7 @@ declare const _default: {
     editAIOHandler: typeof editAIOHandler;
     invitesHandler: typeof invitesHandler;
     addOngoingHandler: typeof addOngoingHandler;
+    inviteStatusHandler: typeof inviteStatusHandler;
     totalUsersHandler: typeof totalUsersHandler;
     myBroadcastHandler: typeof myBroadcastHandler;
 };

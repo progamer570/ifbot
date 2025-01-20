@@ -6,7 +6,13 @@ export declare class InviteService {
     useRequest(userId: string): Promise<void>;
     getTopInviters(): Promise<{
         userId: string;
-        username: string;
         inviteCount: number;
     }[]>;
+    resetUserInvites(userId: string): Promise<void>;
+    updateInviteUsed(userId: string, newUsedInvites: number): Promise<boolean>;
+    getInviteStatus(userId: string): Promise<{
+        totalInvites: number;
+        usedInvites: number;
+        remainingInvites: number;
+    } | null>;
 }

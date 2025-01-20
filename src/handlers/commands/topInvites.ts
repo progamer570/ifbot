@@ -5,7 +5,6 @@ export default async function addAIOHandler(ctx: WizardContext) {
   try {
     const topInviters: {
       userId: string;
-      username: string;
       inviteCount: number;
     }[] = await database.getTopInviters();
 
@@ -16,13 +15,13 @@ export default async function addAIOHandler(ctx: WizardContext) {
 
     const topInvitersString = topInviters
       .map((inviter, index) => {
-        const { username, inviteCount } = inviter;
+        const { userId, inviteCount } = inviter;
 
-        return `${index + 1}. ${username || "Unknown User"} (Invites: ${inviteCount})`;
+        return `${index + 1}. ${userId || "Unknown User"} (Invites: ${inviteCount})`;
       })
       .join("\n");
 
-    const resultString = `🏆 Top Inviters 🏆\n\n${topInvitersString}\n\n💪 Keep inviting to climb the leaderboard!`;
+    const resultString = `🏆 Top Inviters 🏆\n\n${topInvitersString}\n\n`;
 
     await ctx.reply(`\`\`\`\n${resultString}\n\`\`\``, { parse_mode: "Markdown" });
   } catch (error) {

@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import UserModel from "./models/inviteModel.js";
+import InviteModel from "./models/inviteModel.js";
 var InviteService = /** @class */ (function () {
     function InviteService() {
     }
@@ -43,11 +43,11 @@ var InviteService = /** @class */ (function () {
             var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, UserModel.findOne({ userId: userId })];
+                    case 0: return [4 /*yield*/, InviteModel.findOne({ userId: userId })];
                     case 1:
                         user = _a.sent();
                         if (!user) {
-                            user = new UserModel({
+                            user = new InviteModel({
                                 userId: userId,
                                 invites: [],
                                 lastRequestDate: new Date(0),
@@ -70,7 +70,7 @@ var InviteService = /** @class */ (function () {
     InviteService.prototype.getInviteUser = function (userId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, UserModel.findOne({ userId: userId }).exec()];
+                return [2 /*return*/, InviteModel.findOne({ userId: userId }).exec()];
             });
         });
     };
@@ -81,11 +81,11 @@ var InviteService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         today = new Date().setHours(0, 0, 0, 0);
-                        return [4 /*yield*/, UserModel.findOne({ userId: userId })];
+                        return [4 /*yield*/, InviteModel.findOne({ userId: userId })];
                     case 1:
                         user = _a.sent();
                         if (!!user) return [3 /*break*/, 3];
-                        user = new UserModel({
+                        user = new InviteModel({
                             userId: userId,
                             lastRequestDate: new Date(0),
                             invites: [],
@@ -113,7 +113,7 @@ var InviteService = /** @class */ (function () {
             var user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, UserModel.findOne({ userId: userId })];
+                    case 0: return [4 /*yield*/, InviteModel.findOne({ userId: userId })];
                     case 1:
                         user = _a.sent();
                         if (!user || user.dailyRequests <= 0) {
@@ -135,16 +135,15 @@ var InviteService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, UserModel.aggregate([
+                        return [4 /*yield*/, InviteModel.aggregate([
                                 {
                                     $project: {
-                                        userId: 1,
-                                        username: { $ifNull: [{ $arrayElemAt: ["$invites.username", 0] }, "Unknown User"] },
+                                        userId: 1, // Include userId
                                         inviteCount: { $size: "$invites" }, // Calculate the number of invites
                                     },
                                 },
                                 { $sort: { inviteCount: -1 } }, // Sort by inviteCount in descending order
-                                { $limit: 10 },
+                                { $limit: 20 },
                             ])];
                     case 1:
                         topInviters = _a.sent();
@@ -153,6 +152,98 @@ var InviteService = /** @class */ (function () {
                         error_1 = _a.sent();
                         console.error("Error fetching top inviters:", error_1);
                         throw new Error("Failed to fetch top inviters.");
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    InviteService.prototype.resetUserInvites = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, InviteModel.updateOne({ userId: userId }, { $set: { invites: [] } })];
+                    case 1:
+                        result = _a.sent();
+                        if (result.matchedCount === 0) {
+                            console.log("\u274C No user found with userId: ".concat(userId));
+                        }
+                        else if (result.modifiedCount === 0) {
+                            console.log("\u26A0\uFE0F No changes made. Invites were already empty for userId: ".concat(userId));
+                        }
+                        else {
+                            console.log("\u2705 Successfully reset invites for userId: ".concat(userId));
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.error("❌ Error resetting invites for user:", error_2);
+                        throw new Error("Failed to reset invites for the user.");
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    InviteService.prototype.updateInviteUsed = function (userId, newUsedInvites) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, oldUsedInvites, updatedUsedInvites, result, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, InviteModel.findOne({ userId: userId })];
+                    case 1:
+                        user = _a.sent();
+                        if (!user) {
+                            console.log("\u274C No user found with userId: ".concat(userId));
+                            return [2 /*return*/, false];
+                        }
+                        oldUsedInvites = user.inviteUsed || 0;
+                        updatedUsedInvites = oldUsedInvites + newUsedInvites;
+                        return [4 /*yield*/, InviteModel.updateOne({ userId: userId }, { $set: { inviteUsed: updatedUsedInvites } })];
+                    case 2:
+                        result = _a.sent();
+                        if (result.modifiedCount > 0) {
+                            return [2 /*return*/, true];
+                        }
+                        else {
+                            console.log("\u26A0\uFE0F No changes made. InviteUsed for userId: ".concat(userId, " remains the same."));
+                            return [2 /*return*/, false];
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.error("❌ Error updating inviteUsed:", error_3);
+                        return [2 /*return*/, false];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    InviteService.prototype.getInviteStatus = function (userId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, totalInvites, usedInvites, remainingInvites, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, InviteModel.findOne({ userId: userId })];
+                    case 1:
+                        user = _a.sent();
+                        if (!user) {
+                            console.log("\u274C No user found with userId: ".concat(userId));
+                            return [2 /*return*/, null];
+                        }
+                        totalInvites = user.invites.length;
+                        usedInvites = user.inviteUsed || 0;
+                        remainingInvites = totalInvites - usedInvites;
+                        return [2 /*return*/, { totalInvites: totalInvites, usedInvites: usedInvites, remainingInvites: remainingInvites }];
+                    case 2:
+                        error_4 = _a.sent();
+                        console.error("❌ Error fetching invite status:", error_4);
+                        throw new Error("Failed to fetch invite status.");
                     case 3: return [2 /*return*/];
                 }
             });

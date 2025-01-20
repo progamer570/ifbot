@@ -33,9 +33,14 @@ declare class Database {
     useRequest(userId: string): Promise<void>;
     getTopInviters(): Promise<{
         userId: string;
-        username: string;
         inviteCount: number;
     }[]>;
+    updateInviteUsed(userId: string, newUsedInvites: number): Promise<boolean>;
+    getInviteStatus(userId: string): Promise<{
+        totalInvites: number;
+        usedInvites: number;
+        remainingInvites: number;
+    } | null>;
     hasGeneratedToken(userId: string): Promise<boolean>;
     verifyAndValidateToken(userId: string): Promise<boolean>;
     generateNewToken(userId: string): Promise<string>;
