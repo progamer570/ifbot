@@ -34,10 +34,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import { generateInviteLink } from "../../utils/helper.js";
 import database from "../../services/database.js";
 export default function inviteStatusHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var userId, userName, inviteStatus, totalInvites, usedInvites, remainingInvites, responseMessage, error_1;
+        var userId, userName, inviteStatus, totalInvites, usedInvites, remainingInvites, inviteLink, shareInviteLink, responseMessage, error_1;
         var _a, _b, _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
@@ -60,7 +61,9 @@ export default function inviteStatusHandler(ctx) {
                     return [2 /*return*/];
                 case 5:
                     totalInvites = inviteStatus.totalInvites, usedInvites = inviteStatus.usedInvites, remainingInvites = inviteStatus.remainingInvites;
-                    responseMessage = "\n\uD83D\uDCCA  Invite Status for ".concat(userName, ":\n-   Total Invites: ").concat(totalInvites, "\n-   Used Invites: ").concat(usedInvites, "\n-   Remaining Invites: ").concat(remainingInvites, "\n");
+                    inviteLink = generateInviteLink(userId, false);
+                    shareInviteLink = generateInviteLink(userId, true);
+                    responseMessage = "\n\uD83D\uDCCA  Invite Status for ".concat(userName, ":\n-   Total Invites: ").concat(totalInvites, "\n-   Used Invites: ").concat(usedInvites, "\n-   Remaining Invites: ").concat(remainingInvites, "\n-   your invite link: ").concat(inviteLink, "\n");
                     return [4 /*yield*/, ctx.reply(responseMessage.trim(), {
                             parse_mode: "HTML",
                             reply_markup: {
@@ -69,6 +72,12 @@ export default function inviteStatusHandler(ctx) {
                                         {
                                             text: "Unlock premium with your invites!",
                                             callback_data: "unlockpremium-".concat(remainingInvites),
+                                        },
+                                    ],
+                                    [
+                                        {
+                                            text: "Invite your friends",
+                                            url: shareInviteLink,
                                         },
                                     ],
                                 ],

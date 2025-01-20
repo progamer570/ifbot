@@ -1,6 +1,6 @@
 import { WizardContext } from "telegraf/typings/scenes";
 import auth from "../../services/auth.js";
-import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
+import { generateInviteLink } from "../../utils/helper.js";
 import database from "../../services/database.js";
 
 export default async function inviteStatusHandler(ctx: WizardContext): Promise<void> {
@@ -39,11 +39,14 @@ export default async function inviteStatusHandler(ctx: WizardContext): Promise<v
 
     // Reply with the formatted invite status
     const { totalInvites, usedInvites, remainingInvites } = inviteStatus;
+    const inviteLink = generateInviteLink(userId, false);
+    const shareInviteLink = generateInviteLink(userId, true);
     const responseMessage = `
 📊  Invite Status for ${userName}:
 -   Total Invites: ${totalInvites}
 -   Used Invites: ${usedInvites}
 -   Remaining Invites: ${remainingInvites}
+-   your invite link: ${inviteLink}
 `;
 
     await ctx.reply(responseMessage.trim(), {
@@ -54,6 +57,12 @@ export default async function inviteStatusHandler(ctx: WizardContext): Promise<v
             {
               text: "Unlock premium with your invites!",
               callback_data: `unlockpremium-${remainingInvites}`,
+            },
+          ],
+          [
+            {
+              text: "Invite your friends",
+              url: shareInviteLink,
             },
           ],
         ],

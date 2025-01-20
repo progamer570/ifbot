@@ -35,22 +35,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import database from "../../services/database.js";
+import { generateInviteLink } from "../../utils/helper.js";
 export default function addAIOHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var topInviters, topInvitersString, resultString, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var topInviters, userId, topInvitersString, resultString, error_1;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a.trys.push([0, 5, , 7]);
+                    _b.trys.push([0, 5, , 7]);
                     return [4 /*yield*/, database.getTopInviters()];
                 case 1:
-                    topInviters = _a.sent();
+                    topInviters = _b.sent();
                     if (!(!topInviters || topInviters.length === 0)) return [3 /*break*/, 3];
                     return [4 /*yield*/, ctx.reply("❌ No invites found.")];
                 case 2:
-                    _a.sent();
+                    _b.sent();
                     return [2 /*return*/];
                 case 3:
+                    userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
+                    if (!userId) {
+                        return [2 /*return*/];
+                    }
                     topInvitersString = topInviters
                         .map(function (inviter, index) {
                         var userId = inviter.userId, inviteCount = inviter.inviteCount;
@@ -58,16 +64,28 @@ export default function addAIOHandler(ctx) {
                     })
                         .join("\n");
                     resultString = "\uD83C\uDFC6 Top Inviters \uD83C\uDFC6\n\n".concat(topInvitersString, "\n\n");
-                    return [4 /*yield*/, ctx.reply("```swift\n".concat(resultString, "\n```"), { parse_mode: "HTML" })];
+                    return [4 /*yield*/, ctx.reply("```swift\n".concat(resultString, "\n```"), {
+                            parse_mode: "HTML",
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        {
+                                            text: "Invite Your Friends",
+                                            callback_data: generateInviteLink(userId.toString(), true),
+                                        },
+                                    ],
+                                ],
+                            },
+                        })];
                 case 4:
-                    _a.sent();
+                    _b.sent();
                     return [3 /*break*/, 7];
                 case 5:
-                    error_1 = _a.sent();
+                    error_1 = _b.sent();
                     console.error("Error displaying top inviters:", error_1);
                     return [4 /*yield*/, ctx.reply("❌ An error occurred while fetching the leaderboard.")];
                 case 6:
-                    _a.sent();
+                    _b.sent();
                     return [3 /*break*/, 7];
                 case 7: return [2 /*return*/];
             }
