@@ -111,11 +111,10 @@ export default {
 
       try {
         if (callbackData.startsWith("unlockpremium")) {
-          let regex = /unlockpremium-(\d+)/;
+          const inviteStatus = await database.getInviteStatus(ctx.from?.id.toString() || "");
 
-          let match = callbackData.match(regex);
-          if (match) {
-            let remainingInvites = parseInt(match[1], 10);
+          if (inviteStatus) {
+            let remainingInvites = inviteStatus.remainingInvites;
             if (remainingInvites <= 7) {
               await ctx.reply(
                 "You don't have enough invites to unlock premium features. minimum 7 invites required to unlock premium features."
