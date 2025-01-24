@@ -13,6 +13,7 @@ import * as list from "../../utils/markupButton/permanantButton/lists.js";
 import { sendToLogGroup } from "../../utils/sendToCollection.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
+import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
 
 // Create a Wizard Scene
 const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
@@ -215,8 +216,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
     } else if (tracker.startsWith("poster") && ctx.message && "photo" in ctx.message) {
       if (ctx.message && "photo" in ctx.message) {
         const photoFileId: string = ctx.message.photo[0].file_id;
+        const photoUrl = await getPhotoUrl(photoFileId);
         await database.updateAIOAttribute(selectedShareId, {
-          AIOPosterID: photoFileId,
+          aIOPosterID: photoUrl,
         });
 
         try {

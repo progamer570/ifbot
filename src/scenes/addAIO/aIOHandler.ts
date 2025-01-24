@@ -12,6 +12,7 @@ import getRandomId from "../../extra/getRandomId.js";
 import { shortenUrl } from "../../utils/sortLink.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
+import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
 
 async function askTitleAIO(ctx: AIOWizardContext) {
   (ctx.session as AIOSessionData).messageIds = [];
@@ -193,30 +194,6 @@ async function done(ctx: AIOWizardContext) {
       }
     }
   }
-}
-
-export async function getPhotoUrl(photoId: any): Promise<string> {
-  let success = false;
-  let photo;
-
-  while (!success) {
-    try {
-      const result = await telegram.app.telegram.sendPhoto(env.dbPosterID, photoId);
-      await delay(1000, 4100);
-      photo = `${env.dbPosterLink}/${result.message_id}`;
-      success = true;
-    } catch (error) {
-      success = false;
-      if ((error as any).code === 429) {
-        console.log(`${error}`);
-        await delay(40000, 41000);
-      } else {
-        console.log(`${error}`);
-        await delay(40000, 41000);
-      }
-    }
-  }
-  return photo || "";
 }
 
 export { askTitleAIO, handleTitleAskPoster, done, handlePosterAskRelatedMsg };

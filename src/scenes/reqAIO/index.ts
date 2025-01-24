@@ -66,6 +66,9 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
                   (ctx.session as PageSessionData).next || "",
                   (ctx.session as PageSessionData).prev || ""
                 ),
+                reply_parameters: {
+                  message_id: ctx.message.message_id,
+                },
                 parse_mode: "MarkdownV2",
               })
               .then((sentMessage) => {

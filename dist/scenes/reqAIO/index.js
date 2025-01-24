@@ -104,6 +104,9 @@ var paginationWizard = new Scenes.WizardScene("reqAIO", Composer.on("message", f
                         .replyWithPhoto(photo, {
                         caption: "```\n".concat(makeAIOCaption(finalResult[0]), "\n```"),
                         reply_markup: makeButtons(link, ctx.session.next || "", ctx.session.prev || ""),
+                        reply_parameters: {
+                            message_id: ctx.message.message_id,
+                        },
                         parse_mode: "MarkdownV2",
                     })
                         .then(function (sentMessage) {

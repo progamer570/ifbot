@@ -41,10 +41,10 @@ import database from "../../services/database.js";
 import getAIOdata from "./aIODocument.js";
 // import { editCaption } from "../../services/client.js";
 import { sendToCOllection, sendToLogGroup } from "../../utils/sendToCollection.js";
-import { delay } from "../../extra/delay.js";
 import getRandomId from "../../extra/getRandomId.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
+import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
 function askTitleAIO(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -269,50 +269,6 @@ function done(ctx) {
                     }
                     _m.label = 35;
                 case 35: return [2 /*return*/];
-            }
-        });
-    });
-}
-export function getPhotoUrl(photoId) {
-    return __awaiter(this, void 0, void 0, function () {
-        var success, photo, result, error_3;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    success = false;
-                    _a.label = 1;
-                case 1:
-                    if (!!success) return [3 /*break*/, 11];
-                    _a.label = 2;
-                case 2:
-                    _a.trys.push([2, 5, , 10]);
-                    return [4 /*yield*/, telegram.app.telegram.sendPhoto(env.dbPosterID, photoId)];
-                case 3:
-                    result = _a.sent();
-                    return [4 /*yield*/, delay(1000, 4100)];
-                case 4:
-                    _a.sent();
-                    photo = "".concat(env.dbPosterLink, "/").concat(result.message_id);
-                    success = true;
-                    return [3 /*break*/, 10];
-                case 5:
-                    error_3 = _a.sent();
-                    success = false;
-                    if (!(error_3.code === 429)) return [3 /*break*/, 7];
-                    console.log("".concat(error_3));
-                    return [4 /*yield*/, delay(40000, 41000)];
-                case 6:
-                    _a.sent();
-                    return [3 /*break*/, 9];
-                case 7:
-                    console.log("".concat(error_3));
-                    return [4 /*yield*/, delay(40000, 41000)];
-                case 8:
-                    _a.sent();
-                    _a.label = 9;
-                case 9: return [3 /*break*/, 10];
-                case 10: return [3 /*break*/, 1];
-                case 11: return [2 /*return*/, photo || ""];
             }
         });
     });

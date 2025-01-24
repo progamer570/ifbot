@@ -44,6 +44,7 @@ import * as keyboard from "../../utils/markupButton/permanantButton/keyboard.js"
 import telegram from "../../services/telegram.js";
 import { sendToLogGroup } from "../../utils/sendToCollection.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
+import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
 // Create a Wizard Scene
 var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var request, searchCriteria, finalResult, random, photo;
@@ -262,7 +263,7 @@ var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", 
         }
     });
 }); }), Composer.on("message", function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
-    var selectedShareId, tracker, user, _a, photoFileId, user, _b, text, _c, messageIds, captions, forwardedMessageIds, user, _d, caption;
+    var selectedShareId, tracker, user, _a, photoFileId, photoUrl, user, _b, text, _c, messageIds, captions, forwardedMessageIds, user, _d, caption;
     var _e, _f, _g, _h, _j;
     return __generator(this, function (_k) {
         switch (_k.label) {
@@ -296,79 +297,82 @@ var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", 
             case 6: return [4 /*yield*/, ctx.scene.leave()];
             case 7: return [2 /*return*/, _k.sent()];
             case 8:
-                if (!(tracker.startsWith("poster") && ctx.message && "photo" in ctx.message)) return [3 /*break*/, 17];
-                if (!(ctx.message && "photo" in ctx.message)) return [3 /*break*/, 15];
+                if (!(tracker.startsWith("poster") && ctx.message && "photo" in ctx.message)) return [3 /*break*/, 18];
+                if (!(ctx.message && "photo" in ctx.message)) return [3 /*break*/, 16];
                 photoFileId = ctx.message.photo[0].file_id;
-                return [4 /*yield*/, database.updateAIOAttribute(selectedShareId, {
-                        AIOPosterID: photoFileId,
-                    })];
+                return [4 /*yield*/, getPhotoUrl(photoFileId)];
             case 9:
-                _k.sent();
-                _k.label = 10;
+                photoUrl = _k.sent();
+                return [4 /*yield*/, database.updateAIOAttribute(selectedShareId, {
+                        aIOPosterID: photoUrl,
+                    })];
             case 10:
-                _k.trys.push([10, 12, , 13]);
+                _k.sent();
+                _k.label = 11;
+            case 11:
+                _k.trys.push([11, 13, , 14]);
                 user = {
                     id: ctx.from.id,
                     firstname: ctx.from.first_name,
                     username: ctx.from.username,
                 };
                 return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Edited AIO Poster ".concat(selectedShareId, " by  ").concat(selectedShareId, " by "), user))];
-            case 11:
-                _k.sent();
-                return [3 /*break*/, 13];
             case 12:
-                _b = _k.sent();
-                return [3 /*break*/, 13];
-            case 13: return [4 /*yield*/, ctx.reply("edited")];
-            case 14:
                 _k.sent();
-                _k.label = 15;
-            case 15: return [4 /*yield*/, ctx.scene.leave()];
-            case 16: return [2 /*return*/, _k.sent()];
-            case 17:
-                if (!tracker.startsWith("add")) return [3 /*break*/, 32];
-                if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/cancel")) return [3 /*break*/, 20];
-                return [4 /*yield*/, ctx.reply("Share AIO Canceled start again /editD")];
+                return [3 /*break*/, 14];
+            case 13:
+                _b = _k.sent();
+                return [3 /*break*/, 14];
+            case 14: return [4 /*yield*/, ctx.reply("edited")];
+            case 15:
+                _k.sent();
+                _k.label = 16;
+            case 16: return [4 /*yield*/, ctx.scene.leave()];
+            case 17: return [2 /*return*/, _k.sent()];
             case 18:
+                if (!tracker.startsWith("add")) return [3 /*break*/, 33];
+                if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/cancel")) return [3 /*break*/, 21];
+                return [4 /*yield*/, ctx.reply("Share AIO Canceled start again /editD")];
+            case 19:
                 _k.sent();
                 return [4 /*yield*/, ctx.scene.leave()];
-            case 19: return [2 /*return*/, _k.sent()];
-            case 20:
-                if (!ctx.message) return [3 /*break*/, 31];
+            case 20: return [2 /*return*/, _k.sent()];
+            case 21:
+                if (!ctx.message) return [3 /*break*/, 32];
                 text = "text" in ctx.message ? ctx.message.text : "";
-                if (!(text.toLowerCase() === "done" && !ctx.session.done)) return [3 /*break*/, 29];
+                if (!(text.toLowerCase() === "done" && !ctx.session.done)) return [3 /*break*/, 30];
                 _c = ctx.session, messageIds = _c.messageIds, captions = _c.captions;
                 return [4 /*yield*/, ctx.reply("```AIO details and file received.\n \uD83C\uDF89```", {
                         parse_mode: "HTML",
                     })];
-            case 21:
+            case 22:
                 _k.sent();
                 ctx.session.done = true;
                 return [4 /*yield*/, telegram.forwardMessages(env.dbAIOChannelId, (_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id, messageIds ? messageIds : [], false, captions)];
-            case 22:
+            case 23:
                 forwardedMessageIds = _k.sent();
                 return [4 /*yield*/, database.addAIO(selectedShareId, forwardedMessageIds)];
-            case 23:
-                _k.sent();
-                _k.label = 24;
             case 24:
-                _k.trys.push([24, 26, , 27]);
+                _k.sent();
+                _k.label = 25;
+            case 25:
+                _k.trys.push([25, 27, , 28]);
                 user = {
                     id: ctx.from.id,
                     firstname: ctx.from.first_name,
                     username: ctx.from.username,
                 };
                 return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Added eps To AIO ".concat(selectedShareId, " by "), user))];
-            case 25:
-                _k.sent();
-                return [3 /*break*/, 27];
             case 26:
+                _k.sent();
+                return [3 /*break*/, 28];
+            case 27:
                 _d = _k.sent();
-                return [3 /*break*/, 27];
-            case 27: return [4 /*yield*/, ctx.scene.leave()];
-            case 28: return [2 /*return*/, _k.sent()];
-            case 29: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_f = ctx.session.messageIds) === null || _f === void 0 ? void 0 : _f.length), keyboard.oneTimeDoneKeyboard())];
-            case 30:
+                return [3 /*break*/, 28];
+            case 28: return [4 /*yield*/, ctx.scene.leave()];
+            case 29: return [2 /*return*/, _k.sent()];
+            case 30: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_f = ctx.session.messageIds) === null || _f === void 0 ? void 0 : _f.length), keyboard.oneTimeDoneKeyboard())];
+            case 31:
                 _k.sent();
                 (_g = ctx.session.messageIds) === null || _g === void 0 ? void 0 : _g.push(ctx.message.message_id);
                 caption = getRandomId().toString();
@@ -384,13 +388,13 @@ var editDeleteWizard = new Scenes.WizardScene("editAIO", Composer.on("message", 
                         ctx.session.captions || [];
                     (_j = ctx.session.captions) === null || _j === void 0 ? void 0 : _j.push(caption);
                 }
-                _k.label = 31;
-            case 31: return [3 /*break*/, 34];
-            case 32:
+                _k.label = 32;
+            case 32: return [3 /*break*/, 35];
+            case 33:
                 ctx.reply("somthing went wrong try again");
                 return [4 /*yield*/, ctx.scene.leave()];
-            case 33: return [2 /*return*/, _k.sent()];
-            case 34: return [2 /*return*/];
+            case 34: return [2 /*return*/, _k.sent()];
+            case 35: return [2 /*return*/];
         }
     });
 }); }));
