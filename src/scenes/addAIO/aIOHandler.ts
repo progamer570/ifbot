@@ -5,14 +5,14 @@ import env from "../../services/env.js";
 import database from "../../services/database.js";
 import getAIOdata from "./aIODocument.js";
 import AIOWizardContext from "./aIOWizardContext.js";
-// import { editCaption } from "../../services/client.js";
 import { sendToCOllection, sendToLogGroup } from "../../utils/sendToCollection.js";
-import { delay } from "../../extra/delay.js";
 import getRandomId from "../../extra/getRandomId.js";
-import { shortenUrl } from "../../utils/sortLink.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
 import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
+import { Writable } from "stream";
+import { createWriteStream } from "fs";
+import { sendToWebsite } from "../../services/sendToWebsite.js";
 
 async function askTitleAIO(ctx: AIOWizardContext) {
   (ctx.session as AIOSessionData).messageIds = [];
@@ -74,12 +74,15 @@ async function handleTitleAskPoster(ctx: AIOWizardContext) {
 
 async function handlePosterAskRelatedMsg(ctx: AIOWizardContext) {
   if (ctx.message && "text" in ctx.message && ctx.message.text === "/cancel") {
-    await ctx.reply("Share AIO Canceled start again /addaio");
+    await ctx.reply("Share AIO Canceled start again /add");
     return await ctx.scene.leave();
   }
   if (ctx.message && "photo" in ctx.message) {
     const photoFileId: string = ctx.message.photo[0].file_id;
+    const { file_id } = ctx.message.photo.pop()!;
+    const webPhotoUrl = await download(file_id, "./photos/poster.jpg");
     (ctx.session as AIOSessionData).aIOPosterID = photoFileId;
+    (ctx.session as AIOSessionData).webPhotoUrl = webPhotoUrl;
     (ctx.session as AIOSessionData).messageIds = (ctx.session as AIOSessionData).messageIds || [];
     (ctx.session as AIOSessionData).messageIds?.push(ctx.message.message_id);
     await ctx.reply("Send me files and message that realated to it ");
@@ -93,7 +96,7 @@ async function handlePosterAskRelatedMsg(ctx: AIOWizardContext) {
 
 async function done(ctx: AIOWizardContext) {
   if (ctx.message && "text" in ctx.message && ctx.message.text === "/cancel") {
-    await ctx.reply("Share AIO Canceled start again /addaio");
+    await ctx.reply("Share AIO Canceled start again /add");
     return await ctx.scene.leave();
   }
   if (ctx.message) {
@@ -101,7 +104,7 @@ async function done(ctx: AIOWizardContext) {
 
     if (text.toLowerCase() === "done" && !(ctx.session as AIOSessionData).done) {
       const { backupChannel, messageIds, aIOPosterID, captions } = ctx.session as AIOSessionData;
-      let { aIOTitle } = ctx.session as AIOSessionData;
+      let { aIOTitle, webPhotoUrl } = ctx.session as AIOSessionData;
       const photoUrl = await getPhotoUrl(aIOPosterID);
       const AIODetails = {
         aIOTitle,
@@ -136,23 +139,57 @@ async function done(ctx: AIOWizardContext) {
           shareId = AIOData ? await database.saveAIO(AIOData) : null;
           link = shareId ? `https://t.me/${botUsername}?start=${shareId}-eng` : null;
         }
-        if (!AIOData || !shareId || !link) {
-          throw new Error("Failed to process the request ");
+        if (!AIOData || !shareId || !link || !webPhotoUrl) {
+          await ctx.reply("Share AIO Canceled start again /add");
+          return await ctx.scene.leave();
         }
         await ctx.reply(link + " " + AIOData.aioShortUrl);
-        if ((ctx.session as AIOSessionData).isHindi) {
-          try {
+        try {
+          if ((ctx.session as AIOSessionData).isHindi) {
             await sendToCOllection(
               env.collectionHindi,
               AIOData.aIOPosterID,
               link,
               AIOData.aIOTitle || "none"
             );
-          } catch (error) {}
-        } else {
-          await sendToCOllection(env.collectionAIO, aIOPosterID, link, aIOTitle || "none");
-          await sendToCOllection(env.collectionAIOBackup, aIOPosterID, link, aIOTitle || "none");
+
+            try {
+              await sendToWebsite(
+                `${env.apiBaseUrl}/add-aio`,
+                webPhotoUrl.replace(`${env.token}`, "token"),
+                env.apiFetchToken,
+                {
+                  ...AIOData,
+                  isHindi: true,
+                }
+              );
+            } catch (error) {
+              console.error("Error sending to website (Hindi):", error);
+            }
+          } else {
+            await Promise.all([
+              sendToCOllection(env.collectionAIO, aIOPosterID, link, aIOTitle || "none"),
+              sendToCOllection(env.collectionAIOBackup, aIOPosterID, link, aIOTitle || "none"),
+            ]);
+
+            try {
+              await sendToWebsite(
+                `${env.apiBaseUrl}/add-aio`,
+                webPhotoUrl.replace(`${env.token}`, "token"),
+                env.apiFetchToken,
+                {
+                  ...AIOData,
+                  isHindi: false,
+                }
+              );
+            } catch (error) {
+              console.error("Error sending to website (AIO):", error);
+            }
+          }
+        } catch (error) {
+          console.error("Error processing AIO content:", error);
         }
+
         try {
           const user = {
             id: ctx.from.id,
@@ -197,3 +234,10 @@ async function done(ctx: AIOWizardContext) {
 }
 
 export { askTitleAIO, handleTitleAskPoster, done, handlePosterAskRelatedMsg };
+const download = async (fromFileId: string, toPath: string): Promise<string> => {
+  const link = await telegram.app.telegram.getFileLink(fromFileId);
+  console.log(link);
+  const res = await fetch(link.toString());
+  return res.url;
+  //  await res.body!.pipeTo(Writable.toWeb(createWriteStream(toPath)));
+};

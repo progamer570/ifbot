@@ -1,6 +1,8 @@
 import "dotenv/config";
 declare const _default: {
     baseUrl: string;
+    apiBaseUrl: string | undefined;
+    apiFetchToken: string;
     ownerId: number;
     collectionAIOBackup: string | number;
     logGroupId: number;

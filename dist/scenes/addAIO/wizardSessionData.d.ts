@@ -5,6 +5,7 @@ export interface AIOSessionData extends WizardSessionData {
     file?: string;
     messageIds?: number[];
     aIOPosterID?: string;
+    webPhotoUrl?: string;
     done?: boolean;
     isHindi?: boolean;
     captions?: string[];
