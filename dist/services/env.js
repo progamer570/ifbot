@@ -34,7 +34,7 @@ var collectionOngoing = Number(env.ONGOING_COLLECTION) || "";
 var collectionAIOBackup = Number(env.COLLECTION_AIO_BACKUP) || "";
 var jwtSecret = env.JWT_SECRET || "randomSecretString";
 var howToGenerateToken = env.HOW_TO_GENERATE_TOKEN;
-var apiBaseUrl = env.API_BASE_URL;
+var apiBaseUrl = env.API_BASE_URL || "";
 var apiFetchToken = env.API_FETCH_TOKEN || "";
 if (!token) {
     throw Error("Provide TELEGRAM_BOT_TOKEN");

@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import env from "../services/env.js";
+import telegram from "../services/telegram.js";
 export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
     return __awaiter(this, void 0, void 0, function () {
         var firstName, message;
@@ -164,3 +165,18 @@ export function hasReplyToMessage(message) {
 export function isTextMessage(message) {
     return message && typeof message.text === "string";
 }
+export var getUrlFromFileId = function (fromFileId) { return __awaiter(void 0, void 0, void 0, function () {
+    var link, res;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, telegram.app.telegram.getFileLink(fromFileId)];
+            case 1:
+                link = _a.sent();
+                console.log(link);
+                return [4 /*yield*/, fetch(link.toString())];
+            case 2:
+                res = _a.sent();
+                return [2 /*return*/, res.url];
+        }
+    });
+}); };

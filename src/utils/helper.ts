@@ -1,6 +1,7 @@
 import { ReactionType, TelegramEmoji, User } from "telegraf/typings/core/types/typegram.js";
 import env from "../services/env.js";
 import { CommandContext } from "../interfaces.js";
+import telegram from "../services/telegram.js";
 
 export async function sendTokenExpiredMessage(
   ctx: CommandContext,
@@ -116,3 +117,10 @@ export function hasReplyToMessage(message: any): message is { reply_to_message: 
 export function isTextMessage(message: any): message is { text: string } {
   return message && typeof message.text === "string";
 }
+export const getUrlFromFileId = async (fromFileId: string): Promise<string> => {
+  const link = await telegram.app.telegram.getFileLink(fromFileId);
+  console.log(link);
+  const res = await fetch(link.toString());
+  return res.url;
+  //  await res.body!.pipeTo(Writable.toWeb(createWriteStream(toPath)));
+};

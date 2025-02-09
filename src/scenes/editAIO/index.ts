@@ -9,11 +9,11 @@ import getRandomId from "../../extra/getRandomId.js";
 import { sendCallbackQueryResponse } from "./answerCbQUery.js";
 import * as keyboard from "../../utils/markupButton/permanantButton/keyboard.js";
 import telegram from "../../services/telegram.js";
-import * as list from "../../utils/markupButton/permanantButton/lists.js";
 import { sendToLogGroup } from "../../utils/sendToCollection.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
-import { processCaptionForStore } from "../../utils/caption/editCaption.js";
 import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
+import { deleteToWebsite, updateToWebsite } from "../../services/toWebsite.js";
+import { getUrlFromFileId } from "../../utils/helper.js";
 
 // Create a Wizard Scene
 const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
@@ -152,6 +152,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
       await sendCallbackQueryResponse(ctx, `you need to search again this AIO !!!`);
     }
   }),
+
   Composer.on("callback_query", async (ctx) => {
     const selectedShareId = (ctx.session as PageSessionData).selectedShareId || 0;
 
@@ -171,6 +172,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
       } else if (ctx.callbackQuery.data.startsWith("delete")) {
         await ctx.editMessageText("deleting ...");
         await database.deleteAIO(selectedShareId);
+        try {
+          await deleteToWebsite(selectedShareId);
+        } catch (error) {}
         await ctx.editMessageText("deleted successfully");
         await ctx.editMessageReplyMarkup({
           inline_keyboard: [[{ text: "deleted", callback_data: "delete" }]],
@@ -192,6 +196,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
       }
     }
   }),
+
   Composer.on("message", async (ctx) => {
     const selectedShareId = (ctx.session as PageSessionData).selectedShareId || 0;
     const tracker = (ctx.session as PageSessionData).tracker || "";
@@ -199,6 +204,11 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
       await database.updateAIOAttribute(selectedShareId, {
         aIOTitle: ctx.message.text,
       });
+      try {
+        await updateToWebsite(selectedShareId, false, {
+          title: ctx.message.text,
+        });
+      } catch (error) {}
       await ctx.reply("edited");
 
       try {
@@ -216,11 +226,18 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
     } else if (tracker.startsWith("poster") && ctx.message && "photo" in ctx.message) {
       if (ctx.message && "photo" in ctx.message) {
         const photoFileId: string = ctx.message.photo[0].file_id;
+        const { file_id } = ctx.message.photo.pop()!;
+        const webPhotoUrl = await getUrlFromFileId(file_id);
         const photoUrl = await getPhotoUrl(photoFileId);
         await database.updateAIOAttribute(selectedShareId, {
           aIOPosterID: photoUrl,
         });
-
+        try {
+          await updateToWebsite(selectedShareId, true, {
+            imageUrl: webPhotoUrl.replace(`${env.token}`, "token"),
+            posterId: photoUrl,
+          });
+        } catch (error) {}
         try {
           const user = {
             id: ctx.from.id,

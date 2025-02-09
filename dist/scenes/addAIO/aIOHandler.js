@@ -55,7 +55,8 @@ import getRandomId from "../../extra/getRandomId.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
 import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
-import { sendToWebsite } from "../../services/sendToWebsite.js";
+import { addToWebsite } from "../../services/toWebsite.js";
+import { getUrlFromFileId } from "../../utils/helper.js";
 function askTitleAIO(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -121,7 +122,7 @@ function handlePosterAskRelatedMsg(ctx) {
                     if (!(ctx.message && "photo" in ctx.message)) return [3 /*break*/, 6];
                     photoFileId = ctx.message.photo[0].file_id;
                     file_id = ctx.message.photo.pop().file_id;
-                    return [4 /*yield*/, download(file_id, "./photos/poster.jpg")];
+                    return [4 /*yield*/, getUrlFromFileId(file_id)];
                 case 4:
                     webPhotoUrl = _b.sent();
                     ctx.session.aIOPosterID = photoFileId;
@@ -236,7 +237,7 @@ function done(ctx) {
                     _o.label = 23;
                 case 23:
                     _o.trys.push([23, 25, , 26]);
-                    return [4 /*yield*/, sendToWebsite("".concat(env.apiBaseUrl, "/add-aio"), webPhotoUrl.replace("".concat(env.token), "token"), env.apiFetchToken, __assign(__assign({}, AIOData), { isHindi: true }))];
+                    return [4 /*yield*/, addToWebsite(webPhotoUrl.replace("".concat(env.token), "token"), __assign(__assign({}, AIOData), { isHindi: true }))];
                 case 24:
                     _o.sent();
                     return [3 /*break*/, 26];
@@ -254,7 +255,7 @@ function done(ctx) {
                     _o.label = 29;
                 case 29:
                     _o.trys.push([29, 31, , 32]);
-                    return [4 /*yield*/, sendToWebsite("".concat(env.apiBaseUrl, "/add-aio"), webPhotoUrl.replace("".concat(env.token), "token"), env.apiFetchToken, __assign(__assign({}, AIOData), { isHindi: false }))];
+                    return [4 /*yield*/, addToWebsite(webPhotoUrl.replace("".concat(env.token), "token"), __assign(__assign({}, AIOData), { isHindi: false }))];
                 case 30:
                     _o.sent();
                     return [3 /*break*/, 32];
@@ -315,18 +316,3 @@ function done(ctx) {
     });
 }
 export { askTitleAIO, handleTitleAskPoster, done, handlePosterAskRelatedMsg };
-var download = function (fromFileId, toPath) { return __awaiter(void 0, void 0, void 0, function () {
-    var link, res;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, telegram.app.telegram.getFileLink(fromFileId)];
-            case 1:
-                link = _a.sent();
-                console.log(link);
-                return [4 /*yield*/, fetch(link.toString())];
-            case 2:
-                res = _a.sent();
-                return [2 /*return*/, res.url];
-        }
-    });
-}); };

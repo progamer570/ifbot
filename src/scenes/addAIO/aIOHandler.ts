@@ -10,9 +10,8 @@ import getRandomId from "../../extra/getRandomId.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
 import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
-import { Writable } from "stream";
-import { createWriteStream } from "fs";
-import { sendToWebsite } from "../../services/sendToWebsite.js";
+import { addToWebsite } from "../../services/toWebsite.js";
+import { getUrlFromFileId } from "../../utils/helper.js";
 
 async function askTitleAIO(ctx: AIOWizardContext) {
   (ctx.session as AIOSessionData).messageIds = [];
@@ -80,7 +79,7 @@ async function handlePosterAskRelatedMsg(ctx: AIOWizardContext) {
   if (ctx.message && "photo" in ctx.message) {
     const photoFileId: string = ctx.message.photo[0].file_id;
     const { file_id } = ctx.message.photo.pop()!;
-    const webPhotoUrl = await download(file_id, "./photos/poster.jpg");
+    const webPhotoUrl = await getUrlFromFileId(file_id);
     (ctx.session as AIOSessionData).aIOPosterID = photoFileId;
     (ctx.session as AIOSessionData).webPhotoUrl = webPhotoUrl;
     (ctx.session as AIOSessionData).messageIds = (ctx.session as AIOSessionData).messageIds || [];
@@ -154,15 +153,10 @@ async function done(ctx: AIOWizardContext) {
             );
 
             try {
-              await sendToWebsite(
-                `${env.apiBaseUrl}/add-aio`,
-                webPhotoUrl.replace(`${env.token}`, "token"),
-                env.apiFetchToken,
-                {
-                  ...AIOData,
-                  isHindi: true,
-                }
-              );
+              await addToWebsite(webPhotoUrl.replace(`${env.token}`, "token"), {
+                ...AIOData,
+                isHindi: true,
+              });
             } catch (error) {
               console.error("Error sending to website (Hindi):", error);
             }
@@ -173,15 +167,10 @@ async function done(ctx: AIOWizardContext) {
             ]);
 
             try {
-              await sendToWebsite(
-                `${env.apiBaseUrl}/add-aio`,
-                webPhotoUrl.replace(`${env.token}`, "token"),
-                env.apiFetchToken,
-                {
-                  ...AIOData,
-                  isHindi: false,
-                }
-              );
+              await addToWebsite(webPhotoUrl.replace(`${env.token}`, "token"), {
+                ...AIOData,
+                isHindi: false,
+              });
             } catch (error) {
               console.error("Error sending to website (AIO):", error);
             }
@@ -234,10 +223,3 @@ async function done(ctx: AIOWizardContext) {
 }
 
 export { askTitleAIO, handleTitleAskPoster, done, handlePosterAskRelatedMsg };
-const download = async (fromFileId: string, toPath: string): Promise<string> => {
-  const link = await telegram.app.telegram.getFileLink(fromFileId);
-  console.log(link);
-  const res = await fetch(link.toString());
-  return res.url;
-  //  await res.body!.pipeTo(Writable.toWeb(createWriteStream(toPath)));
-};
