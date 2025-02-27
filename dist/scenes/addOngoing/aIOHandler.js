@@ -37,108 +37,97 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import * as keyboard from "../../utils/markupButton/permanantButton/keyboard.js";
 import telegram from "../../services/telegram.js";
 import database from "../../services/database.js";
-import getAIOdata from "./aIODocument.js";
-import { sendToCOllectionOng, sendToLogGroup } from "../../utils/sendToCollection.js";
+import { sendToCollectionOng2, sendToLogGroup } from "../../utils/sendToCollection.js";
 import env from "../../services/env.js";
 import getRandomId from "../../extra/getRandomId.js";
-import { processCaption } from "../../utils/caption/editCaption.js";
-import { delay } from "../../extra/delay.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 function startCopying(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var caption, msgId, AIODetails, forwardedMessageIds, AIOData, shareId, _a, botUsername, link, user, _b, error_1;
-        var _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var selectedShareId, _a, msgIds_1, captions, forwardedMessageIds, links, user, _b, caption;
+        var _c, _d, _e, _f, _g;
+        return __generator(this, function (_h) {
+            switch (_h.label) {
                 case 0:
-                    if (!(ctx.message &&
-                        "text" in ctx.message &&
-                        (ctx.message.text.toLowerCase() === "done" || ctx.message.text === "/cancel"))) return [3 /*break*/, 3];
+                    if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/cancel")) return [3 /*break*/, 3];
                     return [4 /*yield*/, ctx.reply("Share AIO Canceled start again /addaio")];
                 case 1:
-                    _e.sent();
+                    _h.sent();
                     ctx.session.done = false;
                     return [4 /*yield*/, ctx.scene.leave()];
-                case 2: return [2 /*return*/, _e.sent()];
+                case 2: return [2 /*return*/, _h.sent()];
                 case 3:
-                    if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/addaio")) return [3 /*break*/, 5];
+                    if (!(ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/addong"))) return [3 /*break*/, 5];
+                    if (ctx.message.text.split(" ").length !== 2)
+                        return [2 /*return*/, ctx.reply("wrong format")];
+                    ctx.session.shareId = Number(ctx.message.text.split(" ")[1]);
                     return [4 /*yield*/, ctx.reply("send Files")];
                 case 4:
-                    _e.sent();
-                    return [3 /*break*/, 22];
-                case 5: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_c = ctx.session.msgId) === null || _c === void 0 ? void 0 : _c.length), keyboard.oneTimeDoneKeyboard())];
+                    _h.sent();
+                    return [3 /*break*/, 17];
+                case 5:
+                    selectedShareId = ctx.session.shareId || 0;
+                    if (!(ctx.message &&
+                        "text" in ctx.message &&
+                        ctx.message.text === "Done" &&
+                        !ctx.session.done)) return [3 /*break*/, 15];
+                    _a = ctx.session, msgIds_1 = _a.msgIds, captions = _a.captions;
+                    return [4 /*yield*/, ctx.reply("```Add on going details and file received.\n \uD83C\uDF89```", {
+                            parse_mode: "HTML",
+                        })];
                 case 6:
-                    _e.sent();
-                    caption = getRandomId().toString();
-                    msgId = ctx.message.message_id;
-                    if (!("caption" in ctx.message || ("document" in ctx.message && ctx.message.document.file_name))) return [3 /*break*/, 22];
-                    caption = ctx.message.caption || "????";
-                    if ("document" in ctx.message) {
-                        caption = ctx.message.document.file_name || "no caption";
-                    }
-                    else {
-                        caption = ctx.message.caption || "no caption";
-                    }
-                    AIODetails = {
-                        aIOTitle: processCaption(caption, env.join) || "",
-                        backupChannel: "none",
-                        messageIds: [msgId],
-                        aIOPosterID: "none",
-                    };
-                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_d = ctx.chat) === null || _d === void 0 ? void 0 : _d.id, [msgId], false, [caption])];
+                    _h.sent();
+                    ctx.session.done = true;
+                    return [4 /*yield*/, telegram.forwardMessages(env.dbAIOChannelId, (_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.id, msgIds_1 ? msgIds_1 : [], false, captions)];
                 case 7:
-                    forwardedMessageIds = _e.sent();
-                    _e.label = 8;
+                    forwardedMessageIds = _h.sent();
+                    return [4 /*yield*/, database.addOngoing(selectedShareId, forwardedMessageIds)];
                 case 8:
-                    _e.trys.push([8, 20, , 22]);
-                    return [4 /*yield*/, getAIOdata(AIODetails, forwardedMessageIds)];
+                    _h.sent();
+                    _h.label = 9;
                 case 9:
-                    AIOData = _e.sent();
-                    if (!AIOData) return [3 /*break*/, 11];
-                    return [4 /*yield*/, database.saveOngoing(AIOData)];
-                case 10:
-                    _a = _e.sent();
-                    return [3 /*break*/, 12];
-                case 11:
-                    _a = null;
-                    _e.label = 12;
-                case 12:
-                    shareId = _a;
-                    botUsername = ctx.botInfo.username;
-                    link = shareId ? "https://t.me/".concat(botUsername, "?start=").concat(shareId, "-ong") : null;
-                    if (!AIOData || !shareId || !link) {
-                        throw new Error("Failed to process the request ");
+                    _h.trys.push([9, 12, , 13]);
+                    if (!captions || !msgIds_1) {
+                        console.error("Error: captions or messageIds is undefined");
+                        return [2 /*return*/];
                     }
-                    return [4 /*yield*/, ctx.reply(link + "\n")];
-                case 13:
-                    _e.sent();
-                    return [4 /*yield*/, delay(500, 1000)];
-                case 14:
-                    _e.sent();
-                    return [4 /*yield*/, sendToCOllectionOng(env.collectionOngoing, link, processCaption(caption || "none", env.join))];
-                case 15:
-                    _e.sent();
-                    _e.label = 16;
-                case 16:
-                    _e.trys.push([16, 18, , 19]);
+                    links = captions.map(function (caption, index) { return ({
+                        caption: caption,
+                        messageId: msgIds_1[index] || "",
+                    }); });
+                    return [4 /*yield*/, sendToCollectionOng2(env.collectionAIO, undefined, links)];
+                case 10:
+                    _h.sent();
                     user = {
                         id: ctx.from.id,
                         firstname: ctx.from.first_name,
                         username: ctx.from.username,
                     };
-                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Added Ongoing ".concat(caption, " by "), user))];
-                case 17:
-                    _e.sent();
-                    return [3 /*break*/, 19];
-                case 18:
-                    _b = _e.sent();
-                    return [3 /*break*/, 19];
-                case 19: return [3 /*break*/, 22];
-                case 20:
-                    error_1 = _e.sent();
-                    return [4 /*yield*/, ctx.scene.leave()];
-                case 21: return [2 /*return*/, _e.sent()];
-                case 22: return [2 /*return*/];
+                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Added eps To AIO ".concat(selectedShareId, " by "), user))];
+                case 11:
+                    _h.sent();
+                    return [3 /*break*/, 13];
+                case 12:
+                    _b = _h.sent();
+                    return [3 /*break*/, 13];
+                case 13: return [4 /*yield*/, ctx.scene.leave()];
+                case 14: return [2 /*return*/, _h.sent()];
+                case 15: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_d = ctx.session.msgIds) === null || _d === void 0 ? void 0 : _d.length), keyboard.oneTimeDoneKeyboard())];
+                case 16:
+                    _h.sent();
+                    (_e = ctx.session.msgIds) === null || _e === void 0 ? void 0 : _e.push(ctx.message.message_id);
+                    caption = getRandomId().toString();
+                    if ("caption" in ctx.message) {
+                        caption = ctx.message.caption || "I_F";
+                        ctx.session.captions = ctx.session.captions || [];
+                        (_f = ctx.session.captions) === null || _f === void 0 ? void 0 : _f.push(caption);
+                    }
+                    else {
+                        caption = "I_F";
+                        ctx.session.captions = ctx.session.captions || [];
+                        (_g = ctx.session.captions) === null || _g === void 0 ? void 0 : _g.push(caption);
+                    }
+                    _h.label = 17;
+                case 17: return [2 /*return*/];
             }
         });
     });

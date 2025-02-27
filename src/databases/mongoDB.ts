@@ -125,18 +125,35 @@ class MongoDB {
   async getAIOMessages(shareId: number) {
     return (await this.AIOModel.findOne({ shareId }))?.messageIds;
   }
-  async getOngoingMessages(shareId: number) {
-    return (await this.OngoingModel.findOne({ shareId }))?.messageIds;
+  async getOngoingMessages(shareId: number): Promise<OngoingDocument | undefined> {
+    return (await this.OngoingModel.findOne({ shareId })) || undefined;
   }
 
   async saveAIO(aio: AIODocument) {
     await new this.AIOModel(aio).save();
     return aio;
   }
-  async saveOngoing(ong: OngoingDocument) {
+  async createOngoing(ong: OngoingDocument) {
     await new this.OngoingModel(ong).save();
     return ong;
   }
+  async addOngoing(shareId: number, messageIds: number[]) {
+    const ongoingDocument = await this.OngoingModel.findOne({ shareId });
+    if (ongoingDocument) {
+      await this.OngoingModel.findByIdAndUpdate(
+        ongoingDocument.id,
+        { $push: { messageIds: { $each: messageIds } } },
+        { new: true }
+      );
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // async saveOngoing(ong: OngoingDocument) {
+  //   await new this.OngoingModel(ong).save();
+  //   return ong;
+  // }
   async getHindiMessages(shareId: number) {
     return (await this.HindiDramaModel.findOne({ shareId }))?.messageIds;
   }

@@ -26,15 +26,21 @@ class Database {
     await this.client.saveMessages(shareId, messageIds);
     return shareId;
   }
-
   async saveAIO(aIODocument: AIODocument) {
     await this.client.saveAIO(aIODocument);
     return aIODocument.shareId;
   }
-  async saveOngoing(ongoingDocument: OngoingDocument) {
-    await this.client.saveOngoing(ongoingDocument);
+  async createOngoing(ongoingDocument: OngoingDocument) {
+    await this.client.createOngoing(ongoingDocument);
     return ongoingDocument.shareId;
   }
+  async addOngoing(shareId: number, eps: number[]) {
+    return this.client.addOngoing(shareId, eps);
+  }
+  // async saveOngoing(ongoingDocument: OngoingDocument) {
+  //   await this.client.saveOngoing(ongoingDocument);
+  //   return ongoingDocument.shareId;
+  // }
   async saveHindiDrama(aIODocument: AIODocument) {
     await this.client.saveHindiDrama(aIODocument);
     return aIODocument.shareId;
@@ -49,7 +55,7 @@ class Database {
   async getAIOMessages(shareId: number) {
     return this.client.getAIOMessages(shareId);
   }
-  async getOngoingMessages(shareId: number) {
+  async getOngoingMessages(shareId: number): Promise<OngoingDocument | undefined> {
     return this.client.getOngoingMessages(shareId);
   }
   async getHindiMessages(shareId: number) {

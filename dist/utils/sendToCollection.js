@@ -34,8 +34,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import env from "../services/env.js";
 import telegram from "./../services/telegram.js";
+import { processCaption } from "./caption/editCaption.js";
+import { convertToTinySubscript, escapeMarkdownV2 } from "./helper.js";
 import * as keyboard from "./markupButton/permanantButton/keyboard.js";
+import database from "../services/database.js";
 export function sendToCOllection(chat, aIOPosterID, link, caption) {
     return __awaiter(this, void 0, void 0, function () {
         var error_1;
@@ -85,9 +89,83 @@ export function sendToCOllectionOng(chat, link, caption) {
         });
     });
 }
+export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
+    return __awaiter(this, arguments, void 0, function (chat, aIOPoster, links, shareId) {
+        var captionText, shareText, error_3, photo, chunkSize, i, chunk, formattedLinks, messageText, error_4;
+        if (shareId === void 0) { shareId = ""; }
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!aIOPoster) return [3 /*break*/, 4];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    captionText = "```\n".concat(links[0].caption, "\n```");
+                    shareText = shareId
+                        ? "\n[\uD83D\uDD17Drama Id Share](tg://msg?text=".concat(encodeURIComponent(shareId), ")")
+                        : "";
+                    return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, aIOPoster, {
+                            caption: captionText + shareText,
+                            parse_mode: "Markdown",
+                        })];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_3 = _a.sent();
+                    console.error("Error sending photo:", error_3);
+                    return [3 /*break*/, 4];
+                case 4:
+                    _a.trys.push([4, 12, , 13]);
+                    if (!shareId) return [3 /*break*/, 10];
+                    return [4 /*yield*/, database.getOngoingMessages(Number(shareId)).then(function (result) {
+                            return (result === null || result === void 0 ? void 0 : result.aIOPosterID) || "";
+                        })];
+                case 5:
+                    photo = _a.sent();
+                    console.log(photo + "hvjh");
+                    if (!photo) {
+                        return [2 /*return*/];
+                    }
+                    chunkSize = 10;
+                    i = 0;
+                    _a.label = 6;
+                case 6:
+                    if (!(i < links.length)) return [3 /*break*/, 9];
+                    chunk = links.slice(i, i + chunkSize);
+                    formattedLinks = chunk
+                        .map(function (item) {
+                        return "[*".concat(escapeMarkdownV2(convertToTinySubscript(processCaption(item.caption.slice(0, 90), ""))), "*](https://t.me/").concat(env.botUserName, "?start=").concat(item.messageId, "-ong)\n");
+                    })
+                        .join("\n");
+                    messageText = formattedLinks;
+                    return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, photo, {
+                            caption: messageText,
+                            parse_mode: "MarkdownV2",
+                            reply_markup: keyboard.makeBackupButton(),
+                        })];
+                case 7:
+                    _a.sent();
+                    console.log("Sent message with ".concat(chunk.length, " links"));
+                    _a.label = 8;
+                case 8:
+                    i += chunkSize;
+                    return [3 /*break*/, 6];
+                case 9: return [3 /*break*/, 11];
+                case 10: return [2 /*return*/];
+                case 11: return [3 /*break*/, 13];
+                case 12:
+                    error_4 = _a.sent();
+                    console.error("Error sending message:", error_4);
+                    return [3 /*break*/, 13];
+                case 13: return [2 /*return*/];
+            }
+        });
+    });
+}
 export function sendToLogGroup(chat, caption) {
     return __awaiter(this, void 0, void 0, function () {
-        var error_3;
+        var error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -100,8 +178,8 @@ export function sendToLogGroup(chat, caption) {
                     console.log("log sent successfully!");
                     return [3 /*break*/, 3];
                 case 2:
-                    error_3 = _a.sent();
-                    console.error("Error sending log:", error_3);
+                    error_5 = _a.sent();
+                    console.error("Error sending log:", error_5);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }

@@ -7,14 +7,18 @@ import reqAIO from "./reqAIO/index.js";
 import editAIO from "./editAIO/index.js";
 
 import myInvites from "./myInvites/index.js";
-import ongoing from "./addOngoing/index.js";
+
+import addOng from "./addOngoing/index.js";
+
+import createOng from "./createOng/index.js";
 
 const stage = new Scenes.Stage<Scenes.WizardContext>([
   shareAIO,
   reqAIO,
   editAIO,
   myInvites,
-  ongoing,
+  addOng,
+  createOng,
 ]);
 
 // const shareStage = new Scenes.Stage<Scenes.SceneContext>([shareScene]);

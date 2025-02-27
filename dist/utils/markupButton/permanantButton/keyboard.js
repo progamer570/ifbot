@@ -71,6 +71,11 @@ export var makeCollectionButton = function (link) {
         ],
     };
 };
+export var makeBackupButton = function () {
+    return {
+        inline_keyboard: [[{ text: "Join Back-Up", url: env.backup }]],
+    };
+};
 export var makeAdminButtons = function (link, next, prev) {
     return {
         inline_keyboard: [

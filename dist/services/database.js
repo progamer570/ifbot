@@ -80,11 +80,11 @@ var Database = /** @class */ (function () {
             });
         });
     };
-    Database.prototype.saveOngoing = function (ongoingDocument) {
+    Database.prototype.createOngoing = function (ongoingDocument) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.saveOngoing(ongoingDocument)];
+                    case 0: return [4 /*yield*/, this.client.createOngoing(ongoingDocument)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, ongoingDocument.shareId];
@@ -92,6 +92,17 @@ var Database = /** @class */ (function () {
             });
         });
     };
+    Database.prototype.addOngoing = function (shareId, eps) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.client.addOngoing(shareId, eps)];
+            });
+        });
+    };
+    // async saveOngoing(ongoingDocument: OngoingDocument) {
+    //   await this.client.saveOngoing(ongoingDocument);
+    //   return ongoingDocument.shareId;
+    // }
     Database.prototype.saveHindiDrama = function (aIODocument) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {

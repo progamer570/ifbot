@@ -85,6 +85,11 @@ export const makeCollectionButton = (link: string) => {
     ],
   };
 };
+export const makeBackupButton = () => {
+  return {
+    inline_keyboard: [[{ text: "Join Back-Up", url: env.backup }]],
+  };
+};
 
 export const makeAdminButtons = (link: string, next: string, prev: string) => {
   return {

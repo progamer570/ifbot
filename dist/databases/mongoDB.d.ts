@@ -30,9 +30,10 @@ declare class MongoDB {
     getFirstItem(): Promise<SortDocument | null>;
     getMessages(shareId: number): Promise<number[] | undefined>;
     getAIOMessages(shareId: number): Promise<number[] | undefined>;
-    getOngoingMessages(shareId: number): Promise<number[] | undefined>;
+    getOngoingMessages(shareId: number): Promise<OngoingDocument | undefined>;
     saveAIO(aio: AIODocument): Promise<AIODocument>;
-    saveOngoing(ong: OngoingDocument): Promise<OngoingDocument>;
+    createOngoing(ong: OngoingDocument): Promise<OngoingDocument>;
+    addOngoing(shareId: number, messageIds: number[]): Promise<boolean>;
     getHindiMessages(shareId: number): Promise<number[] | undefined>;
     saveHindiDrama(aio: AIODocument): Promise<AIODocument>;
     searchAIO(criteria: AIOSearchCriteria, messageIdLink?: string | null): Promise<AIODocument[] | undefined>;

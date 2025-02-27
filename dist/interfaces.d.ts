@@ -19,11 +19,12 @@ export interface DatabaseClient {
     isUserExist(user: string): Promise<boolean>;
     countUsers(): Promise<string>;
     saveAIO(aIODocument: AIODocument): Promise<AIODocument>;
-    saveOngoing(ongoingDocument: OngoingDocument): Promise<OngoingDocument>;
+    createOngoing(aIODocument: OngoingDocument): Promise<OngoingDocument>;
+    addOngoing(shareId: number, messageIds: number[]): any;
     saveHindiDrama(aIODocument: AIODocument): Promise<AIODocument>;
     getHindiMessages(shareId: number): Promise<number[] | undefined>;
     getAIOMessages(shareId: number): Promise<number[] | undefined>;
-    getOngoingMessages(shareId: number): Promise<number[] | undefined>;
+    getOngoingMessages(shareId: number): Promise<OngoingDocument | undefined>;
     searchAIO(searchCriteria: AIOSearchCriteria, messageIdLink?: string | null): Promise<AIODocument[] | undefined>;
     searchHindiDrama(searchCriteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
     addAIO(shareId: number, messageIds: number[]): any;

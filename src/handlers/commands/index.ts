@@ -13,9 +13,12 @@ import addToPremiumHandler from "./addToPremium.js";
 import premiumHandler from "./premium.js";
 import topInvitesHandler from "./topInvites.js";
 import inviteStatusHandler from "./inviteStatus.js";
+import createOngHandler from "./createOng.js";
 
 export default {
   startHandler,
+
+  createOngHandler,
 
   addToPremiumHandler,
 

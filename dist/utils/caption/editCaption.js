@@ -19,10 +19,9 @@ export function processCaption(oldCaption, join) {
         newCaption = newCaption.substring(0, plotIndex);
     }
     if (mkv !== -1) {
-        newCaption = newCaption.substring(0, mkv);
+        newCaption = newCaption.substring(0, mkv + 3);
     }
-    newCaption += "\n JOIN: @".concat(join, "\n for more drama movies!!");
-    return newCaption;
+    return newCaption.trim();
 }
 export function editAIOTitle(oldCaption, join) {
     var newCaption = "";

@@ -1,4 +1,5 @@
 import mongoose, { Model, Schema } from "mongoose";
+
 import { OngoingDocument } from "../interfaces/ongoingDocument.js";
 
 export const ongSchema = new Schema<OngoingDocument>(
@@ -15,6 +16,15 @@ export const ongSchema = new Schema<OngoingDocument>(
     aIOTitle: {
       type: String,
       required: true,
+    },
+    aIOPosterID: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["ongoing", "complete"],
+      default: "ongoing",
     },
   },
   { timestamps: true }

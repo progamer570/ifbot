@@ -110,7 +110,8 @@ export default async function startHandler(ctx: CommandContext) {
         messageIds = await database.getHindiMessages(Number(shareId));
         channel = env.dbAIOChannelId;
       } else if (payload.includes("ong")) {
-        messageIds = await database.getOngoingMessages(Number(shareId));
+        // messageIds = await database.getOngoingMessages(Number(shareId));
+        messageIds = [shareId];
         channel = env.dbOngoingChannelId;
       }
 

@@ -23,6 +23,12 @@ export declare const makeCollectionButton: (link: string) => {
         url: string;
     }[][];
 };
+export declare const makeBackupButton: () => {
+    inline_keyboard: {
+        text: string;
+        url: string;
+    }[][];
+};
 export declare const makeAdminButtons: (link: string, next: string, prev: string) => {
     inline_keyboard: ({
         text: string;

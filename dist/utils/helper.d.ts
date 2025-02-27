@@ -14,3 +14,5 @@ export declare function isTextMessage(message: any): message is {
     text: string;
 };
 export declare const getUrlFromFileId: (fromFileId: string) => Promise<string>;
+export declare function convertToTinySubscript(inputText: string): string;
+export declare function escapeMarkdownV2(text: string): string;

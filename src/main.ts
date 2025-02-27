@@ -26,6 +26,7 @@ app.command("myinvites", commands.invitesHandler);
 app.command("totalusers", commands.totalUsersHandler);
 app.command("broadcast", commands.myBroadcastHandler);
 app.command("add", commands.addAIOHandler);
+app.command("createong", commands.createOngHandler);
 app.command("addh", commands.addAIOHandler);
 app.command("addong", commands.addOngoingHandler);
 app.command("edit", commands.editAIOHandler);

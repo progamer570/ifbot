@@ -13,6 +13,15 @@ export var ongSchema = new Schema({
         type: String,
         required: true,
     },
+    aIOPosterID: {
+        type: String,
+        required: true,
+    },
+    status: {
+        type: String,
+        enum: ["ongoing", "complete"],
+        default: "ongoing",
+    },
 }, { timestamps: true });
 var ongoingModel = mongoose.model("ongoing", ongSchema);
 export default ongoingModel;

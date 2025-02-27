@@ -27,12 +27,14 @@ export interface DatabaseClient {
   countUsers(): Promise<string>;
 
   saveAIO(aIODocument: AIODocument): Promise<AIODocument>;
-  saveOngoing(ongoingDocument: OngoingDocument): Promise<OngoingDocument>;
+  createOngoing(aIODocument: OngoingDocument): Promise<OngoingDocument>;
+  addOngoing(shareId: number, messageIds: number[]): any;
+  // saveOngoing(ongoingDocument: OngoingDocument): Promise<OngoingDocument>;
   saveHindiDrama(aIODocument: AIODocument): Promise<AIODocument>;
 
   getHindiMessages(shareId: number): Promise<number[] | undefined>;
   getAIOMessages(shareId: number): Promise<number[] | undefined>;
-  getOngoingMessages(shareId: number): Promise<number[] | undefined>;
+  getOngoingMessages(shareId: number): Promise<OngoingDocument | undefined>;
 
   searchAIO(
     searchCriteria: AIOSearchCriteria,

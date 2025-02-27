@@ -11,12 +11,13 @@ declare class Database {
     initialize(): Promise<void>;
     saveMessages(messageIds: number[]): Promise<number>;
     saveAIO(aIODocument: AIODocument): Promise<number>;
-    saveOngoing(ongoingDocument: OngoingDocument): Promise<number>;
+    createOngoing(ongoingDocument: OngoingDocument): Promise<number>;
+    addOngoing(shareId: number, eps: number[]): Promise<any>;
     saveHindiDrama(aIODocument: AIODocument): Promise<number>;
     searchAIO(searchCriteria: AIOSearchCriteria, messageIdLink?: string | null): Promise<AIODocument[] | undefined>;
     searchHindiDrama(searchCriteria: AIOSearchCriteria): Promise<AIODocument[] | undefined>;
     getAIOMessages(shareId: number): Promise<number[] | undefined>;
-    getOngoingMessages(shareId: number): Promise<number[] | undefined>;
+    getOngoingMessages(shareId: number): Promise<OngoingDocument | undefined>;
     getHindiMessages(shareId: number): Promise<number[] | undefined>;
     getFirstItem(): Promise<SortDocument | null>;
     saveUser(user: User): Promise<User>;

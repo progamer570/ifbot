@@ -18,11 +18,9 @@ export function processCaption(oldCaption: string, join: string): string {
     newCaption = newCaption.substring(0, plotIndex);
   }
   if (mkv !== -1) {
-    newCaption = newCaption.substring(0, mkv);
+    newCaption = newCaption.substring(0, mkv + 3);
   }
-  newCaption += `\n JOIN: @${join}\n for more drama movies!!`;
-
-  return newCaption;
+  return newCaption.trim();
 }
 export function editAIOTitle(oldCaption: string, join: string): string {
   let newCaption: string = "";

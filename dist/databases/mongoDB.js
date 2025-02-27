@@ -231,11 +231,10 @@ var MongoDB = /** @class */ (function () {
     };
     MongoDB.prototype.getOngoingMessages = function (shareId) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0: return [4 /*yield*/, this.OngoingModel.findOne({ shareId: shareId })];
-                    case 1: return [2 /*return*/, (_a = (_b.sent())) === null || _a === void 0 ? void 0 : _a.messageIds];
+                    case 1: return [2 /*return*/, (_a.sent()) || undefined];
                 }
             });
         });
@@ -252,7 +251,7 @@ var MongoDB = /** @class */ (function () {
             });
         });
     };
-    MongoDB.prototype.saveOngoing = function (ong) {
+    MongoDB.prototype.createOngoing = function (ong) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -264,6 +263,28 @@ var MongoDB = /** @class */ (function () {
             });
         });
     };
+    MongoDB.prototype.addOngoing = function (shareId, messageIds) {
+        return __awaiter(this, void 0, void 0, function () {
+            var ongoingDocument;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.OngoingModel.findOne({ shareId: shareId })];
+                    case 1:
+                        ongoingDocument = _a.sent();
+                        if (!ongoingDocument) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.OngoingModel.findByIdAndUpdate(ongoingDocument.id, { $push: { messageIds: { $each: messageIds } } }, { new: true })];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/, true];
+                    case 3: return [2 /*return*/, false];
+                }
+            });
+        });
+    };
+    // async saveOngoing(ong: OngoingDocument) {
+    //   await new this.OngoingModel(ong).save();
+    //   return ong;
+    // }
     MongoDB.prototype.getHindiMessages = function (shareId) {
         return __awaiter(this, void 0, void 0, function () {
             var _a;

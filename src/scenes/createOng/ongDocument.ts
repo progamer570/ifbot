@@ -1,5 +1,7 @@
 import { OngoingDocument } from "../../databases/interfaces/ongoingDocument.js";
 import getRandomId from "../../extra/getRandomId.js";
+import database from "../../services/database.js";
+
 interface AIODetails {
   aIOTitle?: string;
   backupChannel?: string;
@@ -11,14 +13,16 @@ interface AIODetails {
 
 export default async function getDramadata(
   dramaDetails: AIODetails,
-  messageIds: number[]
+  messageIds: number[],
+  status: string
 ): Promise<OngoingDocument | null> {
   try {
-    const shareId = getRandomId();
     return {
-      shareId: shareId,
-      messageIds: messageIds ? messageIds : [],
-      aIOTitle: dramaDetails.aIOTitle ? dramaDetails.aIOTitle : "",
+      shareId: getRandomId(),
+      messageIds: messageIds || [],
+      aIOTitle: dramaDetails.aIOTitle || "",
+      aIOPosterID: dramaDetails.aIOPosterID || "0",
+      status: status || "ongoing",
     };
   } catch (error) {
     return null;

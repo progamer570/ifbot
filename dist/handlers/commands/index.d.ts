@@ -12,8 +12,10 @@ import addToPremiumHandler from "./addToPremium.js";
 import premiumHandler from "./premium.js";
 import topInvitesHandler from "./topInvites.js";
 import inviteStatusHandler from "./inviteStatus.js";
+import createOngHandler from "./createOng.js";
 declare const _default: {
     startHandler: typeof startHandler;
+    createOngHandler: typeof createOngHandler;
     addToPremiumHandler: typeof addToPremiumHandler;
     topInvitesHandler: typeof topInvitesHandler;
     premiumHandler: typeof premiumHandler;
