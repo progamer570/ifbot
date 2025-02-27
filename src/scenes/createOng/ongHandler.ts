@@ -142,7 +142,7 @@ async function done(ctx: AIOWizardContext) {
           }));
 
           await sendToCollectionOng2(
-            env.collectionAIO,
+            env.collectionOngoing,
             aIOPosterID,
             links,
             shareId ? String(shareId) : undefined

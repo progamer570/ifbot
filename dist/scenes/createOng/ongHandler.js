@@ -206,7 +206,7 @@ function done(ctx) {
                         caption: caption,
                         messageId: forwardedMessageIds_1[index] || "",
                     }); });
-                    return [4 /*yield*/, sendToCollectionOng2(env.collectionAIO, aIOPosterID, links, shareId ? String(shareId) : undefined)];
+                    return [4 /*yield*/, sendToCollectionOng2(env.collectionOngoing, aIOPosterID, links, shareId ? String(shareId) : undefined)];
                 case 17:
                     _h.sent();
                     return [3 /*break*/, 19];

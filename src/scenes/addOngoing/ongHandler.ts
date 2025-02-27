@@ -15,8 +15,10 @@ async function startCopying(ctx: AIOWizardContext) {
     (ctx.session as AIOSessionData).done = false;
     return await ctx.scene.leave();
   } else if (ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/addong")) {
-    if (ctx.message.text.split(" ").length !== 2) return ctx.reply("wrong format");
-    (ctx.session as AIOSessionData).shareId = Number(ctx.message.text.split(" ")[1]);
+    // if (ctx.message.text.split(" ").length !== 2) return ctx.reply("wrong format");
+    (ctx.session as AIOSessionData).shareId = Number(
+      ctx.message.text.replace("/addong", "").trim().trimStart()
+    );
     await ctx.reply("send Files");
   } else {
     const selectedShareId = (ctx.session as AIOSessionData).shareId || 0;
@@ -51,7 +53,12 @@ async function startCopying(ctx: AIOWizardContext) {
           messageId: forwardedMessageIds[index] || "",
         }));
 
-        await sendToCollectionOng2(env.collectionAIO, undefined, links, selectedShareId.toString());
+        await sendToCollectionOng2(
+          env.collectionOngoing,
+          undefined,
+          links,
+          selectedShareId.toString()
+        );
         const user = {
           id: ctx.from.id,
           firstname: ctx.from.first_name,

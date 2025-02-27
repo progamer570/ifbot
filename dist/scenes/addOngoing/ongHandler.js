@@ -56,9 +56,8 @@ function startCopying(ctx) {
                 case 2: return [2 /*return*/, _e.sent()];
                 case 3:
                     if (!(ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/addong"))) return [3 /*break*/, 5];
-                    if (ctx.message.text.split(" ").length !== 2)
-                        return [2 /*return*/, ctx.reply("wrong format")];
-                    ctx.session.shareId = Number(ctx.message.text.split(" ")[1]);
+                    // if (ctx.message.text.split(" ").length !== 2) return ctx.reply("wrong format");
+                    ctx.session.shareId = Number(ctx.message.text.replace("/addong", "").trim().trimStart());
                     return [4 /*yield*/, ctx.reply("send Files")];
                 case 4:
                     _e.sent();
@@ -94,7 +93,7 @@ function startCopying(ctx) {
                         caption: caption,
                         messageId: forwardedMessageIds_1[index] || "",
                     }); });
-                    return [4 /*yield*/, sendToCollectionOng2(env.collectionAIO, undefined, links, selectedShareId.toString())];
+                    return [4 /*yield*/, sendToCollectionOng2(env.collectionOngoing, undefined, links, selectedShareId.toString())];
                 case 10:
                     _e.sent();
                     user = {
