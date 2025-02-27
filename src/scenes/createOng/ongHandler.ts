@@ -109,7 +109,7 @@ async function done(ctx: AIOWizardContext) {
       );
       (ctx.session as AIOSessionData).done = true;
       const forwardedMessageIds = await telegram.forwardMessages(
-        env.dbAIOChannelId,
+        env.dbOngoingChannelId,
         ctx.chat?.id,
         AIODetails.messageIds ? AIODetails.messageIds : [],
         false,

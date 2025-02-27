@@ -163,7 +163,7 @@ function done(ctx) {
                 case 5:
                     _h.sent();
                     ctx.session.done = true;
-                    return [4 /*yield*/, telegram.forwardMessages(env.dbAIOChannelId, (_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id, AIODetails.messageIds ? AIODetails.messageIds : [], false, captions)];
+                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id, AIODetails.messageIds ? AIODetails.messageIds : [], false, captions)];
                 case 6:
                     forwardedMessageIds_1 = _h.sent();
                     _h.label = 7;
