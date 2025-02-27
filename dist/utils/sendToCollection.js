@@ -102,7 +102,7 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     _a.trys.push([1, 3, , 4]);
                     captionText = "```\n".concat(links[0].caption, "\n```");
                     shareText = shareId
-                        ? "\n[\uD83D\uDD17Drama Id Share](tg://msg?text=/addong".concat(encodeURIComponent(shareId), ")")
+                        ? "\n[\uD83D\uDD17add ongoing](tg://msg?text=/addong".concat(encodeURIComponent(shareId), ")")
                         : "";
                     return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, aIOPoster, {
                             caption: captionText + shareText,

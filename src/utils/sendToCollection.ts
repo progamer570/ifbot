@@ -44,7 +44,7 @@ export async function sendToCollectionOng2(
     try {
       const captionText = `\`\`\`\n${links[0].caption}\n\`\`\``;
       const shareText = shareId
-        ? `\n[🔗Drama Id Share](tg://msg?text=/addong${encodeURIComponent(shareId)})`
+        ? `\n[🔗add ongoing](tg://msg?text=/addong${encodeURIComponent(shareId)})`
         : "";
 
       await telegram.app.telegram.sendPhoto(chat, aIOPoster, {
