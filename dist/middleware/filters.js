@@ -50,51 +50,56 @@ export default {
                 switch (_r.label) {
                     case 0:
                         console.log((_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.id);
-                        if (!(ctx.message && "text" in ctx.message && auth.isAdmin((_e = (_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id) !== null && _e !== void 0 ? _e : 0))) return [3 /*break*/, 16];
+                        if (!(ctx.message && "text" in ctx.message && auth.isAdmin((_e = (_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id) !== null && _e !== void 0 ? _e : 0))) return [3 /*break*/, 18];
                         messageText = (_f = ctx.message) === null || _f === void 0 ? void 0 : _f.text;
                         _a = messageText.split(" "), command = _a[0], args = _a.slice(1);
                         _r.label = 1;
                     case 1:
-                        _r.trys.push([1, 14, , 16]);
+                        _r.trys.push([1, 16, , 18]);
                         _b = command;
                         switch (_b) {
                             case "/setLink": return [3 /*break*/, 2];
                             case "/getFirstItem": return [3 /*break*/, 4];
                             case "/setActive": return [3 /*break*/, 6];
-                            case "/updateFirstAndActive": return [3 /*break*/, 8];
-                            case "/systemuses": return [3 /*break*/, 10];
+                            case "/addsort": return [3 /*break*/, 8];
+                            case "/deletesort": return [3 /*break*/, 10];
+                            case "/systemuses": return [3 /*break*/, 12];
                         }
-                        return [3 /*break*/, 12];
+                        return [3 /*break*/, 14];
                     case 2: return [4 /*yield*/, handleSetLink(ctx, args)];
                     case 3:
                         _r.sent();
-                        return [3 /*break*/, 13];
+                        return [3 /*break*/, 15];
                     case 4: return [4 /*yield*/, handleGetFirstItem(ctx)];
                     case 5:
                         _r.sent();
-                        return [3 /*break*/, 13];
+                        return [3 /*break*/, 15];
                     case 6: return [4 /*yield*/, handleSetActive(ctx, args)];
                     case 7:
                         _r.sent();
-                        return [3 /*break*/, 13];
+                        return [3 /*break*/, 15];
                     case 8: return [4 /*yield*/, handleUpdateFirstAndActive(ctx, args)];
                     case 9:
                         _r.sent();
-                        return [3 /*break*/, 13];
-                    case 10: return [4 /*yield*/, handleSystemUses(ctx)];
+                        return [3 /*break*/, 15];
+                    case 10: return [4 /*yield*/, deleteSort(ctx)];
                     case 11:
                         _r.sent();
-                        return [3 /*break*/, 13];
-                    case 12: return [3 /*break*/, 13];
-                    case 13: return [3 /*break*/, 16];
-                    case 14:
+                        return [3 /*break*/, 15];
+                    case 12: return [4 /*yield*/, handleSystemUses(ctx)];
+                    case 13:
+                        _r.sent();
+                        return [3 /*break*/, 15];
+                    case 14: return [3 /*break*/, 15];
+                    case 15: return [3 /*break*/, 18];
+                    case 16:
                         error_1 = _r.sent();
                         console.error("Error handling command:", error_1);
                         return [4 /*yield*/, ctx.reply("An error occurred while processing your request.")];
-                    case 15:
+                    case 17:
                         _r.sent();
-                        return [3 /*break*/, 16];
-                    case 16:
+                        return [3 /*break*/, 18];
+                    case 18:
                         if (autoReplyMemory[(_g = ctx.from) === null || _g === void 0 ? void 0 : _g.id]) {
                             setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
                                 return __generator(this, function (_a) {
@@ -134,12 +139,12 @@ export default {
                                 console.error("Unexpected error while deleting message:", error);
                             }
                         }
-                        if (!auth.isAdmin((_k = (_j = ctx.from) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : 0)) return [3 /*break*/, 21];
-                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 21];
+                        if (!auth.isAdmin((_k = (_j = ctx.from) === null || _j === void 0 ? void 0 : _j.id) !== null && _k !== void 0 ? _k : 0)) return [3 /*break*/, 23];
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 23];
                         callbackData = ctx.callbackQuery.data;
-                        _r.label = 17;
-                    case 17:
-                        _r.trys.push([17, 20, , 21]);
+                        _r.label = 19;
+                    case 19:
+                        _r.trys.push([19, 22, , 23]);
                         message = void 0;
                         switch (callbackData) {
                             case "addDrama":
@@ -166,59 +171,59 @@ export default {
                             default:
                                 message = "";
                         }
-                        if (!message) return [3 /*break*/, 19];
+                        if (!message) return [3 /*break*/, 21];
                         return [4 /*yield*/, ctx.reply(message)];
-                    case 18:
-                        _r.sent();
-                        _r.label = 19;
-                    case 19: return [3 /*break*/, 21];
                     case 20:
+                        _r.sent();
+                        _r.label = 21;
+                    case 21: return [3 /*break*/, 23];
+                    case 22:
                         err_1 = _r.sent();
                         console.log("Error handling callback:", err_1);
-                        return [3 /*break*/, 21];
-                    case 21:
-                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 34];
-                        callbackData = ctx.callbackQuery.data;
-                        _r.label = 22;
-                    case 22:
-                        _r.trys.push([22, 33, , 34]);
-                        if (!callbackData.startsWith("unlockpremium")) return [3 /*break*/, 32];
-                        return [4 /*yield*/, database.getInviteStatus(((_l = ctx.from) === null || _l === void 0 ? void 0 : _l.id.toString()) || "")];
+                        return [3 /*break*/, 23];
                     case 23:
-                        inviteStatus = _r.sent();
-                        if (!inviteStatus) return [3 /*break*/, 31];
-                        remainingInvites = inviteStatus.remainingInvites;
-                        if (!(remainingInvites <= 7)) return [3 /*break*/, 25];
-                        return [4 /*yield*/, ctx.reply("You don't have enough invites to unlock premium features. minimum 7 invites required to unlock premium features.")];
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 36];
+                        callbackData = ctx.callbackQuery.data;
+                        _r.label = 24;
                     case 24:
+                        _r.trys.push([24, 35, , 36]);
+                        if (!callbackData.startsWith("unlockpremium")) return [3 /*break*/, 34];
+                        return [4 /*yield*/, database.getInviteStatus(((_l = ctx.from) === null || _l === void 0 ? void 0 : _l.id.toString()) || "")];
+                    case 25:
+                        inviteStatus = _r.sent();
+                        if (!inviteStatus) return [3 /*break*/, 33];
+                        remainingInvites = inviteStatus.remainingInvites;
+                        if (!(remainingInvites <= 7)) return [3 /*break*/, 27];
+                        return [4 /*yield*/, ctx.reply("You don't have enough invites to unlock premium features. minimum 7 invites required to unlock premium features.")];
+                    case 26:
                         _r.sent();
                         return [2 /*return*/];
-                    case 25: return [4 /*yield*/, database.updateInviteUsed((((_m = ctx.from) === null || _m === void 0 ? void 0 : _m.id) || 0).toString(), remainingInvites)];
-                    case 26:
+                    case 27: return [4 /*yield*/, database.updateInviteUsed((((_m = ctx.from) === null || _m === void 0 ? void 0 : _m.id) || 0).toString(), remainingInvites)];
+                    case 28:
                         success = _r.sent();
                         return [4 /*yield*/, database.addBotPremium(((_o = ctx.from) === null || _o === void 0 ? void 0 : _o.id.toString()) || "0", "".concat(remainingInvites, "d"))];
-                    case 27:
+                    case 29:
                         result = _r.sent();
                         return [4 /*yield*/, ctx.reply("[".concat((_p = ctx.from) === null || _p === void 0 ? void 0 : _p.first_name, "](tg://user?id=").concat((_q = ctx.from) === null || _q === void 0 ? void 0 : _q.id, ")\n").concat(result), {
                                 parse_mode: "Markdown",
                             })];
-                    case 28:
+                    case 30:
                         _r.sent();
-                        if (!success) return [3 /*break*/, 30];
+                        if (!success) return [3 /*break*/, 32];
                         return [4 /*yield*/, ctx.reply("You have successfully unlocked premium features for ".concat(remainingInvites, " days."))];
-                    case 29:
-                        _r.sent();
-                        _r.label = 30;
-                    case 30: return [3 /*break*/, 32];
                     case 31:
-                        console.log("No valid invite data found");
+                        _r.sent();
                         _r.label = 32;
                     case 32: return [3 /*break*/, 34];
                     case 33:
+                        console.log("No valid invite data found");
+                        _r.label = 34;
+                    case 34: return [3 /*break*/, 36];
+                    case 35:
                         error_2 = _r.sent();
                         console.error("Error occurred:", error_2);
-                        return [3 /*break*/, 34];
-                    case 34: return [2 /*return*/];
+                        return [3 /*break*/, 36];
+                    case 36: return [2 /*return*/];
                 }
             });
         });

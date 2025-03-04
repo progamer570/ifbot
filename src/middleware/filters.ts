@@ -27,8 +27,11 @@ export default {
           case "/setActive":
             await handleSetActive(ctx, args);
             break;
-          case "/updateFirstAndActive":
+          case "/addsort":
             await handleUpdateFirstAndActive(ctx, args);
+            break;
+          case "/deletesort":
+            await deleteSort(ctx);
             break;
           case "/systemuses":
             await handleSystemUses(ctx);
