@@ -608,10 +608,11 @@ class MongoDB {
         {
           $push: { sort: { $each: [newLink], $position: 0 } },
           $set: { currentActivePath: newActiveShareId },
-        }
+        },
+        { upsert: true } // This creates a new document if none exists
       );
 
-      return result.modifiedCount > 0;
+      return result.modifiedCount > 0 || result.upsertedCount > 0;
     } catch (error) {
       console.error("Error updating first sort and active path:", error);
       return false;
