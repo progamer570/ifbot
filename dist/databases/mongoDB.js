@@ -907,13 +907,34 @@ var MongoDB = /** @class */ (function () {
                         return [4 /*yield*/, SortModel.updateOne({}, {
                                 $push: { sort: { $each: [newLink], $position: 0 } },
                                 $set: { currentActivePath: newActiveShareId },
-                            })];
+                            }, { upsert: true } // This creates a new document if none exists
+                            )];
                     case 1:
                         result = _a.sent();
-                        return [2 /*return*/, result.modifiedCount > 0];
+                        return [2 /*return*/, result.modifiedCount > 0 || result.upsertedCount > 0];
                     case 2:
                         error_16 = _a.sent();
                         console.error("Error updating first sort and active path:", error_16);
+                        return [2 /*return*/, false];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    MongoDB.prototype.deleteAllSortData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_17;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, SortModel.deleteMany({})];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result.deletedCount > 0];
+                    case 2:
+                        error_17 = _a.sent();
+                        console.error("Error deleting all sort data:", error_17);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }

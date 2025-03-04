@@ -75,6 +75,7 @@ declare class MongoDB {
         shareId: number;
         aioShortUrl: string;
     }, newActiveShareId: string): Promise<boolean>;
+    deleteAllSortData(): Promise<boolean>;
 }
 declare const mongoDB: MongoDB;
 export default mongoDB;

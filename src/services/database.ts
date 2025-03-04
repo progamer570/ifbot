@@ -163,7 +163,9 @@ class Database {
   ): Promise<boolean> {
     return await this.client.updateFirstSortAndActivePath(newLink, newActiveShareId);
   }
-
+  async deleteAllSortData(): Promise<boolean> {
+    return await this.client.deleteAllSortData();
+  }
   //sort
 }
 

@@ -15,6 +15,7 @@ export interface DatabaseClient {
     saveMessages(shareId: number, messageIds: number[]): Promise<number>;
     getMessages(shareId: number): Promise<number[] | undefined>;
     saveSort(SortDocument: SortDocument): Promise<SortDocument>;
+    deleteAllSortData(): Promise<boolean>;
     saveUser(user: User): Promise<User>;
     isUserExist(user: string): Promise<boolean>;
     countUsers(): Promise<string>;

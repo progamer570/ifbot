@@ -214,3 +214,7 @@ async function handleSystemUses(ctx: Context) {
     await ctx.reply("Failed to retrieve system usage information.");
   }
 }
+async function deleteSort(ctx: Context) {
+  const success = await database.deleteAllSortData();
+  await ctx.reply(success ? "Deleted successfully" : "Failed to delete Sort.");
+}

@@ -618,6 +618,15 @@ class MongoDB {
       return false;
     }
   }
+  async deleteAllSortData(): Promise<boolean> {
+    try {
+      const result = await SortModel.deleteMany({});
+      return result.deletedCount > 0;
+    } catch (error) {
+      console.error("Error deleting all sort data:", error);
+      return false;
+    }
+  }
 }
 
 const mongoDB = new MongoDB();
