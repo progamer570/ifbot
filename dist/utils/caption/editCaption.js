@@ -21,7 +21,7 @@ export function processCaption(oldCaption, join) {
     if (mkv !== -1) {
         newCaption = newCaption.substring(0, mkv + 3);
     }
-    return newCaption.trim();
+    return newCaption.trim() + "\n\uFF2A\uFF2F\uFF29\uFF2E : @".concat(join);
 }
 export function editAIOTitle(oldCaption, join) {
     var newCaption = "";
