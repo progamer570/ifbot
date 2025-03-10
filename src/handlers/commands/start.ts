@@ -5,10 +5,10 @@ import env from "../../services/env.js";
 import telegram from "../../services/telegram.js";
 import {
   sendDailyLimitMessage,
-  sendInviteMessage,
   sendInviterWelcomeMessage,
   sendTokenExpiredMessage,
   sendTokenGeneratedMessage,
+  sendWelcomeMessage,
 } from "../../utils/helper.js";
 
 export default async function startHandler(ctx: CommandContext) {
@@ -59,7 +59,7 @@ export default async function startHandler(ctx: CommandContext) {
 
     // Default message if no shareId is found
     if (!shareId) {
-      return await sendInviteMessage(ctx, user, userId.toString()).catch((error) =>
+      return await sendWelcomeMessage(ctx, user, userId.toString()).catch((error) =>
         console.error(error)
       );
     }

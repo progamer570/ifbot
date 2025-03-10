@@ -42,26 +42,38 @@ You can generate a new token once a day, which takes just 30–40 seconds. After
   });
 }
 
-export async function sendInviteMessage(
+import { Markup } from "telegraf";
+import { error } from "console";
+
+export async function sendWelcomeMessage(
   ctx: CommandContext,
-  user: User,
+  user: { first_name?: string },
   userId: string
 ): Promise<void> {
   const firstName = (user.first_name?.replace(/[^a-zA-Z0-9]/g, "") || "User").trim();
-  const inviteLink = generateInviteLink(userId, false);
-  const message = `Hello ${firstName}!
 
-${env.request}
-
-Invite your friends! Your invite link is:
-${inviteLink}
-
-You can check your invite progress using the command: /myinvites, 
-To see who has invited the most people, use the command: /myinvitestatus`;
+  const message = `👋 ʜᴇʟʟᴏ [${firstName}](tg://user?id=${userId})!
+ɪ ᴀᴍ ᴀ ᴘᴏᴡᴇʀꜰᴜʟ ʙᴏᴛ ᴛʜᴀᴛ ᴡᴏʀᴋs ɪɴ ɢʀᴏᴜᴘs. 
+${escapeMarkdownV2(env.request)}\n
+`;
+  const groupLink = await telegram
+    .getInviteLink(env.allowGroups[0])
+    .catch((error) => console.log(error));
+  const keyboard = Markup.inlineKeyboard([
+    [
+      Markup.button.url(
+        "📌 Send Your Request Name Here 📌",
+        groupLink || "https://t.me/kdrama_cht"
+      ),
+    ],
+    [Markup.button.callback("🛠 ʜᴇʟᴘ", "features"), Markup.button.callback("💌 ᴀʙᴏᴜᴛ", "about")],
+    [Markup.button.callback("🎟 ᴘʀᴇᴍɪᴜᴍ", "seeplans"), Markup.button.callback("🎁 ʀᴇғᴇʀ", "refer")],
+  ]);
 
   await ctx.reply(message, {
-    parse_mode: "HTML",
+    parse_mode: "Markdown",
     link_preview_options: { is_disabled: true },
+    ...keyboard,
   });
 }
 
@@ -174,4 +186,55 @@ export function convertToTinySubscript(inputText: string): string {
 }
 export function escapeMarkdownV2(text: string): string {
   return text.replace(/[_*[\]()~`>#\+\-=|{}.!]/g, "\\$&");
+}
+export const premiumPlan = `✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨
+
+📌 ᴘʀɪᴄɪɴɢ:  
+▸ ₹19 ┇ 1 ᴡᴇᴇᴋ  
+▸ ₹35 ┇ 1 ᴍᴏɴᴛʜ  
+▸ ₹99 ┇ 3 ᴍᴏɴᴛʜs  
+▸ ₹169 ┇ 6 ᴍᴏɴᴛʜs  
+▸ ₹329 ┇ 1 ʏᴇᴀʀ  
+▸ ₹1.5ᴋ ┇ ᴠᴀʟɪᴅ ᴛɪʟʟ ᴄʜᴀɴɴᴇʟ ᴇxɪsᴛs  
+
+🔹 ᴘʀᴇᴍɪᴜᴍ ᴄʜᴀɴɴᴇʟ ꜰᴇᴀᴛᴜʀᴇs:  
+🫳 ᴀᴄᴄᴇss ᴛᴏ ɴᴇᴡ & ᴏʟᴅ ᴍᴏᴠɪᴇs, ꜱᴇʀɪᴇs, ᴀɴɪᴍᴇ & ᴍᴏʀᴇ  
+🫳 ʜɪɢʜ-ǫᴜᴀʟɪᴛʏ ᴄᴏɴᴛᴇɴᴛ ᴀᴠᴀɪʟᴀʙʟᴇ  
+🫳 ᴅɪʀᴇᴄᴛ ꜰɪʟᴇ ᴅᴏᴡɴʟᴏᴀᴅs 
+🫳 ꜰᴜʟʟ ᴀᴅᴍɪɴ ꜱᴜᴘᴘᴏʀᴛ ꜰᴏʀ ǫᴜᴇʀɪᴇs & ʀᴇǫᴜᴇꜱᴛꜱ
+🫳 ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴊᴏɪɴ ᴍᴜʟᴛɪᴘʟᴇ ᴄʜᴀɴɴᴇʟꜱ 
+🫳 ᴅɪʀᴇᴄᴛ & ᴀᴅꜱ-ꜰʀᴇᴇ ᴀᴄᴄᴇꜱꜱ
+ ɪꜰ ʏᴏᴜ ᴡᴀɴᴛ ᴘʀᴇᴍɪᴜᴍ, ᴄᴏɴᴛᴀᴄᴛ ʜᴇʀᴇ: [ADMIN](tg://user?id=${env.adminIds[0]})  
+`;
+
+export const developerInfo = `  
+‣ ᴅᴇᴠᴇʟᴏᴘᴇʀ : ᴀɴᴍᴏʟ  
+‣ ɪᴅ : [ᴀɴᴍᴏʟ](t.me/eywwi)  
+‣ ʟɪʙʀᴀʀʏ : ᴛᴇʟᴇɢʀᴀꜰ  
+‣ ʟᴀɴɢᴜᴀɢᴇ : ᴛs  
+‣ ᴅᴀᴛᴀʙᴀsᴇ : ᴍᴏɴɢᴏᴅʙ  
+‣ ʜᴏsᴛᴇᴅ ᴏɴ : ᴀʟʟ ᴡᴇʙ  
+`;
+export const helpMessage = `  
+✨ ʜᴏᴡ ᴛᴏ ʀᴇǫᴜᴇꜱᴛ ᴅʀᴀᴍᴀꜱ & ᴍᴏᴠɪᴇꜱ ✨  
+
+1️⃣ ꜱᴇᴀʀᴄʜ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ɴᴀᴍᴇ ᴏɴ ɢᴏᴏɢʟᴇ.  
+2️⃣ ꜱᴇɴᴅ ᴛʜᴇ ɴᴀᴍᴇ ɪɴ ᴛʜᴇ ɢʀᴏᴜᴘ.  
+3️⃣ ᴜꜱᴇ ᴛʜɪꜱ ꜰᴏʀᴍᴀᴛ:  
+
+🚀 ꜰᴏʟʟᴏᴡ ᴛʜᴇꜱᴇ ꜱᴛᴇᴘꜱ!  
+`;
+
+export function getInviteMessage(username: string, userId: string): string {
+  const firstName = (username?.replace(/[^a-zA-Z0-9]/g, "") || "User").trim();
+  const inviteLink = generateInviteLink(userId, false);
+
+  return (
+    `Hello ${firstName}!\n` +
+    `Invite your friends and earn exclusive rewards! 🎉\n` +
+    `Your invite link is:\n${inviteLink}\n\n` +
+    `🔥 ᴡʜʏ ɪɴᴠɪᴛᴇ? ᴇᴀᴄʜ ɪɴᴠɪᴛᴇ ᴄᴀɴ ᴜɴʟᴏᴄᴋ sᴘᴇᴄɪᴀʟ ʙᴏɴᴜsᴇs ʟɪᴋᴇ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss, ᴇxᴛʀᴀ ᴄᴏɴᴛᴇɴᴛ, ᴀɴᴅ ᴏᴛʜᴇʀ ᴇxᴄʟᴜsɪᴠᴇ ʙᴇɴᴇғɪᴛs! 🚀\n\n` +
+    ` ᴄʜᴇᴄᴋ ʏᴏᴜʀ ɪɴᴠɪᴛᴇ ᴘʀᴏɢʀᴇss: /myinvites\n` +
+    `ᴛᴏ sᴇᴇ ᴛʜᴇ ᴛᴏᴘ ɪɴᴠɪᴛᴇʀs: /myinvitestatus\n`
+  );
 }

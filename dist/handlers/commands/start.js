@@ -38,7 +38,7 @@ import auth from "../../services/auth.js";
 import database from "../../services/database.js";
 import env from "../../services/env.js";
 import telegram from "../../services/telegram.js";
-import { sendDailyLimitMessage, sendInviteMessage, sendInviterWelcomeMessage, sendTokenExpiredMessage, sendTokenGeneratedMessage, } from "../../utils/helper.js";
+import { sendDailyLimitMessage, sendInviterWelcomeMessage, sendTokenExpiredMessage, sendTokenGeneratedMessage, sendWelcomeMessage, } from "../../utils/helper.js";
 export default function startHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var chatId, user, userId, payload, shareId, tokenNumber, firstSortItem, activeShareId, token, inviteParts, inviterId, newUserId, isUserExist, parts, chatsUserHasNotJoined, haveBotPremium, isValidToken, firstItem, canRequest, error_1, messageIds, channel, error_2, error_3;
@@ -94,7 +94,7 @@ export default function startHandler(ctx) {
                     _a.label = 11;
                 case 11:
                     if (!!shareId) return [3 /*break*/, 13];
-                    return [4 /*yield*/, sendInviteMessage(ctx, user, userId.toString()).catch(function (error) {
+                    return [4 /*yield*/, sendWelcomeMessage(ctx, user, userId.toString()).catch(function (error) {
                             return console.error(error);
                         })];
                 case 12: return [2 /*return*/, _a.sent()];

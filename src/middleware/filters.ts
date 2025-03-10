@@ -1,11 +1,19 @@
-import { Context } from "telegraf";
+import { Context, Markup } from "telegraf";
 import env from "../services/env.js";
 import { getSystemUsage, getSystemUsageDetails } from "../extra/systemUses.js";
 import { Message } from "telegraf/typings/core/types/typegram";
 import auth from "../services/auth.js";
 import database from "../services/database.js";
 import { autoReplyMemory } from "../handlers/commands/autoReact.js";
-import { getRandomReactionEmoji } from "../utils/helper.js";
+import {
+  developerInfo,
+  escapeMarkdownV2,
+  getInviteMessage,
+  getRandomReactionEmoji,
+  helpMessage,
+  premiumPlan,
+} from "../utils/helper.js";
+import telegram from "../services/telegram.js";
 
 export default {
   async private(ctx: Context, next: () => void) {
@@ -51,11 +59,7 @@ export default {
         });
       }, 60000);
     }
-    if (ctx.chat?.id !== undefined) {
-      if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
-        next();
-      }
-    }
+
     if (ctx.message && containsSGD(ctx.message)) {
       try {
         setTimeout(async () => {
@@ -108,9 +112,84 @@ export default {
       }
     }
 
-    // invite premium users
+    // callback query handlers
     if (ctx.callbackQuery && "data" in ctx.callbackQuery) {
       const callbackData = ctx.callbackQuery.data;
+      try {
+        let message = "";
+        const firstName = (
+          ctx.message?.from.first_name?.replace(/[^a-zA-Z0-9]/g, "") || "User"
+        ).trim();
+
+        switch (callbackData) {
+          case "features":
+            message = helpMessage;
+            break;
+          case "seeplans":
+            message = premiumPlan;
+            break;
+          case "about":
+            message = developerInfo;
+            break;
+          case "refer":
+            message = getInviteMessage(
+              ctx.callbackQuery?.from?.first_name || "user",
+              ctx.callbackQuery?.from.id.toString() || ""
+            );
+            break;
+          case "home":
+            message = "home";
+            break;
+        }
+
+        if (message) {
+          if (message === "home") {
+            const homeMessage = `👋 ʜᴇʟʟᴏ ${firstName}!
+            ɪ ᴀᴍ ᴀ ᴘᴏᴡᴇʀꜰᴜʟ ʙᴏᴛ ᴛʜᴀᴛ ᴡᴏʀᴋs ɪɴ ɢʀᴏᴜᴘs. 
+            ${escapeMarkdownV2(env.request)}\n`;
+            const groupLink = await telegram
+              .getInviteLink(env.allowGroups[0])
+              .catch((error) => console.log(error));
+            const homeKeyboard = Markup.inlineKeyboard([
+              [
+                Markup.button.url(
+                  "📌 Send Your Request Name Here 📌",
+                  groupLink || "https://t.me/kdrama_cht"
+                ),
+              ],
+              [
+                Markup.button.callback("🛠 ʜᴇʟᴘ", "features"),
+                Markup.button.callback("💌 ᴀʙᴏᴜᴛ", "about"),
+              ],
+              [
+                Markup.button.callback("🎟 ᴘʀᴇᴍɪᴜᴍ", "seeplans"),
+                Markup.button.callback("🎁 ʀᴇғᴇʀ", "refer"),
+              ],
+            ]);
+
+            await ctx
+              .editMessageText(homeMessage, {
+                parse_mode: "HTML",
+                reply_markup: homeKeyboard.reply_markup,
+              })
+              .catch((e) => console.log(e));
+          } else {
+            const backKeyboard = Markup.inlineKeyboard([
+              [Markup.button.callback("🔙 Home", "home")],
+            ]);
+
+            await ctx
+              .editMessageText(message || "Welcome", {
+                parse_mode: "Markdown",
+                reply_markup: backKeyboard.reply_markup,
+                link_preview_options: { is_disabled: true },
+              })
+              .catch((e) => console.log(e));
+          }
+        }
+      } catch (err) {
+        console.log("Error handling callback:", err);
+      }
 
       try {
         if (callbackData.startsWith("unlockpremium")) {
@@ -118,12 +197,14 @@ export default {
 
           if (inviteStatus) {
             let remainingInvites = inviteStatus.remainingInvites;
+
             if (remainingInvites <= 7) {
               await ctx.reply(
-                "You don't have enough invites to unlock premium features. minimum 7 invites required to unlock premium features."
+                "You don't have enough invites to unlock premium features. Minimum 7 invites required to unlock premium features."
               );
               return;
             }
+
             const success = await database.updateInviteUsed(
               (ctx.from?.id || 0).toString(),
               remainingInvites
@@ -132,9 +213,11 @@ export default {
               ctx.from?.id.toString() || "0",
               `${remainingInvites}d`
             );
+
             await ctx.reply(`[${ctx.from?.first_name}](tg://user?id=${ctx.from?.id})\n${result}`, {
               parse_mode: "Markdown",
             });
+
             if (success) {
               await ctx.reply(
                 `You have successfully unlocked premium features for ${remainingInvites} days.`
@@ -146,6 +229,11 @@ export default {
         }
       } catch (error) {
         console.error("Error occurred:", error);
+      }
+    }
+    if (ctx.chat?.id !== undefined) {
+      if (ctx.chat.type === "private" || env.allowGroups.includes(ctx.chat.id)) {
+        next();
       }
     }
   },

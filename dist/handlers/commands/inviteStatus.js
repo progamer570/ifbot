@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { generateInviteLink } from "../../utils/helper.js";
 import database from "../../services/database.js";
+import { bold, fmt, quote } from "telegraf/format";
 export default function inviteStatusHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var userId, userName, inviteStatus, totalInvites, usedInvites, remainingInvites, inviteLink, shareInviteLink, responseMessage, error_1;
@@ -63,9 +64,22 @@ export default function inviteStatusHandler(ctx) {
                     totalInvites = inviteStatus.totalInvites, usedInvites = inviteStatus.usedInvites, remainingInvites = inviteStatus.remainingInvites;
                     inviteLink = generateInviteLink(userId, false);
                     shareInviteLink = generateInviteLink(userId, true);
-                    responseMessage = "\n\uD83D\uDCCA  Invite Status for ".concat(userName, ":\n-   Total Invites: ").concat(totalInvites, "\n-   Used Invites: ").concat(usedInvites, "\n-   Remaining Invites: ").concat(remainingInvites, "\n-   your invite link: ").concat(inviteLink, "\n");
-                    return [4 /*yield*/, ctx.reply(responseMessage.trim(), {
-                            parse_mode: "HTML",
+                    responseMessage = fmt([
+                        bold("\uD83D\uDCCA \u026A\u0274\u1D20\u026A\u1D1B\u1D07 s\u1D1B\u1D00\u1D1B\u1D1Cs \u0493\u1D0F\u0280: ".concat(userName, "\n")),
+                        fmt([
+                            "\u2022 \u1D1B\u1D0F\u1D1B\u1D00\u029F \u026A\u0274\u1D20\u026A\u1D1B\u1D07s: ".concat(totalInvites, "\n"),
+                            "\u2022 \u1D1Cs\u1D07\u1D05 \u026A\u0274\u1D20\u026A\u1D1B\u1D07s: ".concat(usedInvites, "\n"),
+                            "\u2022 \u0280\u1D07\u1D0D\u1D00\u026A\u0274\u026A\u0274\u0262 \u026A\u0274\u1D20\u026A\u1D1B\u1D07s: ".concat(remainingInvites, "\n"),
+                        ]),
+                        "\n\u028F\u1D0F\u1D1C\u0280 \u026A\u0274\u1D20\u026A\u1D1B\u1D07 \u029F\u026A\u0274\u1D0B: ".concat(inviteLink, "\n\n"),
+                        quote(fmt([
+                            bold("ʙʏ ɪɴᴠɪᴛɪɴɢ ᴍᴏʀᴇ ᴜsᴇʀs, ʏᴏᴜ ᴄᴀɴ ᴜɴʟᴏᴄᴋ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss!\n"),
+                            bold("ᴇᴀᴄʜ ɪɴᴠɪᴛᴇ ɢʀᴀɴᴛs ʏᴏᴜ ᴀᴅᴅɪᴛɪᴏɴᴀʟ ᴘʀᴇᴍɪᴜᴍ ᴅᴀʏs.\n"),
+                            bold("❗ᴀ ᴍɪɴɪᴍᴜᴍ ᴏғ ❽ ɪɴᴠɪᴛᴇs ɪs ʀᴇǫᴜɪʀᴇᴅ ᴛᴏ ᴄʟᴀɪᴍ ᴛʜᴇ ʙᴇɴᴇғɪᴛs."),
+                        ])),
+                    ]);
+                    return [4 /*yield*/, ctx.reply(responseMessage, {
+                            parse_mode: "Markdown",
                             link_preview_options: { is_disabled: true },
                             reply_markup: {
                                 inline_keyboard: [

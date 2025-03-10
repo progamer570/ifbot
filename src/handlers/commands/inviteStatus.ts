@@ -1,7 +1,7 @@
 import { WizardContext } from "telegraf/typings/scenes";
-import auth from "../../services/auth.js";
 import { generateInviteLink } from "../../utils/helper.js";
 import database from "../../services/database.js";
+import { bold, fmt, quote } from "telegraf/format";
 
 export default async function inviteStatusHandler(ctx: WizardContext): Promise<void> {
   try {
@@ -41,16 +41,25 @@ export default async function inviteStatusHandler(ctx: WizardContext): Promise<v
     const { totalInvites, usedInvites, remainingInvites } = inviteStatus;
     const inviteLink = generateInviteLink(userId, false);
     const shareInviteLink = generateInviteLink(userId, true);
-    const responseMessage = `
-📊  Invite Status for ${userName}:
--   Total Invites: ${totalInvites}
--   Used Invites: ${usedInvites}
--   Remaining Invites: ${remainingInvites}
--   your invite link: ${inviteLink}
-`;
+    const responseMessage = fmt([
+      bold(`📊 ɪɴᴠɪᴛᴇ sᴛᴀᴛᴜs ғᴏʀ: ${userName}\n`),
+      fmt([
+        `• ᴛᴏᴛᴀʟ ɪɴᴠɪᴛᴇs: ${totalInvites}\n`,
+        `• ᴜsᴇᴅ ɪɴᴠɪᴛᴇs: ${usedInvites}\n`,
+        `• ʀᴇᴍᴀɪɴɪɴɢ ɪɴᴠɪᴛᴇs: ${remainingInvites}\n`,
+      ]),
+      `\nʏᴏᴜʀ ɪɴᴠɪᴛᴇ ʟɪɴᴋ: ${inviteLink}\n\n`,
+      quote(
+        fmt([
+          bold("ʙʏ ɪɴᴠɪᴛɪɴɢ ᴍᴏʀᴇ ᴜsᴇʀs, ʏᴏᴜ ᴄᴀɴ ᴜɴʟᴏᴄᴋ ᴘʀᴇᴍɪᴜᴍ ᴀᴄᴄᴇss!\n"),
+          bold("ᴇᴀᴄʜ ɪɴᴠɪᴛᴇ ɢʀᴀɴᴛs ʏᴏᴜ ᴀᴅᴅɪᴛɪᴏɴᴀʟ ᴘʀᴇᴍɪᴜᴍ ᴅᴀʏs.\n"),
+          bold("❗ᴀ ᴍɪɴɪᴍᴜᴍ ᴏғ ❽ ɪɴᴠɪᴛᴇs ɪs ʀᴇǫᴜɪʀᴇᴅ ᴛᴏ ᴄʟᴀɪᴍ ᴛʜᴇ ʙᴇɴᴇғɪᴛs."),
+        ])
+      ),
+    ]);
 
-    await ctx.reply(responseMessage.trim(), {
-      parse_mode: "HTML",
+    await ctx.reply(responseMessage, {
+      parse_mode: "Markdown",
       link_preview_options: { is_disabled: true },
       reply_markup: {
         inline_keyboard: [
