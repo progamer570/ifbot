@@ -7,6 +7,7 @@ import splitArray from "../extra/splitArray.js";
 import { delay } from "../extra/delay.js";
 import { scheduleMessageDeletion } from "../extra/scheduleMessageDeletion.js";
 import { processCaption } from "../utils/caption/editCaption.js";
+import { bold, fmt } from "telegraf/format.js";
 
 class Telegram {
   app: Telegraf<Scenes.WizardContext>;
@@ -169,7 +170,7 @@ class Telegram {
             scheduleMessageDeletion(this, toChatId, result.message_id, 5);
           } else {
             const result = await this.app.telegram.copyMessage(toChatId, fromChatId, messageId, {
-              caption: processCaption(caption, env.join),
+              caption: fmt(bold(processCaption(caption, env.join).trim())),
             });
             resultIds.push(result.message_id);
           }

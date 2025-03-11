@@ -51,6 +51,7 @@ import splitArray from "../extra/splitArray.js";
 import { delay } from "../extra/delay.js";
 import { scheduleMessageDeletion } from "../extra/scheduleMessageDeletion.js";
 import { processCaption } from "../utils/caption/editCaption.js";
+import { bold, fmt } from "telegraf/format.js";
 var Telegram = /** @class */ (function () {
     function Telegram() {
         this.app = new Telegraf(env.token);
@@ -277,7 +278,7 @@ var Telegram = /** @class */ (function () {
                         scheduleMessageDeletion(this, toChatId, result.message_id, 5);
                         return [3 /*break*/, 7];
                     case 5: return [4 /*yield*/, this.app.telegram.copyMessage(toChatId, fromChatId, messageId, {
-                            caption: processCaption(caption, env.join),
+                            caption: fmt(bold(processCaption(caption, env.join).trim())),
                         })];
                     case 6:
                         result = _a.sent();
