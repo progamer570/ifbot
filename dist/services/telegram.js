@@ -51,7 +51,7 @@ import splitArray from "../extra/splitArray.js";
 import { delay } from "../extra/delay.js";
 import { scheduleMessageDeletion } from "../extra/scheduleMessageDeletion.js";
 import { processCaption } from "../utils/caption/editCaption.js";
-import { bold, fmt } from "telegraf/format.js";
+import { bold, fmt } from "telegraf/format";
 var Telegram = /** @class */ (function () {
     function Telegram() {
         this.app = new Telegraf(env.token);
