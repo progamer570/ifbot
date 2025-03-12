@@ -208,8 +208,8 @@ export const premiumPlan = `✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨
 `;
 
 export const developerInfo = `  
-‣ ᴅᴇᴠᴇʟᴏᴘᴇʀ : ᴀɴᴍᴏʟ  
-‣ ɪᴅ : [ᴀɴᴍᴏʟ](t.me/eywwi)  
+‣ ᴅᴇᴠᴇʟᴏᴘᴇʀ : RAM 
+‣ ɪᴅ : [RAM](t.me/Ram_Ox)  
 ‣ ʟɪʙʀᴀʀʏ : ᴛᴇʟᴇɢʀᴀꜰ  
 ‣ ʟᴀɴɢᴜᴀɢᴇ : ᴛs  
 ‣ ᴅᴀᴛᴀʙᴀsᴇ : ᴍᴏɴɢᴏᴅʙ  
