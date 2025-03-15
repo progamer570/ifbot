@@ -33,11 +33,11 @@ export const makeButtons = (link: string, next: string, prev: string) => {
         { text: "⬅️ Prev", callback_data: prev },
         { text: "Next ➡️", callback_data: next },
       ],
-      [{ text: "DOWNLOAD", url: link }],
-      [{ text: "❣️❣️ Join Back-UP ❣️❣️", url: `${env.backup}` }],
+      [{ text: "𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱", url: link }],
+      [{ text: "𝗠𝗮𝗶𝗻 𝗖𝗵𝗮𝗻𝗻𝗲𝗹", url: `${env.backup}` }],
       [
         {
-          text: "❣️❣️ How to Download ❣️❣️",
+          text: "❗️𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱❗️",
           url: `${env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"}`,
         },
       ],
@@ -74,11 +74,11 @@ export const makeInviteButtons = (
 export const makeCollectionButton = (link: string) => {
   return {
     inline_keyboard: [
-      [{ text: "Download", url: link }],
-      [{ text: "Join Back-Up", url: env.backup }],
+      [{ text: "𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱", url: link },
+      { text: "𝗠𝗮𝗶𝗻 𝗖𝗵𝗮𝗻𝗻𝗲𝗹", url: env.backup }],
       [
         {
-          text: "❣️❣️ How to Download ❣️❣️",
+          text: "❗️𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱❗️",
           url: `${env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"}`,
         },
       ],
