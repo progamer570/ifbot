@@ -190,8 +190,8 @@ export function escapeMarkdownV2(text: string): string {
 export const premiumPlan = `✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨
 
 📌 ᴘʀɪᴄɪɴɢ:  
-▸ ₹19 ┇ 1 ᴡᴇᴇᴋ  
-▸ ₹35 ┇ 1 ᴍᴏɴᴛʜ  
+▸ ₹39 ┇ 1 ᴡᴇᴇᴋ  
+▸ ₹69 ┇ 1 ᴍᴏɴᴛʜ  
 ▸ ₹99 ┇ 3 ᴍᴏɴᴛʜs  
 ▸ ₹169 ┇ 6 ᴍᴏɴᴛʜs  
 ▸ ₹329 ┇ 1 ʏᴇᴀʀ  
