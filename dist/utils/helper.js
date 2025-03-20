@@ -103,9 +103,6 @@ export function sendWelcomeMessage(ctx, user, userId) {
                 case 1:
                     groupLink = _b.sent();
                     keyboard = Markup.inlineKeyboard([
-                        [
-                            Markup.button.url("📌 Send Your Request Name Here 📌", groupLink || "https://t.me/kdrama_cht"),
-                        ],
                         [Markup.button.callback("🛠 ʜᴇʟᴘ", "features"), Markup.button.callback("💌 ᴀʙᴏᴜᴛ", "about")],
                         [Markup.button.callback("🎟 ᴘʀᴇᴍɪᴜᴍ", "seeplans"), Markup.button.callback("🎁 ʀᴇғᴇʀ", "refer")],
                     ]);
