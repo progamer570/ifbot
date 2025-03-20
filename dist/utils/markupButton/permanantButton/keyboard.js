@@ -33,7 +33,7 @@ export var makeButtons = function (link, next, prev) {
                 { text: "Next ➡️", callback_data: next },
             ],
             [{ text: "𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱", url: link }],
-            [{ text: "𝗠𝗮𝗶𝗻 𝗖𝗵𝗮𝗻𝗻𝗲𝗹", url: "".concat(env.backup) }],
+            [{ text: "𝗕𝗮𝗰𝗸𝘂𝗽", url: "".concat(env.backup) }],
             [
                 {
                     text: "❗️𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱❗️",
@@ -61,7 +61,7 @@ export var makeCollectionButton = function (link) {
     return {
         inline_keyboard: [
             [{ text: "𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱", url: link },
-            { text: "𝗠𝗮𝗶𝗻 𝗖𝗵𝗮𝗻𝗻𝗲𝗹", url: env.backup }],
+            { text: "𝗕𝗮𝗰𝗸𝘂𝗽", url: env.backup }],
             [
                 {
                     text: "❗️𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱❗️",
