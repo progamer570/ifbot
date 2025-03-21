@@ -62,7 +62,6 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
             broadcastActive = true;
             break;
           }
-
           await ctx.telegram.copyMessage(user, ctx.chat!.id, referencedMessage.message_id);
           successCount++;
         } catch (error) {

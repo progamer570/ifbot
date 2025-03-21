@@ -16,6 +16,7 @@ var baseUrl = env.BASE_URL || "";
 var sortApiKey = env.SHORT_API_KEY || "";
 var howToDownload = env.HOW_TO_DOWNLOAD_MSG_LINK || "";
 var botUserName = env.BOT_USERNAME;
+var premium = env.PREMIUM;
 var port = env.PORT || 8080;
 var forceChannelIds = ((_a = env.FORCE_CHANNEL_IDS) === null || _a === void 0 ? void 0 : _a.split(" ").map(Number)) || [];
 var forceGroupIds = ((_b = env.FORCE_GROUP_IDS) === null || _b === void 0 ? void 0 : _b.split(" ").map(Number)) || [];
@@ -34,6 +35,7 @@ var collectionOngoing = Number(env.ONGOING_COLLECTION) || "";
 var collectionAIOBackup = Number(env.COLLECTION_AIO_BACKUP) || "";
 var jwtSecret = env.JWT_SECRET || "randomSecretString";
 var howToGenerateToken = env.HOW_TO_GENERATE_TOKEN;
+var botSupportLink = env.botSupportLink;
 var apiBaseUrl = env.API_BASE_URL || "";
 var apiFetchToken = env.API_FETCH_TOKEN || "";
 if (!token) {
@@ -44,6 +46,7 @@ if (!adminIds) {
 }
 export default {
     baseUrl: baseUrl,
+    premium: premium,
     apiBaseUrl: apiBaseUrl,
     apiFetchToken: apiFetchToken,
     ownerId: ownerId,
@@ -78,4 +81,5 @@ export default {
     adminIds: adminIds,
     databaseUrl: databaseUrl,
     otherDomain: otherDomain,
+    botSupportLink: botSupportLink,
 };

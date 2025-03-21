@@ -18,7 +18,9 @@ You can generate a new token once a day, which takes just 30–40 seconds. After
     message += `Tutorial:\n[TO KNOW HOW TO GENERATE NEW TOKEN](${env.howToGenerateToken})`;
   }
 
-  message += `\nANY PROBLEM CONTACT: [ADMIN](tg://user?id=${env.adminIds[0]})`;
+  message += `\nANY PROBLEM CONTACT: [Share Your Problem Here](${
+    env.botSupportLink || `tg://user?id=${env.adminIds[0]}`
+  })`;
 
   await ctx.reply(message, {
     reply_markup: {
@@ -187,7 +189,9 @@ export function convertToTinySubscript(inputText: string): string {
 export function escapeMarkdownV2(text: string): string {
   return text.replace(/[_*[\]()~`>#\+\-=|{}.!]/g, "\\$&");
 }
-export const premiumPlan = `✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨
+export const premiumPlan =
+  env.premium ||
+  `✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨
 
 📌 ᴘʀɪᴄɪɴɢ:  
 ▸ ₹19 ┇ 1 ᴡᴇᴇᴋ  

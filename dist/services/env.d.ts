@@ -1,6 +1,7 @@
 import "dotenv/config";
 declare const _default: {
     baseUrl: string;
+    premium: string | undefined;
     apiBaseUrl: string;
     apiFetchToken: string;
     ownerId: number;
@@ -35,5 +36,6 @@ declare const _default: {
     adminIds: number[];
     databaseUrl: string | undefined;
     otherDomain: string;
+    botSupportLink: string | undefined;
 };
 export default _default;

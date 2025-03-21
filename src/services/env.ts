@@ -17,6 +17,7 @@ const baseUrl = env.BASE_URL || "";
 const sortApiKey = env.SHORT_API_KEY || "";
 const howToDownload = env.HOW_TO_DOWNLOAD_MSG_LINK || "";
 const botUserName = env.BOT_USERNAME;
+const premium = env.PREMIUM;
 const port = env.PORT || 8080;
 const forceChannelIds = env.FORCE_CHANNEL_IDS?.split(" ").map(Number) || [];
 const forceGroupIds = env.FORCE_GROUP_IDS?.split(" ").map(Number) || [];
@@ -35,6 +36,7 @@ const collectionOngoing = Number(env.ONGOING_COLLECTION) || "";
 const collectionAIOBackup = Number(env.COLLECTION_AIO_BACKUP) || "";
 const jwtSecret = env.JWT_SECRET || "randomSecretString";
 const howToGenerateToken = env.HOW_TO_GENERATE_TOKEN;
+const botSupportLink = env.botSupportLink;
 const apiBaseUrl = env.API_BASE_URL || "";
 const apiFetchToken = env.API_FETCH_TOKEN || "";
 
@@ -47,6 +49,7 @@ if (!adminIds) {
 }
 export default {
   baseUrl,
+  premium,
   apiBaseUrl,
   apiFetchToken,
   ownerId,
@@ -81,4 +84,5 @@ export default {
   adminIds,
   databaseUrl,
   otherDomain,
+  botSupportLink,
 };
