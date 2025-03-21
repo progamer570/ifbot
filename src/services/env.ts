@@ -36,7 +36,7 @@ const collectionOngoing = Number(env.ONGOING_COLLECTION) || "";
 const collectionAIOBackup = Number(env.COLLECTION_AIO_BACKUP) || "";
 const jwtSecret = env.JWT_SECRET || "randomSecretString";
 const howToGenerateToken = env.HOW_TO_GENERATE_TOKEN;
-const botSupportLink = env.botSupportLink;
+const botSupportLink = env.BOT_SUPPORT_LINK;
 const apiBaseUrl = env.API_BASE_URL || "";
 const apiFetchToken = env.API_FETCH_TOKEN || "";
 
