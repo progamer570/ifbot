@@ -184,7 +184,7 @@ export default {
                         _w.label = 24;
                     case 24:
                         _w.trys.push([24, 30, , 31]);
-                        message = "";
+                        message = "?";
                         firstName = (((_l = (_k = ctx.message) === null || _k === void 0 ? void 0 : _k.from.first_name) === null || _l === void 0 ? void 0 : _l.replace(/[^a-zA-Z0-9]/g, "")) || "User").trim();
                         switch (callbackData) {
                             case "features":

@@ -17,6 +17,7 @@ declare const _default: {
     webhookDomain: string | undefined;
     port: string | number;
     channelSourceLink: string | undefined;
+    premiumPlansLink: string | undefined;
     join: string;
     howToGenerateToken: string | undefined;
     backup: string;
@@ -37,5 +38,6 @@ declare const _default: {
     databaseUrl: string | undefined;
     otherDomain: string;
     botSupportLink: string | undefined;
+    upiId: string;
 };
 export default _default;

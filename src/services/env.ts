@@ -37,8 +37,12 @@ const collectionAIOBackup = Number(env.COLLECTION_AIO_BACKUP) || "";
 const jwtSecret = env.JWT_SECRET || "randomSecretString";
 const howToGenerateToken = env.HOW_TO_GENERATE_TOKEN;
 const botSupportLink = env.BOT_SUPPORT_LINK;
+const premiumPlansLink = env.PREMIUM_PLANS_LINK;
+
 const apiBaseUrl = env.API_BASE_URL || "";
 const apiFetchToken = env.API_FETCH_TOKEN || "";
+//payment
+const upiId = env.UPI_ID || "";
 
 if (!token) {
   throw Error("Provide TELEGRAM_BOT_TOKEN");
@@ -65,6 +69,7 @@ export default {
   webhookDomain,
   port,
   channelSourceLink,
+  premiumPlansLink,
   join,
   howToGenerateToken,
   backup,
@@ -85,4 +90,5 @@ export default {
   databaseUrl,
   otherDomain,
   botSupportLink,
+  upiId,
 };

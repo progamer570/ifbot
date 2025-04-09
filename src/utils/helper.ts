@@ -2,6 +2,11 @@ import { ReactionType, TelegramEmoji, User } from "telegraf/typings/core/types/t
 import env from "../services/env.js";
 import { CommandContext } from "../interfaces.js";
 import telegram from "../services/telegram.js";
+import { fmt, code, link } from "telegraf/format";
+import { isValidUrl } from "../extra/validation.js";
+import { Markup } from "telegraf";
+
+const upiId = env.upiId || "yourupi@bank";
 
 export async function sendTokenExpiredMessage(
   ctx: CommandContext,
@@ -21,31 +26,39 @@ You can generate a new token once a day, which takes just 30–40 seconds. After
   message += `\nANY PROBLEM CONTACT: [Share Your Problem Here](${
     env.botSupportLink || `tg://user?id=${env.adminIds[0]}`
   })`;
-
+  const keyboard = [
+    [
+      {
+        text: "Click Me To Generate 1-Day Token",
+        url: shortUrl,
+      },
+    ],
+  ];
+  if (env && env.premiumPlansLink && isValidUrl(env.premiumPlansLink)) {
+    keyboard.push([
+      {
+        text: "See Premium Plans",
+        url: env.premiumPlansLink,
+      },
+    ]);
+  }
+  keyboard.push([
+    {
+      text: "Try Again",
+      url: `https://t.me/${env.botUserName}?start=${payload}`.replace(" ", ""),
+    },
+  ]);
   await ctx.reply(message, {
     reply_markup: {
-      inline_keyboard: [
-        [
-          {
-            text: "Click Me To Generate New Token",
-            url: shortUrl,
-          },
-        ],
-        [
-          {
-            text: "Try Again",
-            url: `https://t.me/${env.botUserName}?start=${payload}`.replace(" ", ""),
-          },
-        ],
-      ],
+      inline_keyboard: keyboard,
     },
     parse_mode: "Markdown",
+    reply_parameters: {
+      message_id: ctx.message.message_id,
+    },
     link_preview_options: { is_disabled: true },
   });
 }
-
-import { Markup } from "telegraf";
-import { error } from "console";
 
 export async function sendWelcomeMessage(
   ctx: CommandContext,
@@ -189,9 +202,8 @@ export function convertToTinySubscript(inputText: string): string {
 export function escapeMarkdownV2(text: string): string {
   return text.replace(/[_*[\]()~`>#\+\-=|{}.!]/g, "\\$&");
 }
-export const premiumPlan =
-  env.premium ||
-  `✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨
+export const premiumPlan = fmt`
+✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨
 
 📌 ᴘʀɪᴄɪɴɢ:  
 ▸ ₹19 ┇ 1 ᴡᴇᴇᴋ  
@@ -201,14 +213,18 @@ export const premiumPlan =
 ▸ ₹329 ┇ 1 ʏᴇᴀʀ  
 ▸ ₹1.5ᴋ ┇ ᴠᴀʟɪᴅ ᴛɪʟʟ ᴄʜᴀɴɴᴇʟ ᴇxɪsᴛs  
 
-🔹 ᴘʀᴇᴍɪᴜᴍ ᴄʜᴀɴɴᴇʟ ꜰᴇᴀᴛᴜʀᴇs:  
+🔹 ᴘʀᴇᴍɪᴜᴍ ᴄʜᴀɴɴᴇʟ ꜰᴇᴀᴛᴜʀᴇs: 
+🫳 ɴᴏ ᴅᴀɪʟʏ ᴛᴏᴋᴇɴ ɢᴇɴᴇʀᴀᴛɪᴏɴ ʀᴇǫᴜɪʀᴇᴅ 
+🫳 ɴᴏ ʀᴇǫᴜᴇꜱᴛ ʟɪᴍɪᴛ
+🫳 ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴊᴏɪɴ ᴍᴜʟᴛɪᴘʟᴇ ᴄʜᴀɴɴᴇʟꜱ 
 🫳 ᴀᴄᴄᴇss ᴛᴏ ɴᴇᴡ & ᴏʟᴅ ᴍᴏᴠɪᴇs, ꜱᴇʀɪᴇs, ᴀɴɪᴍᴇ & ᴍᴏʀᴇ  
 🫳 ʜɪɢʜ-ǫᴜᴀʟɪᴛʏ ᴄᴏɴᴛᴇɴᴛ ᴀᴠᴀɪʟᴀʙʟᴇ  
 🫳 ᴅɪʀᴇᴄᴛ ꜰɪʟᴇ ᴅᴏᴡɴʟᴏᴀᴅs 
 🫳 ꜰᴜʟʟ ᴀᴅᴍɪɴ ꜱᴜᴘᴘᴏʀᴛ ꜰᴏʀ ǫᴜᴇʀɪᴇs & ʀᴇǫᴜᴇꜱᴛꜱ
-🫳 ɴᴏ ɴᴇᴇᴅ ᴛᴏ ᴊᴏɪɴ ᴍᴜʟᴛɪᴘʟᴇ ᴄʜᴀɴɴᴇʟꜱ 
 🫳 ᴅɪʀᴇᴄᴛ & ᴀᴅꜱ-ꜰʀᴇᴇ ᴀᴄᴄᴇꜱꜱ
- ɪꜰ ʏᴏᴜ ᴡᴀɴᴛ ᴘʀᴇᴍɪᴜᴍ, ᴄᴏɴᴛᴀᴄᴛ ʜᴇʀᴇ: [ADMIN](tg://user?id=${env.adminIds[0]})  
+
+ᴘᴀʏᴍᴇɴᴛ ᴜᴘɪ: ${code(upiId)}
+ᴀꜰᴛᴇʀ ᴘᴀʏᴍᴇɴᴛ, ꜱᴇɴᴅ ꜱᴄʀᴇᴇɴꜱʜᴏᴛ ᴛᴏ: ${link(`${"Admin"}`, `tg://user?id=${env.adminIds[0]}`)}
 `;
 
 export const developerInfo = `  

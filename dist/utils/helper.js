@@ -1,3 +1,7 @@
+var __makeTemplateObject = (this && this.__makeTemplateObject) || function (cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+};
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -47,9 +51,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import env from "../services/env.js";
 import telegram from "../services/telegram.js";
+import { fmt, code, link } from "telegraf/format";
+import { isValidUrl } from "../extra/validation.js";
+import { Markup } from "telegraf";
+var upiId = env.upiId || "yourupi@bank";
 export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
     return __awaiter(this, void 0, void 0, function () {
-        var firstName, message;
+        var firstName, message, keyboard;
         var _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
@@ -60,24 +68,36 @@ export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
                         message += "Tutorial:\n[TO KNOW HOW TO GENERATE NEW TOKEN](".concat(env.howToGenerateToken, ")");
                     }
                     message += "\nANY PROBLEM CONTACT: [Share Your Problem Here](".concat(env.botSupportLink || "tg://user?id=".concat(env.adminIds[0]), ")");
+                    keyboard = [
+                        [
+                            {
+                                text: "Click Me To Generate 1-Day Token",
+                                url: shortUrl,
+                            },
+                        ],
+                    ];
+                    if (env && env.premiumPlansLink && isValidUrl(env.premiumPlansLink)) {
+                        keyboard.push([
+                            {
+                                text: "See Premium Plans",
+                                url: env.premiumPlansLink,
+                            },
+                        ]);
+                    }
+                    keyboard.push([
+                        {
+                            text: "Try Again",
+                            url: "https://t.me/".concat(env.botUserName, "?start=").concat(payload).replace(" ", ""),
+                        },
+                    ]);
                     return [4 /*yield*/, ctx.reply(message, {
                             reply_markup: {
-                                inline_keyboard: [
-                                    [
-                                        {
-                                            text: "Click Me To Generate New Token",
-                                            url: shortUrl,
-                                        },
-                                    ],
-                                    [
-                                        {
-                                            text: "Try Again",
-                                            url: "https://t.me/".concat(env.botUserName, "?start=").concat(payload).replace(" ", ""),
-                                        },
-                                    ],
-                                ],
+                                inline_keyboard: keyboard,
                             },
                             parse_mode: "Markdown",
+                            reply_parameters: {
+                                message_id: ctx.message.message_id,
+                            },
                             link_preview_options: { is_disabled: true },
                         })];
                 case 1:
@@ -87,7 +107,6 @@ export function sendTokenExpiredMessage(ctx, user, shortUrl, payload) {
         });
     });
 }
-import { Markup } from "telegraf";
 export function sendWelcomeMessage(ctx, user, userId) {
     return __awaiter(this, void 0, void 0, function () {
         var firstName, message, groupLink, keyboard;
@@ -250,8 +269,7 @@ export function convertToTinySubscript(inputText) {
 export function escapeMarkdownV2(text) {
     return text.replace(/[_*[\]()~`>#\+\-=|{}.!]/g, "\\$&");
 }
-export var premiumPlan = env.premium ||
-    "\u2728 \u1D18\u0280\u1D07\u1D0D\u026A\u1D1C\u1D0D \u1D18\u029F\u1D00\u0274s \u2728\n\n\uD83D\uDCCC \u1D18\u0280\u026A\u1D04\u026A\u0274\u0262:  \n\u25B8 \u20B919 \u2507 1 \u1D21\u1D07\u1D07\u1D0B  \n\u25B8 \u20B935 \u2507 1 \u1D0D\u1D0F\u0274\u1D1B\u029C  \n\u25B8 \u20B999 \u2507 3 \u1D0D\u1D0F\u0274\u1D1B\u029Cs  \n\u25B8 \u20B9169 \u2507 6 \u1D0D\u1D0F\u0274\u1D1B\u029Cs  \n\u25B8 \u20B9329 \u2507 1 \u028F\u1D07\u1D00\u0280  \n\u25B8 \u20B91.5\u1D0B \u2507 \u1D20\u1D00\u029F\u026A\u1D05 \u1D1B\u026A\u029F\u029F \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F \u1D07x\u026As\u1D1Bs  \n\n\uD83D\uDD39 \u1D18\u0280\u1D07\u1D0D\u026A\u1D1C\u1D0D \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F \uA730\u1D07\u1D00\u1D1B\u1D1C\u0280\u1D07s:  \n\uD83E\uDEF3 \u1D00\u1D04\u1D04\u1D07ss \u1D1B\u1D0F \u0274\u1D07\u1D21 & \u1D0F\u029F\u1D05 \u1D0D\u1D0F\u1D20\u026A\u1D07s, \uA731\u1D07\u0280\u026A\u1D07s, \u1D00\u0274\u026A\u1D0D\u1D07 & \u1D0D\u1D0F\u0280\u1D07  \n\uD83E\uDEF3 \u029C\u026A\u0262\u029C-\u01EB\u1D1C\u1D00\u029F\u026A\u1D1B\u028F \u1D04\u1D0F\u0274\u1D1B\u1D07\u0274\u1D1B \u1D00\u1D20\u1D00\u026A\u029F\u1D00\u0299\u029F\u1D07  \n\uD83E\uDEF3 \u1D05\u026A\u0280\u1D07\u1D04\u1D1B \uA730\u026A\u029F\u1D07 \u1D05\u1D0F\u1D21\u0274\u029F\u1D0F\u1D00\u1D05s \n\uD83E\uDEF3 \uA730\u1D1C\u029F\u029F \u1D00\u1D05\u1D0D\u026A\u0274 \uA731\u1D1C\u1D18\u1D18\u1D0F\u0280\u1D1B \uA730\u1D0F\u0280 \u01EB\u1D1C\u1D07\u0280\u026A\u1D07s & \u0280\u1D07\u01EB\u1D1C\u1D07\uA731\u1D1B\uA731\n\uD83E\uDEF3 \u0274\u1D0F \u0274\u1D07\u1D07\u1D05 \u1D1B\u1D0F \u1D0A\u1D0F\u026A\u0274 \u1D0D\u1D1C\u029F\u1D1B\u026A\u1D18\u029F\u1D07 \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F\uA731 \n\uD83E\uDEF3 \u1D05\u026A\u0280\u1D07\u1D04\u1D1B & \u1D00\u1D05\uA731-\uA730\u0280\u1D07\u1D07 \u1D00\u1D04\u1D04\u1D07\uA731\uA731\n \u026A\uA730 \u028F\u1D0F\u1D1C \u1D21\u1D00\u0274\u1D1B \u1D18\u0280\u1D07\u1D0D\u026A\u1D1C\u1D0D, \u1D04\u1D0F\u0274\u1D1B\u1D00\u1D04\u1D1B \u029C\u1D07\u0280\u1D07: [ADMIN](tg://user?id=".concat(env.adminIds[0], ")  \n");
+export var premiumPlan = fmt(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n\u2728 \u1D18\u0280\u1D07\u1D0D\u026A\u1D1C\u1D0D \u1D18\u029F\u1D00\u0274s \u2728\n\n\uD83D\uDCCC \u1D18\u0280\u026A\u1D04\u026A\u0274\u0262:  \n\u25B8 \u20B919 \u2507 1 \u1D21\u1D07\u1D07\u1D0B  \n\u25B8 \u20B935 \u2507 1 \u1D0D\u1D0F\u0274\u1D1B\u029C  \n\u25B8 \u20B999 \u2507 3 \u1D0D\u1D0F\u0274\u1D1B\u029Cs  \n\u25B8 \u20B9169 \u2507 6 \u1D0D\u1D0F\u0274\u1D1B\u029Cs  \n\u25B8 \u20B9329 \u2507 1 \u028F\u1D07\u1D00\u0280  \n\u25B8 \u20B91.5\u1D0B \u2507 \u1D20\u1D00\u029F\u026A\u1D05 \u1D1B\u026A\u029F\u029F \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F \u1D07x\u026As\u1D1Bs  \n\n\uD83D\uDD39 \u1D18\u0280\u1D07\u1D0D\u026A\u1D1C\u1D0D \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F \uA730\u1D07\u1D00\u1D1B\u1D1C\u0280\u1D07s: \n\uD83E\uDEF3 \u0274\u1D0F \u1D05\u1D00\u026A\u029F\u028F \u1D1B\u1D0F\u1D0B\u1D07\u0274 \u0262\u1D07\u0274\u1D07\u0280\u1D00\u1D1B\u026A\u1D0F\u0274 \u0280\u1D07\u01EB\u1D1C\u026A\u0280\u1D07\u1D05 \n\uD83E\uDEF3 \u0274\u1D0F \u0280\u1D07\u01EB\u1D1C\u1D07\uA731\u1D1B \u029F\u026A\u1D0D\u026A\u1D1B\n\uD83E\uDEF3 \u0274\u1D0F \u0274\u1D07\u1D07\u1D05 \u1D1B\u1D0F \u1D0A\u1D0F\u026A\u0274 \u1D0D\u1D1C\u029F\u1D1B\u026A\u1D18\u029F\u1D07 \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F\uA731 \n\uD83E\uDEF3 \u1D00\u1D04\u1D04\u1D07ss \u1D1B\u1D0F \u0274\u1D07\u1D21 & \u1D0F\u029F\u1D05 \u1D0D\u1D0F\u1D20\u026A\u1D07s, \uA731\u1D07\u0280\u026A\u1D07s, \u1D00\u0274\u026A\u1D0D\u1D07 & \u1D0D\u1D0F\u0280\u1D07  \n\uD83E\uDEF3 \u029C\u026A\u0262\u029C-\u01EB\u1D1C\u1D00\u029F\u026A\u1D1B\u028F \u1D04\u1D0F\u0274\u1D1B\u1D07\u0274\u1D1B \u1D00\u1D20\u1D00\u026A\u029F\u1D00\u0299\u029F\u1D07  \n\uD83E\uDEF3 \u1D05\u026A\u0280\u1D07\u1D04\u1D1B \uA730\u026A\u029F\u1D07 \u1D05\u1D0F\u1D21\u0274\u029F\u1D0F\u1D00\u1D05s \n\uD83E\uDEF3 \uA730\u1D1C\u029F\u029F \u1D00\u1D05\u1D0D\u026A\u0274 \uA731\u1D1C\u1D18\u1D18\u1D0F\u0280\u1D1B \uA730\u1D0F\u0280 \u01EB\u1D1C\u1D07\u0280\u026A\u1D07s & \u0280\u1D07\u01EB\u1D1C\u1D07\uA731\u1D1B\uA731\n\uD83E\uDEF3 \u1D05\u026A\u0280\u1D07\u1D04\u1D1B & \u1D00\u1D05\uA731-\uA730\u0280\u1D07\u1D07 \u1D00\u1D04\u1D04\u1D07\uA731\uA731\n\n\u1D18\u1D00\u028F\u1D0D\u1D07\u0274\u1D1B \u1D1C\u1D18\u026A: ", "\n\u1D00\uA730\u1D1B\u1D07\u0280 \u1D18\u1D00\u028F\u1D0D\u1D07\u0274\u1D1B, \uA731\u1D07\u0274\u1D05 \uA731\u1D04\u0280\u1D07\u1D07\u0274\uA731\u029C\u1D0F\u1D1B \u1D1B\u1D0F: ", "\n"], ["\n\u2728 \u1D18\u0280\u1D07\u1D0D\u026A\u1D1C\u1D0D \u1D18\u029F\u1D00\u0274s \u2728\n\n\uD83D\uDCCC \u1D18\u0280\u026A\u1D04\u026A\u0274\u0262:  \n\u25B8 \u20B919 \u2507 1 \u1D21\u1D07\u1D07\u1D0B  \n\u25B8 \u20B935 \u2507 1 \u1D0D\u1D0F\u0274\u1D1B\u029C  \n\u25B8 \u20B999 \u2507 3 \u1D0D\u1D0F\u0274\u1D1B\u029Cs  \n\u25B8 \u20B9169 \u2507 6 \u1D0D\u1D0F\u0274\u1D1B\u029Cs  \n\u25B8 \u20B9329 \u2507 1 \u028F\u1D07\u1D00\u0280  \n\u25B8 \u20B91.5\u1D0B \u2507 \u1D20\u1D00\u029F\u026A\u1D05 \u1D1B\u026A\u029F\u029F \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F \u1D07x\u026As\u1D1Bs  \n\n\uD83D\uDD39 \u1D18\u0280\u1D07\u1D0D\u026A\u1D1C\u1D0D \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F \uA730\u1D07\u1D00\u1D1B\u1D1C\u0280\u1D07s: \n\uD83E\uDEF3 \u0274\u1D0F \u1D05\u1D00\u026A\u029F\u028F \u1D1B\u1D0F\u1D0B\u1D07\u0274 \u0262\u1D07\u0274\u1D07\u0280\u1D00\u1D1B\u026A\u1D0F\u0274 \u0280\u1D07\u01EB\u1D1C\u026A\u0280\u1D07\u1D05 \n\uD83E\uDEF3 \u0274\u1D0F \u0280\u1D07\u01EB\u1D1C\u1D07\uA731\u1D1B \u029F\u026A\u1D0D\u026A\u1D1B\n\uD83E\uDEF3 \u0274\u1D0F \u0274\u1D07\u1D07\u1D05 \u1D1B\u1D0F \u1D0A\u1D0F\u026A\u0274 \u1D0D\u1D1C\u029F\u1D1B\u026A\u1D18\u029F\u1D07 \u1D04\u029C\u1D00\u0274\u0274\u1D07\u029F\uA731 \n\uD83E\uDEF3 \u1D00\u1D04\u1D04\u1D07ss \u1D1B\u1D0F \u0274\u1D07\u1D21 & \u1D0F\u029F\u1D05 \u1D0D\u1D0F\u1D20\u026A\u1D07s, \uA731\u1D07\u0280\u026A\u1D07s, \u1D00\u0274\u026A\u1D0D\u1D07 & \u1D0D\u1D0F\u0280\u1D07  \n\uD83E\uDEF3 \u029C\u026A\u0262\u029C-\u01EB\u1D1C\u1D00\u029F\u026A\u1D1B\u028F \u1D04\u1D0F\u0274\u1D1B\u1D07\u0274\u1D1B \u1D00\u1D20\u1D00\u026A\u029F\u1D00\u0299\u029F\u1D07  \n\uD83E\uDEF3 \u1D05\u026A\u0280\u1D07\u1D04\u1D1B \uA730\u026A\u029F\u1D07 \u1D05\u1D0F\u1D21\u0274\u029F\u1D0F\u1D00\u1D05s \n\uD83E\uDEF3 \uA730\u1D1C\u029F\u029F \u1D00\u1D05\u1D0D\u026A\u0274 \uA731\u1D1C\u1D18\u1D18\u1D0F\u0280\u1D1B \uA730\u1D0F\u0280 \u01EB\u1D1C\u1D07\u0280\u026A\u1D07s & \u0280\u1D07\u01EB\u1D1C\u1D07\uA731\u1D1B\uA731\n\uD83E\uDEF3 \u1D05\u026A\u0280\u1D07\u1D04\u1D1B & \u1D00\u1D05\uA731-\uA730\u0280\u1D07\u1D07 \u1D00\u1D04\u1D04\u1D07\uA731\uA731\n\n\u1D18\u1D00\u028F\u1D0D\u1D07\u0274\u1D1B \u1D1C\u1D18\u026A: ", "\n\u1D00\uA730\u1D1B\u1D07\u0280 \u1D18\u1D00\u028F\u1D0D\u1D07\u0274\u1D1B, \uA731\u1D07\u0274\u1D05 \uA731\u1D04\u0280\u1D07\u1D07\u0274\uA731\u029C\u1D0F\u1D1B \u1D1B\u1D0F: ", "\n"])), code(upiId), link("".concat("Admin"), "tg://user?id=".concat(env.adminIds[0])));
 export var developerInfo = "  \n\u2023 \u1D05\u1D07\u1D20\u1D07\u029F\u1D0F\u1D18\u1D07\u0280 : \u1D00\u0274\u1D0D\u1D0F\u029F  \n\u2023 \u026A\u1D05 : [\u1D00\u0274\u1D0D\u1D0F\u029F](t.me/eywwi)  \n\u2023 \u029F\u026A\u0299\u0280\u1D00\u0280\u028F : \u1D1B\u1D07\u029F\u1D07\u0262\u0280\u1D00\uA730  \n\u2023 \u029F\u1D00\u0274\u0262\u1D1C\u1D00\u0262\u1D07 : \u1D1Bs  \n\u2023 \u1D05\u1D00\u1D1B\u1D00\u0299\u1D00s\u1D07 : \u1D0D\u1D0F\u0274\u0262\u1D0F\u1D05\u0299  \n\u2023 \u029C\u1D0Fs\u1D1B\u1D07\u1D05 \u1D0F\u0274 : \u1D00\u029F\u029F \u1D21\u1D07\u0299  \n";
 export var helpMessage = "  \n\u2728 \u029C\u1D0F\u1D21 \u1D1B\u1D0F \u0280\u1D07\u01EB\u1D1C\u1D07\uA731\u1D1B \u1D05\u0280\u1D00\u1D0D\u1D00\uA731 & \u1D0D\u1D0F\u1D20\u026A\u1D07\uA731 \u2728  \n\n1\uFE0F\u20E3 \uA731\u1D07\u1D00\u0280\u1D04\u029C \u1D1B\u029C\u1D07 \u1D04\u1D0F\u0280\u0280\u1D07\u1D04\u1D1B \u0274\u1D00\u1D0D\u1D07 \u1D0F\u0274 \u0262\u1D0F\u1D0F\u0262\u029F\u1D07.  \n2\uFE0F\u20E3 \uA731\u1D07\u0274\u1D05 \u1D1B\u029C\u1D07 \u0274\u1D00\u1D0D\u1D07 \u026A\u0274 \u1D1B\u029C\u1D07 \u0262\u0280\u1D0F\u1D1C\u1D18.  \n3\uFE0F\u20E3 \u1D1C\uA731\u1D07 \u1D1B\u029C\u026A\uA731 \uA730\u1D0F\u0280\u1D0D\u1D00\u1D1B:  \n\n\uD83D\uDE80 \uA730\u1D0F\u029F\u029F\u1D0F\u1D21 \u1D1B\u029C\u1D07\uA731\u1D07 \uA731\u1D1B\u1D07\u1D18\uA731!  \n";
 export function getInviteMessage(username, userId) {
@@ -264,3 +282,4 @@ export function getInviteMessage(username, userId) {
         "\uD83D\uDCCA\u1D04\u029C\u1D07\u1D04\u1D0B \u028F\u1D0F\u1D1C\u0280 \u026A\u0274\u1D20\u026A\u1D1B\u1D07 \u1D18\u0280\u1D0F\u0262\u0280\u1D07ss: /myinvites\n" +
         "\u1D1B\u1D0F s\u1D07\u1D07 \u1D1B\u029C\u1D07 \u1D1B\u1D0F\u1D18 \u026A\u0274\u1D20\u026A\u1D1B\u1D07\u0280s: /myinvitestatus\n");
 }
+var templateObject_1;

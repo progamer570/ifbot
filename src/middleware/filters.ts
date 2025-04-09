@@ -14,6 +14,7 @@ import {
   premiumPlan,
 } from "../utils/helper.js";
 import telegram from "../services/telegram.js";
+import { FmtString } from "telegraf/format.js";
 
 export default {
   async private(ctx: Context, next: () => void) {
@@ -116,7 +117,7 @@ export default {
     if (ctx.callbackQuery && "data" in ctx.callbackQuery) {
       const callbackData = ctx.callbackQuery.data;
       try {
-        let message = "";
+        let message: string | FmtString = "?";
         const firstName = (
           ctx.message?.from.first_name?.replace(/[^a-zA-Z0-9]/g, "") || "User"
         ).trim();
