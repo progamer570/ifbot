@@ -21,7 +21,7 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
   }
 
   // Check if the user is an admin
-  if (!auth.isAdmin(userId)) {
+  if (!auth.isOwner(userId)) {
     return ctx.reply("Only admins can broadcast messages.");
   }
 
