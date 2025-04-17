@@ -57,7 +57,7 @@ export default function myBroadcastHandler(ctx) {
                         return [2 /*return*/, ctx.reply("This command can only be used in private chats.")];
                     }
                     // Check if the user is an admin
-                    if (!auth.isAdmin(userId)) {
+                    if (!auth.isOwner(userId)) {
                         return [2 /*return*/, ctx.reply("Only admins can broadcast messages.")];
                     }
                     // Handle cancel command
