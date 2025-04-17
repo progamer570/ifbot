@@ -21,7 +21,7 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
   }
 
   // Check if the user is an admin
-  if (!auth.isAdmin(userId)) {
+  if (!auth.isOwner(userId)) {
     return ctx.reply("Only admins can broadcast messages.");
   }
 
@@ -62,7 +62,6 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
             broadcastActive = true;
             break;
           }
-
           await ctx.telegram.copyMessage(user, ctx.chat!.id, referencedMessage.message_id);
           successCount++;
         } catch (error) {
