@@ -30,8 +30,8 @@ export const makeButtons = (link: string, next: string, prev: string) => {
   return {
     inline_keyboard: [
       [
-        { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
-        { text: '𝗇𝖾𝗑𝗍', callback_data: next },
+        { text: '𝐏𝐑𝐄𝐕', callback_data: prev },
+        { text: '𝐍𝐄𝐗𝐓', callback_data: next },
       ],
       [{ text: '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗', url: link }],
       [{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗣', url: `${env.backup}` }],
@@ -56,8 +56,8 @@ export const makeInviteButtons = (
 
   if (totalInvitesNumber > 40) {
     inlineKeyboard.push([
-      { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
-      { text: '𝗇𝖾𝗑𝗍', callback_data: next },
+      { text: '𝐏𝐑𝐄𝐕', callback_data: prev },
+      { text: '𝐍𝐄𝐗𝐓', callback_data: next },
     ]);
   }
 
@@ -95,9 +95,9 @@ export const makeAdminButtons = (link: string, next: string, prev: string) => {
   return {
     inline_keyboard: [
       [
-        { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
+        { text: '𝐏𝐑𝐄𝐕', callback_data: prev },
+        { text: '𝐍𝐄𝐗𝐓', callback_data: next },
         { text: '𝗚𝗲𝘁 𝗧𝗵𝗶𝘀', url: link },
-        { text: '𝗇𝖾𝗑𝗍', callback_data: next },
       ],
       [
         { text: '𝗗𝗲𝗹𝗲𝘁𝗲 𝗧𝗵𝗶𝘀', callback_data: 'delete' },

@@ -29,8 +29,8 @@ export var makeButtons = function (link, next, prev) {
     return {
         inline_keyboard: [
             [
-                { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
-                { text: '𝗇𝖾𝗑𝗍', callback_data: next },
+                { text: '𝐏𝐑𝐄𝐕', callback_data: prev },
+                { text: '𝐍𝐄𝐗𝐓', callback_data: next },
             ],
             [{ text: '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗', url: link }],
             [{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗣', url: "".concat(env.backup) }],
@@ -48,8 +48,8 @@ export var makeInviteButtons = function (link, totalInvites, next, prev) {
     var inlineKeyboard = [];
     if (totalInvitesNumber > 40) {
         inlineKeyboard.push([
-            { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
-            { text: '𝗇𝖾𝗑𝗍', callback_data: next },
+            { text: '𝐏𝐑𝐄𝐕', callback_data: prev },
+            { text: '𝐍𝐄𝐗𝐓', callback_data: next },
         ]);
     }
     inlineKeyboard.push([{ text: "\uD835\uDDE7\uD835\uDDFC\uD835\uDE01\uD835\uDDEE\uD835\uDDF9 \uD835\uDDF6\uD835\uDDFB\uD835\uDE03\uD835\uDDF6\uD835\uDE01\uD835\uDDF2\uD835\uDE00: ".concat(totalInvites), callback_data: totalInvites }], [{ text: '𝗜𝗻𝗰𝗿𝗲𝗮𝘀𝗲 𝗗𝗮𝗶𝗹𝘆 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝘀', url: link }]);
@@ -80,9 +80,9 @@ export var makeAdminButtons = function (link, next, prev) {
     return {
         inline_keyboard: [
             [
-                { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
+                { text: '𝐏𝐑𝐄𝐕', callback_data: prev },
+                { text: '𝐍𝐄𝐗𝐓', callback_data: next },
                 { text: '𝗚𝗲𝘁 𝗧𝗵𝗶𝘀', url: link },
-                { text: '𝗇𝖾𝗑𝗍', callback_data: next },
             ],
             [
                 { text: '𝗗𝗲𝗹𝗲𝘁𝗲 𝗧𝗵𝗶𝘀', callback_data: 'delete' },
