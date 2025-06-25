@@ -135,7 +135,7 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     chunk = links.slice(i, i + chunkSize);
                     formattedLinks = chunk
                         .map(function (item) {
-                        return "[*".concat(escapeMarkdownV2(convertToTinySubscript(processCaption(item.caption.slice(0, 90), ""))), "*](https://t.me/").concat(env.botUserName, "?start=").concat(item.messageId, "-ong)\n");
+                        return "[*".concat(escapeMarkdownV2(convertToTinySubscript(processCaption(item.caption.slice(0, 90), ""))), "*](https://t.me/").concat(env.botUserName, "?start=").concat(item.messageId, "-ong)\n------------------------------\n");
                     })
                         .join("\n");
                     messageText = formattedLinks;

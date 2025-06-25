@@ -29,14 +29,14 @@ export var makeButtons = function (link, next, prev) {
     return {
         inline_keyboard: [
             [
-                { text: "⬅️ Prev", callback_data: prev },
-                { text: "Next ➡️", callback_data: next },
+                { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
+                { text: '𝗇𝖾𝗑𝗍', callback_data: next },
             ],
-            [{ text: "DOWNLOAD", url: link }],
-            [{ text: "❣️❣️ Join Back-UP ❣️❣️", url: "".concat(env.backup) }],
+            [{ text: '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗', url: link }],
+            [{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗣', url: "".concat(env.backup) }],
             [
                 {
-                    text: "❣️❣️ How to Download ❣️❣️",
+                    text: '𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱',
                     url: "".concat(env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"),
                 },
             ],
@@ -48,11 +48,11 @@ export var makeInviteButtons = function (link, totalInvites, next, prev) {
     var inlineKeyboard = [];
     if (totalInvitesNumber > 40) {
         inlineKeyboard.push([
-            { text: "⬅️ Prev", callback_data: prev },
-            { text: "Next ➡️", callback_data: next },
+            { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
+            { text: '𝗇𝖾𝗑𝗍', callback_data: next },
         ]);
     }
-    inlineKeyboard.push([{ text: "Total invites: ".concat(totalInvites), callback_data: totalInvites }], [{ text: "Increase Daily Requests", url: link }]);
+    inlineKeyboard.push([{ text: "\uD835\uDDE7\uD835\uDDFC\uD835\uDE01\uD835\uDDEE\uD835\uDDF9 \uD835\uDDF6\uD835\uDDFB\uD835\uDE03\uD835\uDDF6\uD835\uDE01\uD835\uDDF2\uD835\uDE00: ".concat(totalInvites), callback_data: totalInvites }], [{ text: '𝗜𝗻𝗰𝗿𝗲𝗮𝘀𝗲 𝗗𝗮𝗶𝗹𝘆 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝘀', url: link }]);
     return {
         inline_keyboard: inlineKeyboard,
     };
@@ -60,11 +60,11 @@ export var makeInviteButtons = function (link, totalInvites, next, prev) {
 export var makeCollectionButton = function (link) {
     return {
         inline_keyboard: [
-            [{ text: "Download", url: link }],
-            [{ text: "Join Back-Up", url: env.backup }],
+            [{ text: '𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱', url: link }],
+            [{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗽', url: env.backup }],
             [
                 {
-                    text: "❣️❣️ How to Download ❣️❣️",
+                    text: '𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱',
                     url: "".concat(env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"),
                 },
             ],
@@ -73,20 +73,20 @@ export var makeCollectionButton = function (link) {
 };
 export var makeBackupButton = function () {
     return {
-        inline_keyboard: [[{ text: "Join Back-Up", url: env.backup }]],
+        inline_keyboard: [[{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗽', url: env.backup }]],
     };
 };
 export var makeAdminButtons = function (link, next, prev) {
     return {
         inline_keyboard: [
             [
-                { text: "⬅️ Prev", callback_data: prev },
-                { text: "Get This", url: link },
-                { text: "Next ➡️", callback_data: next },
+                { text: '𝗉𝗋𝖾𝗏', callback_data: prev },
+                { text: '𝗚𝗲𝘁 𝗧𝗵𝗶𝘀', url: link },
+                { text: '𝗇𝖾𝗑𝗍', callback_data: next },
             ],
             [
-                { text: "Delete This", callback_data: "delete" },
-                { text: "Edit This", callback_data: "edit" },
+                { text: '𝗗𝗲𝗹𝗲𝘁𝗲 𝗧𝗵𝗶𝘀', callback_data: 'delete' },
+                { text: '𝗘𝗱𝗶𝘁 𝗧𝗵𝗶𝘀', callback_data: 'edit' },
             ],
         ],
     };
@@ -95,23 +95,23 @@ export var editAnimeButtons = function () {
     return {
         inline_keyboard: [
             [
-                { text: "Edit anime Name", callback_data: "name" },
-                { text: "Edit anime Name", callback_data: "genres" },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗡𝗮𝗺𝗲', callback_data: 'name' },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗚𝗲𝗻𝗿𝗲𝘀', callback_data: 'genres' },
             ],
             [
-                { text: "Edit anime Season", callback_data: "season" },
-                { text: "Edit anime quality", callback_data: "quality" },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗦𝗲𝗮𝘀𝗼𝗻', callback_data: 'season' },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗾𝘂𝗮𝗹𝗶𝘁𝘆', callback_data: 'quality' },
             ],
             [
-                { text: "Edit anime Total Eps", callback_data: "totaleps" },
-                { text: "Edit anime language", callback_data: "language" },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗧𝗼𝘁𝗮𝗹 𝗘𝗽𝘀', callback_data: 'totaleps' },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗹𝗮𝗻𝗴𝘂𝗮𝗴𝗲', callback_data: 'language' },
             ],
             [
-                { text: "Edit anime Subtitle", callback_data: "subtitle" },
-                { text: "Edit anime Poster", callback_data: "poster" },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗦𝘂𝗯𝘁𝗶𝘁𝗹𝗲', callback_data: 'subtitle' },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗣𝗼𝘀𝘁𝗲𝗿', callback_data: 'poster' },
             ],
-            [{ text: "Edit anime Genres", callback_data: "genres" }],
-            [{ text: "Add Next Episodes Of this anime", callback_data: "add" }],
+            [{ text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗚𝗲𝗻𝗿𝗲𝘀', callback_data: 'genres' }],
+            [{ text: '𝗔𝗱𝗱 𝗡𝗲𝘅𝘁 𝗘𝗽𝗶𝘀𝗼𝗱𝗲𝘀 𝗢𝗳 𝘁𝗵𝗶𝘀 𝗮𝗻𝗶𝗺𝗲', callback_data: 'add' }],
         ],
     };
 };
@@ -119,32 +119,32 @@ export var editMovieButton = function () {
     return {
         inline_keyboard: [
             [
-                { text: "Edit Movie Name", callback_data: "name" },
-                { text: "Edit Movie Year", callback_data: "year" },
+                { text: '𝗘𝗱𝗶𝘁 𝗠𝗼𝘃𝗶𝗲 𝗡𝗮𝗺𝗲', callback_data: 'name' },
+                { text: '𝗘𝗱𝗶𝘁 𝗠𝗼𝘃𝗶𝗲 𝗬𝗲𝗮𝗿', callback_data: 'year' },
             ],
             [
-                { text: "Edit anime quality", callback_data: "quality" },
-                { text: "Edit anime language", callback_data: "language" },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗾𝘂𝗮𝗹𝗶𝘁𝘆', callback_data: 'quality' },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗹𝗮𝗻𝗴𝘂𝗮𝗴𝗲', callback_data: 'language' },
             ],
             [
-                { text: "Edit anime Subtitle", callback_data: "subtitle" },
-                { text: "Edit anime Rating", callback_data: "rating" },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗦𝘂𝗯𝘁𝗶𝘁𝗹𝗲', callback_data: 'subtitle' },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗥𝗮𝘁𝗶𝗻𝗴', callback_data: 'rating' },
             ],
             [
-                { text: "Edit anime Poster", callback_data: "poster" },
-                { text: "Edit anime Synopsis", callback_data: "synopsis" },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗣𝗼𝘀𝘁𝗲𝗿', callback_data: 'poster' },
+                { text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗦𝘆𝗻𝗼𝗽𝘀𝗶𝘀', callback_data: 'synopsis' },
             ],
-            [{ text: "Edit anime Genres", callback_data: "genres" }],
-            [{ text: "Add Next Episodes Of this anime", callback_data: "add" }],
+            [{ text: '𝗘𝗱𝗶𝘁 𝗮𝗻𝗶𝗺𝗲 𝗚𝗲𝗻𝗿𝗲𝘀', callback_data: 'genres' }],
+            [{ text: '𝗔𝗱𝗱 𝗡𝗲𝘅𝘁 𝗘𝗽𝗶𝘀𝗼𝗱𝗲𝘀 𝗢𝗳 𝘁𝗵𝗶𝘀 𝗮𝗻𝗶𝗺𝗲', callback_data: 'add' }],
         ],
     };
 };
 export var editAIOButtons = function () {
     return {
         inline_keyboard: [
-            [{ text: "Edit The Caption", callback_data: "caption" }],
-            [{ text: "Edit The Poster", callback_data: "poster" }],
-            [{ text: "Add Next Episodes Of this Drama", callback_data: "add" }],
+            [{ text: '𝗘𝗱𝗶𝘁 𝗧𝗵𝗲 𝗖𝗮𝗽𝘁𝗶𝗼𝗻', callback_data: 'caption' }],
+            [{ text: '𝗘𝗱𝗶𝘁 𝗧𝗵𝗲 𝗣𝗼𝘀𝘁𝗲𝗿', callback_data: 'poster' }],
+            [{ text: '𝗔𝗱𝗱 𝗡𝗲𝘅𝘁 𝗘𝗽𝗶𝘀𝗼𝗱𝗲𝘀 𝗢𝗳 𝘁𝗵𝗶𝘀 𝗗𝗿𝗮𝗺𝗮', callback_data: 'add' }],
         ],
     };
 };
@@ -152,74 +152,74 @@ export var editDramaButtons = function () {
     return {
         inline_keyboard: [
             [
-                { text: "Edit Drama Name", callback_data: "name" },
-                { text: "Edit Drama Year", callback_data: "year" },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗡𝗮𝗺𝗲', callback_data: 'name' },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗬𝗲𝗮𝗿', callback_data: 'year' },
             ],
             [
-                { text: "Edit Drama Season", callback_data: "season" },
-                { text: "Edit Drama quality", callback_data: "quality" },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗦𝗲𝗮𝘀𝗼𝗻', callback_data: 'season' },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗾𝘂𝗮𝗹𝗶𝘁𝘆', callback_data: 'quality' },
             ],
             [
-                { text: "Edit Drama Total Eps", callback_data: "totaleps" },
-                { text: "Edit Drama language", callback_data: "language" },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗧𝗼𝘁𝗮𝗹 𝗘𝗽𝘀', callback_data: 'totaleps' },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗹𝗮𝗻𝗴𝘂𝗮𝗴𝗲', callback_data: 'language' },
             ],
             [
-                { text: "Edit Drama Subtitle", callback_data: "subtitle" },
-                { text: "Edit Drama Rating", callback_data: "rating" },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗦𝘂𝗯𝘁𝗶𝘁𝗹𝗲', callback_data: 'subtitle' },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗥𝗮𝘁𝗶𝗻𝗴', callback_data: 'rating' },
             ],
             [
-                { text: "Edit Drama Poster", callback_data: "poster" },
-                { text: "Edit Drama Synopsis", callback_data: "synopsis" },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗣𝗼𝘀𝘁𝗲𝗿', callback_data: 'poster' },
+                { text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗦𝘆𝗻𝗼𝗽𝘀𝗶𝘀', callback_data: 'synopsis' },
             ],
-            [{ text: "Edit Drama Genres", callback_data: "genres" }],
-            [{ text: "Add Next Episodes Of this Drama", callback_data: "add" }],
+            [{ text: '𝗘𝗱𝗶𝘁 𝗗𝗿𝗮𝗺𝗮 𝗚𝗲𝗻𝗿𝗲𝘀', callback_data: 'genres' }],
+            [{ text: '𝗔𝗱𝗱 𝗡𝗲𝘅𝘁 𝗘𝗽𝗶𝘀𝗼𝗱𝗲𝘀 𝗢𝗳 𝘁𝗵𝗶𝘀 𝗗𝗿𝗮𝗺𝗮', callback_data: 'add' }],
         ],
     };
 };
 export function customButtonsKeyboard() {
     return Markup.keyboard([
-        [" ", "😎 Popular"],
-        ["☸ Setting", "📞 Feedback"],
-        ["📢 Ads", "⭐️ Rate us", "👥 Share"],
+        [' ', '𝗣𝗼𝗽𝘂𝗹𝗮𝗿'],
+        ['𝗦𝗲𝘁𝘁𝗶𝗻𝗴', '𝗙𝗲𝗲𝗱𝗯𝗮𝗰𝗸'],
+        ['𝗔𝗱𝘀', '𝗥𝗮𝘁𝗲 𝘂𝘀', '𝗦𝗵𝗮𝗿𝗲'],
     ])
         .oneTime()
         .resize();
 }
 export function specialButtonsKeyboard() {
     return Markup.keyboard([
-        Markup.button.contactRequest("Send contact"),
-        Markup.button.locationRequest("Send location"),
+        Markup.button.contactRequest('𝗦𝗲𝗻𝗱 𝗰𝗼𝗻𝘁𝗮𝗰𝘁'),
+        Markup.button.locationRequest('𝗦𝗲𝗻𝗱 𝗹𝗼𝗰𝗮𝘁𝗶𝗼𝗻'),
     ]).resize();
 }
 export function pyramidKeyboard() {
-    return Markup.keyboard(["one", "two", "three", "four", "five", "six"], {
+    return Markup.keyboard(['𝗼𝗻𝗲', '𝘁𝘄𝗼', '𝘁𝗵𝗿𝗲𝗲', '𝗳𝗼𝘂𝗿', '𝗳𝗶𝘃𝗲', '𝘀𝗶𝘅'], {
         wrap: function (btn, index, currentRow) { return currentRow.length >= (index + 1) / 2; },
     });
 }
 export function simpleHTMLKeyboard() {
-    return Markup.keyboard(["Coke", "Pepsi"]);
+    return Markup.keyboard(['𝗖𝗼𝗸𝗲', '𝗣𝗲𝗽𝘀𝗶']);
 }
 export function inlineHTMLKeyboard() {
     return Markup.inlineKeyboard([
-        Markup.button.callback("Coke", "Coke"),
-        Markup.button.callback("Pepsi", "Pepsi"),
+        Markup.button.callback('𝗖𝗼𝗸𝗲', 'Coke'),
+        Markup.button.callback('𝗣𝗲𝗽𝘀𝗶', 'Pepsi'),
     ]);
 }
 export function randomInlineKeyboard() {
     return Markup.inlineKeyboard([
-        Markup.button.callback("Coke", "Coke"),
-        Markup.button.callback("Dr Pepper", "Dr Pepper", Math.random() > 0.5),
-        Markup.button.callback("Pepsi", "Pepsi"),
+        Markup.button.callback('𝗖𝗼𝗸𝗲', 'Coke'),
+        Markup.button.callback('𝗗𝗿 𝗣𝗲𝗽𝗽𝗲𝗿', 'Dr Pepper', Math.random() > 0.5),
+        Markup.button.callback('𝗣𝗲𝗽𝘀𝗶', 'Pepsi'),
     ]);
 }
 export function captionInlineKeyboard() {
     return Markup.inlineKeyboard([
-        Markup.button.callback("Plain", "plain"),
-        Markup.button.callback("Italic", "italic"),
+        Markup.button.callback('𝗣𝗹𝗮𝗶𝗻', 'plain'),
+        Markup.button.callback('𝗜𝘁𝗮𝗹𝗶𝗰', 'italic'),
     ]);
 }
 export function wrapKeyboard(columns) {
-    return Markup.keyboard(["one", "two", "three", "four", "five", "six"], {
+    return Markup.keyboard(['𝗼𝗻𝗲', '𝘁𝘄𝗼', '𝘁𝗵𝗿𝗲𝗲', '𝗳𝗼𝘂𝗿', '𝗳𝗶𝘃𝗲', '𝘀𝗶𝘅'], {
         columns: columns,
     });
 }

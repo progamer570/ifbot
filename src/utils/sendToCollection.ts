@@ -73,7 +73,7 @@ export async function sendToCollectionOng2(
             (item) =>
               `[*${escapeMarkdownV2(
                 convertToTinySubscript(processCaption(item.caption.slice(0, 90), ""))
-              )}*](https://t.me/${env.botUserName}?start=${item.messageId}-ong)\n`
+              )}*](https://t.me/${env.botUserName}?start=${item.messageId}-ong)\n------------------------------\n`
           )
           .join("\n");
 

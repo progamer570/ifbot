@@ -20,7 +20,7 @@ export function processCaption(oldCaption: string, join: string): string {
   if (mkv !== -1) {
     newCaption = newCaption.substring(0, mkv + 3);
   }
-  return newCaption.trim() + `\nＪＯＩＮ : @${join}`;
+  return newCaption.trim() + join ? `\nＪＯＩＮ : @${join}` : newCaption.trim();
 }
 export function editAIOTitle(oldCaption: string, join: string): string {
   let newCaption: string = "";

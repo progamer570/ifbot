@@ -5,7 +5,6 @@ import database from "../../services/database.js";
 import AIOWizardContext from "./ongWizardContext.js";
 import { sendToCollectionOng2, sendToLogGroup } from "../../utils/sendToCollection.js";
 import env from "../../services/env.js";
-import getRandomId from "../../extra/getRandomId.js";
 
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 
@@ -68,7 +67,7 @@ async function startCopying(ctx: AIOWizardContext) {
           env.logGroupId,
           getUserLinkMessage(`Added eps To AIO ${selectedShareId} by `, user)
         );
-      } catch {}
+      } catch { }
       return await ctx.scene.leave();
     } else {
       await ctx.reply(
