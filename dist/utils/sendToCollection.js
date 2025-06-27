@@ -126,6 +126,7 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     if (!photo) {
                         return [2 /*return*/];
                     }
+                    console.log(links, "links");
                     chunkSize = 10;
                     i = 0;
                     _a.label = 6;
@@ -138,7 +139,7 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     })
                         .join("\n\n");
                     messageText = formattedLinks;
-                    return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, photo, {
+                    return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, "https://t.me/mypostercollection/10435", {
                             caption: messageText,
                             parse_mode: "MarkdownV2",
                             reply_markup: keyboard.makeBackupButton(),

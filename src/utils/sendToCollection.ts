@@ -63,6 +63,7 @@ export async function sendToCollectionOng2(
       if (!photo) {
         return;
       }
+      console.log(links, "links")
       const chunkSize = 10;
       for (let i = 0; i < links.length; i += chunkSize) {
         const chunk = links.slice(i, i + chunkSize);
@@ -77,7 +78,7 @@ export async function sendToCollectionOng2(
 
         const messageText = formattedLinks;
 
-        await telegram.app.telegram.sendPhoto(chat, photo, {
+        await telegram.app.telegram.sendPhoto(chat, "https://t.me/mypostercollection/10435", {
           caption: messageText,
           parse_mode: "MarkdownV2",
           reply_markup: keyboard.makeBackupButton(),

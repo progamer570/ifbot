@@ -58,6 +58,7 @@ async function startCopying(ctx: AIOWizardContext) {
           links,
           selectedShareId.toString()
         );
+
         const user = {
           id: ctx.from.id,
           firstname: ctx.from.first_name,
@@ -67,6 +68,11 @@ async function startCopying(ctx: AIOWizardContext) {
           env.logGroupId,
           getUserLinkMessage(`Added eps To AIO ${selectedShareId} by `, user)
         );
+        const session = ctx.session as AIOSessionData;
+        session.captions = []
+        session.msgIds = []
+
+
       } catch { }
       return await ctx.scene.leave();
     } else {
@@ -84,6 +90,7 @@ async function startCopying(ctx: AIOWizardContext) {
       }
       session.captions = session.captions || [];
       session.captions.push(caption);
+      console.log(caption, "caption")
     }
   }
 }

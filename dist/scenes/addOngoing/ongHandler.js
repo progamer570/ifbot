@@ -42,7 +42,7 @@ import env from "../../services/env.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 function startCopying(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var selectedShareId, _a, msgIds, captions, forwardedMessageIds_1, links, user, _b, session, caption;
+        var selectedShareId, _a, msgIds, captions, forwardedMessageIds_1, links, user, session, _b, session, caption;
         var _c, _d;
         return __generator(this, function (_e) {
             switch (_e.label) {
@@ -104,6 +104,9 @@ function startCopying(ctx) {
                     return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Added eps To AIO ".concat(selectedShareId, " by "), user))];
                 case 11:
                     _e.sent();
+                    session = ctx.session;
+                    session.captions = [];
+                    session.msgIds = [];
                     return [3 /*break*/, 13];
                 case 12:
                     _b = _e.sent();
@@ -122,6 +125,7 @@ function startCopying(ctx) {
                     }
                     session.captions = session.captions || [];
                     session.captions.push(caption);
+                    console.log(caption, "caption");
                     _e.label = 17;
                 case 17: return [2 /*return*/];
             }

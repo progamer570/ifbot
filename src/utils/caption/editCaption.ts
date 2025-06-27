@@ -22,8 +22,9 @@ export function processCaption(oldCaption: string, join: string): string {
   }
   if (!join) {
     return newCaption.trim()
+  } else {
+    return newCaption.trim() + `\nＪＯＩＮ : @${join}`;
   }
-  return newCaption.trim() + `\nＪＯＩＮ : @${join}`;
 }
 export function editAIOTitle(oldCaption: string, join: string): string {
   let newCaption: string = "";
