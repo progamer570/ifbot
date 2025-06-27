@@ -16,16 +16,15 @@ export async function sendTokenExpiredMessage(
 ): Promise<void> {
   const firstName = (user.first_name?.replace(/[^a-zA-Z0-9]/g, "") || "User").trim();
   let message = `Hello ${firstName}, your token has expired.  
-You can generate a new token once a day, which takes just 30–40 seconds. After that, you’ll enjoy unlimited requests for the next 24 hours!
+You can generate a new token once a day, which takes just 30–40 seconds. After that, you'll enjoy unlimited requests for the next 24 hours!
 `;
 
   if (env.howToGenerateToken) {
     message += `Tutorial:\n[TO KNOW HOW TO GENERATE NEW TOKEN](${env.howToGenerateToken})`;
   }
 
-  message += `\nANY PROBLEM CONTACT: [Share Your Problem Here](${
-    env.botSupportLink || `tg://user?id=${env.adminIds[0]}`
-  })`;
+  message += `\nANY PROBLEM CONTACT: [Share Your Problem Here](${env.botSupportLink || `tg://user?id=${env.adminIds[0]}`
+    })`;
   const keyboard = [
     [
       {
@@ -200,7 +199,9 @@ export function convertToTinySubscript(inputText: string): string {
   return tinySubscriptText.replace(/[()\[\]\+\-]/g, " ").trim();
 }
 export function escapeMarkdownV2(text: string): string {
-  return text.replace(/[_*[\]()~`>#\+\-=|{}.!]/g, "\\$&");
+  // Double-escape all MarkdownV2 special characters for Telegram
+  // _ * [ ] ( ) ~ ` > # + - = | { } . !
+  return text.replace(/([_\*\[\]\(\)~`>#+\-=|{}.!])/g, '\\$1');
 }
 export const premiumPlan = fmt`
 ✨ ᴘʀᴇᴍɪᴜᴍ ᴘʟᴀɴs ✨

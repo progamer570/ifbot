@@ -123,7 +123,6 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                         })];
                 case 5:
                     photo = _a.sent();
-                    console.log(photo + "hvjh");
                     if (!photo) {
                         return [2 /*return*/];
                     }
@@ -135,9 +134,9 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     chunk = links.slice(i, i + chunkSize);
                     formattedLinks = chunk
                         .map(function (item) {
-                        return "[*".concat(escapeMarkdownV2(convertToTinySubscript(processCaption(item.caption.slice(0, 90), ""))), "*](https://t.me/").concat(env.botUserName, "?start=").concat(item.messageId, "-ong)\n------------------------------\n");
+                        return "[".concat(escapeMarkdownV2(convertToTinySubscript(processCaption(item.caption.slice(0, 90), ""))), "](https://t.me/").concat(env.botUserName, "?start=").concat(item.messageId, "-ong)");
                     })
-                        .join("\n");
+                        .join("\n\n");
                     messageText = formattedLinks;
                     return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, photo, {
                             caption: messageText,

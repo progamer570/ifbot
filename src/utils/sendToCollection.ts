@@ -60,22 +60,20 @@ export async function sendToCollectionOng2(
       const photo = await database.getOngoingMessages(Number(shareId)).then((result) => {
         return result?.aIOPosterID || "";
       });
-      console.log(photo + "hvjh");
       if (!photo) {
         return;
       }
       const chunkSize = 10;
       for (let i = 0; i < links.length; i += chunkSize) {
         const chunk = links.slice(i, i + chunkSize);
-
         const formattedLinks = chunk
           .map(
             (item) =>
-              `[*${escapeMarkdownV2(
+              `[${escapeMarkdownV2(
                 convertToTinySubscript(processCaption(item.caption.slice(0, 90), ""))
-              )}*](https://t.me/${env.botUserName}?start=${item.messageId}-ong)\n------------------------------\n`
+              )}](https://t.me/${env.botUserName}?start=${item.messageId}-ong)`
           )
-          .join("\n");
+          .join("\n\n");
 
         const messageText = formattedLinks;
 
