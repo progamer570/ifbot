@@ -721,11 +721,11 @@ var MongoDB = /** @class */ (function () {
     };
     MongoDB.prototype.addBotPremium = function (userId, duration) {
         return __awaiter(this, void 0, void 0, function () {
-            var regex, match, value, unit, durationMs, subscriptionType, expiresAt, tokenData, error_11;
+            var regex, match, value, unit, durationMs, subscriptionType, expiresAt, tokenData, newTokenData, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 6, , 7]);
                         regex = /^(\d+)([smhd])$/;
                         match = duration.match(regex);
                         if (!match) {
@@ -770,10 +770,20 @@ var MongoDB = /** @class */ (function () {
                         return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
                     case 1:
                         tokenData = _a.sent();
-                        if (!tokenData) {
-                            console.error("Token not found for the user.");
-                            return [2 /*return*/, "Token not found for the user."];
+                        if (!!tokenData) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.manageToken(userId)];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, this.TokenModel.findOne({ userId: userId })];
+                    case 3:
+                        newTokenData = _a.sent();
+                        if (!newTokenData) {
+                            console.error("Failed to retrieve token after generation in addBotPremium.");
+                            return [2 /*return*/, "Failed to add premium. Please try again later."];
                         }
+                        tokenData = newTokenData; // Assign the newly created/fetched tokenData
+                        _a.label = 4;
+                    case 4:
                         tokenData.bot_premium = {
                             is_bot_premium: true,
                             subscriptionType: subscriptionType ? subscriptionType : "Other",
@@ -783,15 +793,15 @@ var MongoDB = /** @class */ (function () {
                             details: "".concat(value, " ").concat(unit),
                         };
                         return [4 /*yield*/, tokenData.save()];
-                    case 2:
+                    case 5:
                         _a.sent();
                         console.log("Premium added for ".concat(userId, ", subscription type: ").concat(subscriptionType, ", expires at ").concat(expiresAt));
                         return [2 /*return*/, "Premium successfully added for ".concat(userId, ". Subscription type: ").concat(subscriptionType, ". Premium will expire on ").concat(expiresAt.toLocaleString(), ".")];
-                    case 3:
+                    case 6:
                         error_11 = _a.sent();
                         console.error("Error adding bot premium:", error_11);
                         return [2 /*return*/, "Error adding bot premium:  + ".concat(error_11)];
-                    case 4: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         });

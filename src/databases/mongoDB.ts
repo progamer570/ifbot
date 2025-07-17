@@ -487,11 +487,16 @@ class MongoDB {
 
       const expiresAt = new Date(Date.now() + durationMs);
 
-      const tokenData = await this.TokenModel.findOne({ userId });
+      let tokenData = await this.TokenModel.findOne({ userId });
 
       if (!tokenData) {
-        console.error("Token not found for the user.");
-        return "Token not found for the user.";
+        await this.manageToken(userId);
+        const newTokenData = await this.TokenModel.findOne({ userId });
+        if (!newTokenData) {
+          console.error("Failed to retrieve token after generation in addBotPremium.");
+          return "Failed to add premium. Please try again later.";
+        }
+        tokenData = newTokenData; // Assign the newly created/fetched tokenData
       }
 
       tokenData.bot_premium = {
