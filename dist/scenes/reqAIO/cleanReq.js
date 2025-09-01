@@ -1,4 +1,4 @@
-var unwantedKeywords = [
+const unwantedKeywords = [
     " sub",
     " subtitle",
     " subtitles",
@@ -15,7 +15,7 @@ var unwantedKeywords = [
     "mkv ",
 ];
 export function cleanString(inputString) {
-    var cleanedString = inputString
+    let cleanedString = inputString
         .replace(".", "")
         .replace(/[^A-Za-z0-9\s]/g, " ") // Special characters ko space se replace karega
         .toLowerCase()
@@ -24,9 +24,8 @@ export function cleanString(inputString) {
         .trim();
     // Common contractions jise remove karna hai (like 'm, 's, 're)
     cleanedString = cleanedString.replace(/\b(?:m|s|re|d|ll|ve|t)\b/gi, " ");
-    for (var _i = 0, unwantedKeywords_1 = unwantedKeywords; _i < unwantedKeywords_1.length; _i++) {
-        var keyword = unwantedKeywords_1[_i];
-        var regex = new RegExp("\\b".concat(keyword, "\\b"), "gi");
+    for (const keyword of unwantedKeywords) {
+        const regex = new RegExp(`\\b${keyword}\\b`, "gi");
         cleanedString = cleanedString.replace(regex, " ");
     }
     cleanedString = cleanedString.replace(/\s+/g, " ").trim();

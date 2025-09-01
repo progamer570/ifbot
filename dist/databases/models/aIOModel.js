@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-export var linkSchema = new Schema({
+export const linkSchema = new Schema({
     episodeNumber: {
         type: Number,
         required: true,
@@ -13,7 +13,7 @@ export var linkSchema = new Schema({
         required: true,
     },
 });
-export var aioSchema = new Schema({
+export const aioSchema = new Schema({
     shareId: {
         type: Number,
         required: true,
@@ -37,6 +37,6 @@ export var aioSchema = new Schema({
     },
     episodes: [linkSchema],
 }, { timestamps: true });
-var DramaModel = mongoose.model("aio", aioSchema);
-export var HindiDramaModel = mongoose.model("hindiDrama", aioSchema);
+const DramaModel = mongoose.model("aio", aioSchema);
+export const HindiDramaModel = mongoose.model("hindiDrama", aioSchema);
 export default DramaModel;

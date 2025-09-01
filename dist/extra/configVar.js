@@ -49,7 +49,7 @@
 // export { myVar };
 ////////////////////////////////////////
 ////////////////////////////// series
-var myVar = {
+const myVar = {
     CHANNEL_SOURCE: -1002091318522,
     CHANNEL_DESTINAION: -1002137615124,
     ADD_PER_REQ: 10,
@@ -63,10 +63,10 @@ var myVar = {
     COPY_FROM: 0,
     MIN_ID: 0,
 };
-var myPCVar = {
+const myPCVar = {
     DESTINAION: " ",
 };
-var myTestVar = {
+const myTestVar = {
     SOURCE: "your_api_key",
     DESTINAION: " ",
     ADD_PER_REQ: 10,

@@ -29,10 +29,10 @@ export function getReplyKeyboardWithRowWidth() {
 //   return Markup.inlineKeyboard([Markup.button.login("Login Now")]);
 // }
 export function getMixedButtonsInlineKeyboard(movieList) {
-    var buttons = movieList.map(function (movie, index) {
+    const buttons = movieList.map((movie, index) => {
         return [
-            Markup.button.callback(movie.title, "selectMovie_".concat(index)),
-            Markup.button.url("More Info", "https://example.com/movies/".concat(index)),
+            Markup.button.callback(movie.title, `selectMovie_${index}`),
+            Markup.button.url("More Info", `https://example.com/movies/${index}`),
         ];
     });
     return Markup.inlineKeyboard(buttons.flat());

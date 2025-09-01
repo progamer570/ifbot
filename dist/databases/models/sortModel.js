@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-export var sort = new Schema({
+export const sort = new Schema({
     shareId: {
         type: Number,
         required: true,
@@ -10,9 +10,9 @@ export var sort = new Schema({
         required: true,
     },
 }, { timestamps: true });
-export var sortSchema = new Schema({
+export const sortSchema = new Schema({
     currentActivePath: String,
     sort: [sort],
 });
-var DramaModel = mongoose.model("sort", sortSchema);
+const DramaModel = mongoose.model("sort", sortSchema);
 export default DramaModel;

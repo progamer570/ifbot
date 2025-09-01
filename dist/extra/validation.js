@@ -5,15 +5,14 @@
  * @param options.requireProtocol - Whether to require "http" or "https" (default: true).
  * @returns boolean - True if the string is a valid URL, false otherwise.
  */
-var isValidUrl = function (string, options) {
-    if (options === void 0) { options = { requireProtocol: true }; }
+const isValidUrl = (string, options = { requireProtocol: true }) => {
     try {
-        var trimmedString = string.trim();
+        const trimmedString = string.trim();
         if (!trimmedString) {
             return false;
         }
-        var url = new URL(trimmedString);
-        var validProtocols = ["http:", "https:"];
+        const url = new URL(trimmedString);
+        const validProtocols = ["http:", "https:"];
         if (options.requireProtocol && !validProtocols.includes(url.protocol)) {
             return false;
         }

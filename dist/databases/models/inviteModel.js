@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-var userSchema = new Schema({
+const userSchema = new Schema({
     userId: { type: String, required: true },
     inviteUsed: {
         type: Number,
@@ -14,5 +14,5 @@ var userSchema = new Schema({
     lastRequestDate: { type: Date, default: Date.now },
     dailyRequests: { type: Number, default: 5 },
 });
-var InviteModel = mongoose.model("InviteUser", userSchema);
+const InviteModel = mongoose.model("InviteUser", userSchema);
 export default InviteModel;

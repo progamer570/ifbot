@@ -5,7 +5,7 @@ import editAIO from "./editAIO/index.js";
 import myInvites from "./myInvites/index.js";
 import addOngoing from "./addOngoing/index.js";
 import createOngoing from "./createOng/index.js";
-var stage = new Scenes.Stage([
+const stage = new Scenes.Stage([
     shareAIO,
     reqAio,
     editAIO,

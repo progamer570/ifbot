@@ -1,5 +1,9 @@
 import logger from "./logger.js";
 
+interface ShortenResponse {
+  shortenedUrl?: string;
+}
+
 export async function shortenUrl(
   baseUrl: string,
   apiToken: string,
@@ -15,7 +19,7 @@ export async function shortenUrl(
       throw new Error(`Failed to shorten URL: ${response.statusText} (Status: ${response.status})`);
     }
 
-    const responseData = await response.json();
+    const responseData = (await response.json()) as ShortenResponse;
     logger.info("Shortening URL response:", responseData);
 
     if (!responseData.shortenedUrl) {

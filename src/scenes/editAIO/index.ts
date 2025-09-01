@@ -18,7 +18,7 @@ import logger from "../../utils/logger.js";
 
 // Create a Wizard Scene
 const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
-  "editAIO",
+  "editAio",
   Composer.on("message", async (ctx) => {
     if ("text" in ctx.message) {
       (ctx.session as PageSessionData).done = false;
@@ -71,7 +71,11 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
     ) {
       const page = (ctx.session as PageSessionData).page || 0;
       const AIOData = (ctx.session as PageSessionData).aIOData;
-      logger.debug("Current page and AIO data length:", (ctx.session as PageSessionData).page || 0, (ctx.session as PageSessionData).aIOData?.length);
+      logger.debug(
+        "Current page and AIO data length:",
+        (ctx.session as PageSessionData).page || 0,
+        (ctx.session as PageSessionData).aIOData?.length
+      );
 
       if (AIOData) {
         if (ctx.callbackQuery.data.startsWith("next")) {
@@ -172,7 +176,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
         await database.deleteAIO(selectedShareId);
         try {
           await deleteToWebsite(selectedShareId);
-        } catch (error) { logger.error("Error deleting AIO from website:", error); }
+        } catch (error) {
+          logger.error("Error deleting AIO from website:", error);
+        }
         await ctx.editMessageText("deleted successfully");
         await ctx.editMessageReplyMarkup({
           inline_keyboard: [[{ text: "deleted", callback_data: "delete" }]],
@@ -189,7 +195,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
             message = `Deleted AIO ${selectedShareId} by [${firstName}: ${userId}](tg://user?id=${userId})`;
           }
           await sendToLogGroup(env.logGroupId, message);
-        } catch (e) { logger.error("Error sending AIO deletion log to group:", e); }
+        } catch (e) {
+          logger.error("Error sending AIO deletion log to group:", e);
+        }
         return await ctx.scene.leave();
       }
     }
@@ -206,7 +214,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
         await updateToWebsite(selectedShareId, false, {
           title: ctx.message.text,
         });
-      } catch (error) { logger.error("Error updating website with new AIO title:", error); }
+      } catch (error) {
+        logger.error("Error updating website with new AIO title:", error);
+      }
       await ctx.reply("edited");
 
       try {
@@ -219,7 +229,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
           env.logGroupId,
           getUserLinkMessage(`Edited AIO Caption ${selectedShareId} by  `, user)
         );
-      } catch (e) { logger.error("Error sending AIO caption edit log to group:", e); }
+      } catch (e) {
+        logger.error("Error sending AIO caption edit log to group:", e);
+      }
       return await ctx.scene.leave();
     } else if (tracker.startsWith("poster") && ctx.message && "photo" in ctx.message) {
       if (ctx.message && "photo" in ctx.message) {
@@ -235,7 +247,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
             imageUrl: webPhotoUrl.replace(`${env.token}`, "token"),
             posterId: photoUrl,
           });
-        } catch (error) { logger.error("Error updating website with new AIO poster:", error); }
+        } catch (error) {
+          logger.error("Error updating website with new AIO poster:", error);
+        }
         try {
           const user = {
             id: ctx.from.id,
@@ -249,7 +263,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
               user
             )
           );
-        } catch (e) { logger.error("Error sending AIO poster edit log to group:", e); }
+        } catch (e) {
+          logger.error("Error sending AIO poster edit log to group:", e);
+        }
         await ctx.reply("edited");
       }
       return await ctx.scene.leave();
@@ -286,7 +302,9 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
               env.logGroupId,
               getUserLinkMessage(`Added eps To AIO ${selectedShareId} by `, user)
             );
-          } catch (e) { logger.error("Error sending AIO addition log to group:", e); }
+          } catch (e) {
+            logger.error("Error sending AIO addition log to group:", e);
+          }
           return await ctx.scene.leave();
         } else {
           await ctx.reply(

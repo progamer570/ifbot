@@ -4,7 +4,7 @@ import { AIOSessionData } from "./wizardSessionData.js";
 import * as DramaHandlers from "./ongHandler.js";
 const on = Composer.on;
 const dramaSession = new Scenes.WizardScene<WizardContext<AIOSessionData>>(
-  "addOngoing",
+  "addOng",
   on("message", DramaHandlers.startCopying)
 );
 

@@ -4,7 +4,7 @@ import { AIOSessionData } from "./wizardSessionData.js";
 import * as AioHandlers from "./aIOHandler.js";
 const on = Composer.on;
 const aioSession = new Scenes.WizardScene<WizardContext<AIOSessionData>>(
-  "addAIO",
+  "addAio",
   on("message", AioHandlers.askTitleAIO),
   on("message", AioHandlers.handleTitleAskPoster),
   on("message", AioHandlers.handlePosterAskRelatedMsg),

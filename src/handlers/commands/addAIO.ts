@@ -7,5 +7,5 @@ export default async function addAioHandler(ctx: WizardContext) {
   if (!auth.isAdmin(userId ? userId : 0)) {
     return ctx.reply("Sorry, you have no permission to do this");
   }
-  await ctx.scene.enter("addAIO");
+  await ctx.scene.enter("addAio");
 }

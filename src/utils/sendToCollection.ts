@@ -1,4 +1,3 @@
-import e from "express";
 import env from "../services/env.js";
 import telegram from "./../services/telegram.js";
 import { processCaption } from "./caption/editCaption.js";

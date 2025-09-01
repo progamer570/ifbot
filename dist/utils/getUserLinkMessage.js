@@ -1,9 +1,9 @@
 export default function getUserLinkMessage(update, user) {
     if (user.username) {
-        var userLink = "https://t.me/".concat(user.username);
-        return "".concat(update.slice(0, 30), " [").concat(user.firstname, "](").concat(userLink, ")");
+        const userLink = `https://t.me/${user.username}`;
+        return `${update.slice(0, 30)} [${user.firstname}](${userLink})`;
     }
     else {
-        return "".concat(update.slice(0, 30), " [").concat(user.firstname, "](tg://user?id=").concat(user.id, ")");
+        return `${update.slice(0, 30)} [${user.firstname}](tg://user?id=${user.id})`;
     }
 }

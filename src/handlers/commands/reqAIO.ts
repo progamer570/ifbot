@@ -4,29 +4,17 @@ import env from "../../services/env.js";
 
 export default async function reqAioHandler(ctx: WizardContext, next: () => void) {
   if (ctx.message && "text" in ctx.message) {
-    const id = ctx.chat?.id;
     const text = ctx.message.text;
 
     try {
-      if (!/^\/(start|d|m|a)/i.test(text) && !/(?<!\S)[.!@#$%^&*()](?!\S)/.test(text)) {
-        if (
-          env.withoutCmd.includes(id!) &&
-          text.length > 4 &&
-          !text.startsWith("/s") &&
-          !text.startsWith("/h")
-        ) {
-          await ctx.scene.enter("reqAio");
-        } else if (text.startsWith("/s") || text.startsWith("/h")) {
-          await ctx.scene.enter("reqAio");
-        } else if (
-          !ctx.message.reply_to_message &&
-          !text.includes("@") &&
-          !text.includes("/") &&
-          text.length > 4 &&
-          !containsEmoji(text)
-        ) {
-          await ctx.scene.enter("reqAio");
-        }
+      if (
+        !ctx.message.reply_to_message &&
+        !text.includes("@") &&
+        !text.includes("/") &&
+        text.length > 4 &&
+        !containsEmoji(text)
+      ) {
+        await ctx.scene.enter("reqAio");
       }
 
       if (thankReply(text)) {

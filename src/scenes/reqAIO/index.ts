@@ -14,7 +14,7 @@ import logger from "../../utils/logger.js";
 
 // Create a Wizard Scene
 const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
-  "reqAIO",
+  "reqAio",
   Composer.on("message", async (ctx) => {
     if ("text" in ctx.message) {
       (ctx.session as PageSessionData).page = 0;
@@ -78,7 +78,9 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
                   ctx.deleteMessage(messageIdToDelete);
                 }, 5 * 60 * 1000);
               });
-          } catch (error) { logger.error("Error replying with photo:", error); }
+          } catch (error) {
+            logger.error("Error replying with photo:", error);
+          }
 
           if (finalResult.length > 1) {
             return ctx.wizard.next();
@@ -101,7 +103,11 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
     ) {
       const page = (ctx.session as PageSessionData).page || 0;
       const aIOData = (ctx.session as PageSessionData).aIOData;
-      logger.debug("Current page and AIO data length:", (ctx.session as PageSessionData).page || 0, (ctx.session as PageSessionData).aIOData?.length);
+      logger.debug(
+        "Current page and AIO data length:",
+        (ctx.session as PageSessionData).page || 0,
+        (ctx.session as PageSessionData).aIOData?.length
+      );
 
       if (aIOData) {
         try {
@@ -171,7 +177,9 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
               await sendCallbackQueryResponse(ctx, `Nothing in Prev !! `);
             }
           }
-        } catch (error) { logger.error("Error handling pagination callback:", error); }
+        } catch (error) {
+          logger.error("Error handling pagination callback:", error);
+        }
       } else {
         await sendCallbackQueryResponse(ctx, `No more data there !!!`);
       }

@@ -25,7 +25,7 @@ export function oneTimeDoneKeyboard() {
         .oneTime()
         .resize();
 }
-export var makeButtons = function (link, next, prev) {
+export const makeButtons = (link, next, prev) => {
     return {
         inline_keyboard: [
             [
@@ -33,31 +33,31 @@ export var makeButtons = function (link, next, prev) {
                 { text: '𝐍𝐄𝐗𝐓', callback_data: next },
             ],
             [{ text: '𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗', url: link }],
-            [{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗣', url: "".concat(env.backup) }],
+            [{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗣', url: `${env.backup}` }],
             [
                 {
                     text: '𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱',
-                    url: "".concat(env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"),
+                    url: `${env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"}`,
                 },
             ],
         ],
     };
 };
-export var makeInviteButtons = function (link, totalInvites, next, prev) {
-    var totalInvitesNumber = parseInt(totalInvites, 10); // Convert to number for comparison
-    var inlineKeyboard = [];
+export const makeInviteButtons = (link, totalInvites, next, prev) => {
+    const totalInvitesNumber = parseInt(totalInvites, 10); // Convert to number for comparison
+    const inlineKeyboard = [];
     if (totalInvitesNumber > 40) {
         inlineKeyboard.push([
             { text: '𝐏𝐑𝐄𝐕', callback_data: prev },
             { text: '𝐍𝐄𝐗𝐓', callback_data: next },
         ]);
     }
-    inlineKeyboard.push([{ text: "\uD835\uDDE7\uD835\uDDFC\uD835\uDE01\uD835\uDDEE\uD835\uDDF9 \uD835\uDDF6\uD835\uDDFB\uD835\uDE03\uD835\uDDF6\uD835\uDE01\uD835\uDDF2\uD835\uDE00: ".concat(totalInvites), callback_data: totalInvites }], [{ text: '𝗜𝗻𝗰𝗿𝗲𝗮𝘀𝗲 𝗗𝗮𝗶𝗹𝘆 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝘀', url: link }]);
+    inlineKeyboard.push([{ text: `𝗧𝗼𝘁𝗮𝗹 𝗶𝗻𝘃𝗶𝘁𝗲𝘀: ${totalInvites}`, callback_data: totalInvites }], [{ text: '𝗜𝗻𝗰𝗿𝗲𝗮𝘀𝗲 𝗗𝗮𝗶𝗹𝘆 𝗥𝗲𝗾𝘂𝗲𝘀𝘁𝘀', url: link }]);
     return {
         inline_keyboard: inlineKeyboard,
     };
 };
-export var makeCollectionButton = function (link) {
+export const makeCollectionButton = (link) => {
     return {
         inline_keyboard: [
             [{ text: '𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱', url: link }],
@@ -65,18 +65,18 @@ export var makeCollectionButton = function (link) {
             [
                 {
                     text: '𝗛𝗼𝘄 𝘁𝗼 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱',
-                    url: "".concat(env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"),
+                    url: `${env.howToDownload ? env.howToDownload : "https://t.me/Infinite_tips/17"}`,
                 },
             ],
         ],
     };
 };
-export var makeBackupButton = function () {
+export const makeBackupButton = () => {
     return {
         inline_keyboard: [[{ text: '𝗝𝗼𝗶𝗻 𝗕𝗮𝗰𝗸-𝗨𝗽', url: env.backup }]],
     };
 };
-export var makeAdminButtons = function (link, next, prev) {
+export const makeAdminButtons = (link, next, prev) => {
     return {
         inline_keyboard: [
             [
@@ -91,7 +91,7 @@ export var makeAdminButtons = function (link, next, prev) {
         ],
     };
 };
-export var editAnimeButtons = function () {
+export const editAnimeButtons = () => {
     return {
         inline_keyboard: [
             [
@@ -115,7 +115,7 @@ export var editAnimeButtons = function () {
         ],
     };
 };
-export var editMovieButton = function () {
+export const editMovieButton = () => {
     return {
         inline_keyboard: [
             [
@@ -139,7 +139,7 @@ export var editMovieButton = function () {
         ],
     };
 };
-export var editAIOButtons = function () {
+export const editAIOButtons = () => {
     return {
         inline_keyboard: [
             [{ text: '𝗘𝗱𝗶𝘁 𝗧𝗵𝗲 𝗖𝗮𝗽𝘁𝗶𝗼𝗻', callback_data: 'caption' }],
@@ -148,7 +148,7 @@ export var editAIOButtons = function () {
         ],
     };
 };
-export var editDramaButtons = function () {
+export const editDramaButtons = () => {
     return {
         inline_keyboard: [
             [
@@ -193,7 +193,7 @@ export function specialButtonsKeyboard() {
 }
 export function pyramidKeyboard() {
     return Markup.keyboard(['𝗼𝗻𝗲', '𝘁𝘄𝗼', '𝘁𝗵𝗿𝗲𝗲', '𝗳𝗼𝘂𝗿', '𝗳𝗶𝘃𝗲', '𝘀𝗶𝘅'], {
-        wrap: function (btn, index, currentRow) { return currentRow.length >= (index + 1) / 2; },
+        wrap: (btn, index, currentRow) => currentRow.length >= (index + 1) / 2,
     });
 }
 export function simpleHTMLKeyboard() {

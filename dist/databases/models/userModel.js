@@ -1,6 +1,6 @@
 // models/UserModel.ts
 import { model, Schema } from "mongoose";
-var userSchema = new Schema({
+const userSchema = new Schema({
     id: { type: Number, required: true, unique: true },
     is_bot: { type: Boolean, required: true },
     first_name: { type: String, required: true },
@@ -10,5 +10,5 @@ var userSchema = new Schema({
     is_premium: { type: Boolean },
     added_to_attachment_menu: { type: Boolean },
 });
-var UserModel = model("user", userSchema);
+const UserModel = model("user", userSchema);
 export default UserModel;

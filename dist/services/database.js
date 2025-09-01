@@ -1,471 +1,167 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 import getProperDB from "../extra/getProperDB.js";
 import { getReqDB } from "../extra/getProperDB.js";
 import getRandomId from "../extra/getRandomId.js";
-var Database = /** @class */ (function () {
-    function Database() {
+class Database {
+    client;
+    constructor() {
         this.client = getProperDB();
     }
-    Database.prototype.initialize = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.initialize()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Database.prototype.saveMessages = function (messageIds) {
-        return __awaiter(this, void 0, void 0, function () {
-            var shareId;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        shareId = getRandomId();
-                        return [4 /*yield*/, this.client.saveMessages(shareId, messageIds)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, shareId];
-                }
-            });
-        });
-    };
-    Database.prototype.saveAIO = function (aIODocument) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.saveAIO(aIODocument)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, aIODocument.shareId];
-                }
-            });
-        });
-    };
-    Database.prototype.createOngoing = function (ongoingDocument) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.createOngoing(ongoingDocument)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, ongoingDocument.shareId];
-                }
-            });
-        });
-    };
-    Database.prototype.addOngoing = function (shareId, eps) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.addOngoing(shareId, eps)];
-            });
-        });
-    };
+    async initialize() {
+        await this.client.initialize();
+    }
+    async saveMessages(messageIds) {
+        const shareId = getRandomId();
+        await this.client.saveMessages(shareId, messageIds);
+        return shareId;
+    }
+    async saveAIO(aIODocument) {
+        await this.client.saveAIO(aIODocument);
+        return aIODocument.shareId;
+    }
+    async createOngoing(ongoingDocument) {
+        await this.client.createOngoing(ongoingDocument);
+        return ongoingDocument.shareId;
+    }
+    async addOngoing(shareId, eps) {
+        return this.client.addOngoing(shareId, eps);
+    }
     // async saveOngoing(ongoingDocument: OngoingDocument) {
     //   await this.client.saveOngoing(ongoingDocument);
     //   return ongoingDocument.shareId;
     // }
-    Database.prototype.saveHindiDrama = function (aIODocument) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.saveHindiDrama(aIODocument)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, aIODocument.shareId];
-                }
-            });
-        });
-    };
-    Database.prototype.searchAIO = function (searchCriteria, messageIdLink) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.searchAIO(searchCriteria, messageIdLink)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.searchHindiDrama = function (searchCriteria) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.searchHindiDrama(searchCriteria)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.getAIOMessages = function (shareId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.getAIOMessages(shareId)];
-            });
-        });
-    };
-    Database.prototype.getOngoingMessages = function (shareId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.getOngoingMessages(shareId)];
-            });
-        });
-    };
-    Database.prototype.getHindiMessages = function (shareId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.getHindiMessages(shareId)];
-            });
-        });
-    };
+    async saveHindiDrama(aIODocument) {
+        await this.client.saveHindiDrama(aIODocument);
+        return aIODocument.shareId;
+    }
+    async searchAIO(searchCriteria, messageIdLink) {
+        return await this.client.searchAIO(searchCriteria, messageIdLink);
+    }
+    async searchHindiDrama(searchCriteria) {
+        return await this.client.searchHindiDrama(searchCriteria);
+    }
+    async getAIOMessages(shareId) {
+        return this.client.getAIOMessages(shareId);
+    }
+    async getOngoingMessages(shareId) {
+        return this.client.getOngoingMessages(shareId);
+    }
+    async getHindiMessages(shareId) {
+        return this.client.getHindiMessages(shareId);
+    }
     // async saveSort(sortDocument: SortDocument) {
     //   await this.client.saveSort(sortDocument);
     //   return sortDocument;
     // }
-    Database.prototype.getFirstItem = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.getFirstItem()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.saveUser = function (user) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.saveUser(user)];
-            });
-        });
-    };
-    Database.prototype.getAllUserIds = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.getAllUserIds()];
-            });
-        });
-    };
-    Database.prototype.isUserExist = function (user) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.isUserExist(user)];
-            });
-        });
-    };
-    Database.prototype.countUsers = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.countUsers()];
-            });
-        });
-    };
-    Database.prototype.getMessages = function (shareId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.getMessages(shareId)];
-            });
-        });
-    };
-    Database.prototype.addAIO = function (shareId, eps) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.addAIO(shareId, eps)];
-            });
-        });
-    };
-    Database.prototype.deleteAIO = function (shareId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.deleteAIO(shareId)];
-            });
-        });
-    };
-    Database.prototype.updateAIOAttribute = function (shareId, attribute) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.client.updateAIOAttribute(shareId, attribute)];
-            });
-        });
-    };
+    async getFirstItem() {
+        return await this.client.getFirstItem();
+    }
+    async saveUser(user) {
+        return this.client.saveUser(user);
+    }
+    async getAllUserIds() {
+        return this.client.getAllUserIds();
+    }
+    async isUserExist(user) {
+        return this.client.isUserExist(user);
+    }
+    async countUsers() {
+        return this.client.countUsers();
+    }
+    async getMessages(shareId) {
+        return this.client.getMessages(shareId);
+    }
+    async addAIO(shareId, eps) {
+        return this.client.addAIO(shareId, eps);
+    }
+    async deleteAIO(shareId) {
+        return this.client.deleteAIO(shareId);
+    }
+    async updateAIOAttribute(shareId, attribute) {
+        return this.client.updateAIOAttribute(shareId, attribute);
+    }
     //invite
-    Database.prototype.addInvite = function (userId, invitedUsername, invitedUserId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.addInvite(userId, invitedUsername, invitedUserId)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Database.prototype.getInviteUser = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.getInviteUser(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.canRequest = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.canRequest(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.useRequest = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.useRequest(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.getTopInviters = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.getTopInviters()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.updateInviteUsed = function (userId, newUsedInvites) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.updateInviteUsed(userId, newUsedInvites)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.getInviteStatus = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.getInviteStatus(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
+    async addInvite(userId, invitedUsername, invitedUserId) {
+        await this.client.addInvite(userId, invitedUsername, invitedUserId);
+    }
+    async getInviteUser(userId) {
+        return await this.client.getInviteUser(userId);
+    }
+    async canRequest(userId) {
+        return await this.client.canRequest(userId);
+    }
+    async useRequest(userId) {
+        return await this.client.useRequest(userId);
+    }
+    async getTopInviters() {
+        return await this.client.getTopInviters();
+    }
+    async updateInviteUsed(userId, newUsedInvites) {
+        return await this.client.updateInviteUsed(userId, newUsedInvites);
+    }
+    async getInviteStatus(userId) {
+        return await this.client.getInviteStatus(userId);
+    }
     //token
-    Database.prototype.hasGeneratedToken = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.hasGeneratedToken(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.verifyAndValidateToken = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.verifyAndValidateToken(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.generateNewToken = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.generateNewToken(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.manageToken = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.manageToken(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
+    async hasGeneratedToken(userId) {
+        return await this.client.hasGeneratedToken(userId);
+    }
+    async verifyAndValidateToken(userId) {
+        return await this.client.verifyAndValidateToken(userId);
+    }
+    async generateNewToken(userId) {
+        return await this.client.generateNewToken(userId);
+    }
+    async manageToken(userId) {
+        return await this.client.manageToken(userId);
+    }
     // premium
-    Database.prototype.checkBotPremiumStatus = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.checkBotPremiumStatus(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.addBotPremium = function (userId, duration) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.addBotPremium(userId, duration)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.getPremiumDetails = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.getPremiumDetails(userId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.addLinkToFirstSort = function (newLink) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.addLinkToFirstSort(newLink)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.getFirstSortItem = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.getFirstSortItem()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.setActiveShareId = function (newActiveShareId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.setActiveShareId(newActiveShareId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.updateFirstSortAndActivePath = function (newLink, newActiveShareId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.updateFirstSortAndActivePath(newLink, newActiveShareId)];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    Database.prototype.deleteAllSortData = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.deleteAllSortData()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    return Database;
-}());
-var ReqDB = /** @class */ (function () {
-    function ReqDB() {
+    async checkBotPremiumStatus(userId) {
+        return await this.client.checkBotPremiumStatus(userId);
+    }
+    async addBotPremium(userId, duration) {
+        return await this.client.addBotPremium(userId, duration);
+    }
+    async getPremiumDetails(userId) {
+        return await this.client.getPremiumDetails(userId);
+    }
+    async addLinkToFirstSort(newLink) {
+        return await this.client.addLinkToFirstSort(newLink);
+    }
+    async getFirstSortItem() {
+        return await this.client.getFirstSortItem();
+    }
+    async setActiveShareId(newActiveShareId) {
+        return await this.client.setActiveShareId(newActiveShareId);
+    }
+    async updateFirstSortAndActivePath(newLink, newActiveShareId) {
+        return await this.client.updateFirstSortAndActivePath(newLink, newActiveShareId);
+    }
+    async deleteAllSortData() {
+        return await this.client.deleteAllSortData();
+    }
+}
+class ReqDB {
+    reqClient;
+    constructor() {
         this.reqClient = getReqDB();
     }
-    ReqDB.prototype.initialize = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.reqClient.initialize()];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    ReqDB.prototype.addUserRequest = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.reqClient.addUserRequest(userId)];
-            });
-        });
-    };
+    async initialize() {
+        await this.reqClient.initialize();
+    }
+    async addUserRequest(userId) {
+        return this.reqClient.addUserRequest(userId);
+    }
     // async clearData() {
     //   return this.reqClient.clearData();
     // }
-    ReqDB.prototype.hasReachedRequestLimit = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.reqClient.hasReachedRequestLimit(userId)];
-            });
-        });
-    };
-    ReqDB.prototype.saveRequestData = function (userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.reqClient.saveRequestData(userId)];
-            });
-        });
-    };
-    return ReqDB;
-}());
-var database = new Database();
-var reqDB = new ReqDB();
+    async hasReachedRequestLimit(userId) {
+        return this.reqClient.hasReachedRequestLimit(userId);
+    }
+    async saveRequestData(userId) {
+        return this.reqClient.saveRequestData(userId);
+    }
+}
+const database = new Database();
+const reqDB = new ReqDB();
 export { reqDB };
 export default database;

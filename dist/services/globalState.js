@@ -1,8 +1,8 @@
-var GlobalState = /** @class */ (function () {
-    function GlobalState() {
+class GlobalState {
+    startTime;
+    constructor() {
         this.startTime = Date.now();
     }
-    return GlobalState;
-}());
-var globalState = new GlobalState();
+}
+const globalState = new GlobalState();
 export default globalState;

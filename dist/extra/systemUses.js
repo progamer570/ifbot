@@ -1,34 +1,50 @@
 import * as os from "os";
 export function getSystemUsage() {
-    var cpus = os.cpus();
-    var cpuCount = cpus.length;
-    var totalIdle = 0;
-    var totalTick = 0;
-    cpus.forEach(function (cpu) {
-        var _a = cpu.times, user = _a.user, nice = _a.nice, sys = _a.sys, irq = _a.irq, idle = _a.idle;
-        var totalCpuTime = user + nice + sys + irq + idle;
+    const cpus = os.cpus();
+    const cpuCount = cpus.length;
+    let totalIdle = 0;
+    let totalTick = 0;
+    cpus.forEach((cpu) => {
+        const { user, nice, sys, irq, idle } = cpu.times;
+        const totalCpuTime = user + nice + sys + irq + idle;
         totalTick += totalCpuTime;
         totalIdle += idle;
     });
-    var idle = totalIdle / cpuCount;
-    var total = totalTick / cpuCount;
-    var usage = ((total - idle) / total) * 100;
-    var totalMem = os.totalmem();
-    var freeMem = os.freemem();
-    var usedMem = totalMem - freeMem;
-    var memUsage = (usedMem / totalMem) * 100;
-    var result = "\n    CPU Usage: ".concat(usage.toFixed(2), "%\n    RAM Usage: ").concat(memUsage.toFixed(2), "%\n    Total RAM: ").concat((totalMem / Math.pow(1024, 3)).toFixed(2), " GB\n    Used RAM: ").concat((usedMem / Math.pow(1024, 3)).toFixed(2), " GB\n    Free RAM: ").concat((freeMem / Math.pow(1024, 3)).toFixed(2), " GB\n  ");
+    const idle = totalIdle / cpuCount;
+    const total = totalTick / cpuCount;
+    const usage = ((total - idle) / total) * 100;
+    const totalMem = os.totalmem();
+    const freeMem = os.freemem();
+    const usedMem = totalMem - freeMem;
+    const memUsage = (usedMem / totalMem) * 100;
+    const result = `
+    CPU Usage: ${usage.toFixed(2)}%
+    RAM Usage: ${memUsage.toFixed(2)}%
+    Total RAM: ${(totalMem / 1024 ** 3).toFixed(2)} GB
+    Used RAM: ${(usedMem / 1024 ** 3).toFixed(2)} GB
+    Free RAM: ${(freeMem / 1024 ** 3).toFixed(2)} GB
+  `;
     return result;
 }
 export function getSystemUsageDetails() {
-    var memoryUsage = process.memoryUsage();
-    var rss = (memoryUsage.rss / Math.pow(1024, 2)).toFixed(2);
-    var heapTotal = (memoryUsage.heapTotal / Math.pow(1024, 2)).toFixed(2);
-    var heapUsed = (memoryUsage.heapUsed / Math.pow(1024, 2)).toFixed(2);
-    var external = (memoryUsage.external / Math.pow(1024, 2)).toFixed(2);
-    var cpuUsage = process.cpuUsage();
-    var userCPUTime = (cpuUsage.user / 1000).toFixed(2);
-    var systemCPUTime = (cpuUsage.system / 1000).toFixed(2);
-    var usageDetails = "\n    Memory Usage:\n    - RSS: ".concat(rss, " MB\n    - Heap Total: ").concat(heapTotal, " MB\n    - Heap Used: ").concat(heapUsed, " MB\n    - External: ").concat(external, " MB\n\n    CPU Usage:\n    - User CPU Time: ").concat(userCPUTime, " ms\n    - System CPU Time: ").concat(systemCPUTime, " ms\n  ");
+    const memoryUsage = process.memoryUsage();
+    const rss = (memoryUsage.rss / 1024 ** 2).toFixed(2);
+    const heapTotal = (memoryUsage.heapTotal / 1024 ** 2).toFixed(2);
+    const heapUsed = (memoryUsage.heapUsed / 1024 ** 2).toFixed(2);
+    const external = (memoryUsage.external / 1024 ** 2).toFixed(2);
+    const cpuUsage = process.cpuUsage();
+    const userCPUTime = (cpuUsage.user / 1000).toFixed(2);
+    const systemCPUTime = (cpuUsage.system / 1000).toFixed(2);
+    const usageDetails = `
+    Memory Usage:
+    - RSS: ${rss} MB
+    - Heap Total: ${heapTotal} MB
+    - Heap Used: ${heapUsed} MB
+    - External: ${external} MB
+
+    CPU Usage:
+    - User CPU Time: ${userCPUTime} ms
+    - System CPU Time: ${systemCPUTime} ms
+  `;
     return usageDetails;
 }

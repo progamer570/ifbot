@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-export var ongSchema = new Schema({
+export const ongSchema = new Schema({
     shareId: {
         type: Number,
         required: true,
@@ -23,5 +23,5 @@ export var ongSchema = new Schema({
         default: "ongoing",
     },
 }, { timestamps: true });
-var ongoingModel = mongoose.model("ongoing", ongSchema);
+const ongoingModel = mongoose.model("ongoing", ongSchema);
 export default ongoingModel;

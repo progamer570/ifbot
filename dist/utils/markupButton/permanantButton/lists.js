@@ -1,4 +1,4 @@
-var genresList = [
+const genresList = [
     ["Action", "Drama", "Comedy"],
     ["Romance", "Thriller", "Horror"],
     ["Sci-Fi", "Fantasy", "Mystery"],
@@ -11,33 +11,33 @@ var genresList = [
     ["Law", "Medical", "Youth"],
     ["Done"],
 ];
-var seasonList = [
+const seasonList = [
     ["01", "02", "03"],
     ["04", "05", "06"],
 ];
-var subList = [
+const subList = [
     ["Eng", "Hi", "Chi"],
     ["Spa", "Man", "Fre"],
     ["Jap", "Kor", "Ita"],
     ["Ger", "Por", "Rus"],
     ["Ara", "None", "Not Known"],
 ];
-var langList = [
+const langList = [
     ["English", "Hindi", "Chinese"],
     ["Spanish", "Mandarin", "French"],
     ["Japanese", "Korean", "Italian"],
     ["German", "Portuguese", "Russian"],
     ["Arabic", "Thai", "Not Known"],
 ];
-var imdbRatingList = [
+const imdbRatingList = [
     ["9.0 - 10", "8.0 - 8.9"],
     ["7.0 - 7.9", "6.0 - 6.9"],
     ["5.0 - 5.9", "4.0 - 4.9"],
     ["3.0 - 3.9", "2.0 - 2.9"],
     ["1.0 - 1.9", "None"],
 ];
-var qualityList = [["1080p", "720p"], ["540p", "480p"], ["Not Know"]];
-var genresHashtagList = [
+const qualityList = [["1080p", "720p"], ["540p", "480p"], ["Not Know"]];
+const genresHashtagList = [
     "Action",
     "Drama",
     "Comedy",
@@ -101,7 +101,7 @@ var genresHashtagList = [
     // "Score",
     // "Genres",
 ];
-var reservedWordList = [
+const reservedWordList = [
     "action",
     "drama",
     "comedy",
@@ -187,11 +187,10 @@ var reservedWordList = [
     "720p",
     "[hd]",
 ];
-var thankList = ["Thanks", "Thank you", "Thx", "Tnx", "Thank you so much", "TYSM"];
+const thankList = ["Thanks", "Thank you", "Thx", "Tnx", "Thank you so much", "TYSM"];
 function thankReply(text) {
-    var lowerText = text.toLowerCase();
-    for (var _i = 0, thankList_1 = thankList; _i < thankList_1.length; _i++) {
-        var expression = thankList_1[_i];
+    const lowerText = text.toLowerCase();
+    for (const expression of thankList) {
         if (lowerText.startsWith(expression.toLowerCase())) {
             return true;
         }

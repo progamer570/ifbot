@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es6",
-    "declaration": true,
+    "target": "es2022",
+    "module": "esnext",
+    "lib": ["es2022"],
     "outDir": "./dist",
+    "rootDir": "./src",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "rootDir": "./src"
+    "declaration": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

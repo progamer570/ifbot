@@ -1,20 +1,20 @@
 export function processCaption(oldCaption, join) {
-    var newCaption = "";
-    var stringWithoutSpecialChars = oldCaption
+    let newCaption = "";
+    const stringWithoutSpecialChars = oldCaption
         .replace("@ADrama_Lovers", "")
         .replace(/\./g, " ")
         .replace(/-/g, " ")
         .replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
     newCaption = stringWithoutSpecialChars.replace(/@\w+\s?/g, "").replace(/_/g, " ");
-    var indexOfSize = newCaption.indexOf("🔘 SIZE");
+    const indexOfSize = newCaption.indexOf("🔘 SIZE");
     if (indexOfSize !== -1) {
         newCaption = newCaption.substring(0, indexOfSize);
     }
     else {
         newCaption = newCaption;
     }
-    var plotIndex = newCaption.indexOf("Plot:");
-    var mkv = newCaption.indexOf("mkv");
+    const plotIndex = newCaption.indexOf("Plot:");
+    const mkv = newCaption.indexOf("mkv");
     if (plotIndex !== -1) {
         newCaption = newCaption.substring(0, plotIndex);
     }
@@ -25,11 +25,11 @@ export function processCaption(oldCaption, join) {
         return newCaption.trim();
     }
     else {
-        return newCaption.trim() + "\n\uFF2A\uFF2F\uFF29\uFF2E : @".concat(join);
+        return newCaption.trim() + `\nＪＯＩＮ : @${join}`;
     }
 }
 export function editAIOTitle(oldCaption, join) {
-    var newCaption = "";
+    let newCaption = "";
     newCaption = oldCaption
         .replace("@ADrama_Lovers", "")
         .replace(/\#/g, " ")
@@ -42,11 +42,11 @@ export function editAIOTitle(oldCaption, join) {
         .replace("Tap on Join Here First to Download Episodes", "")
         .replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
     newCaption = newCaption.replace(/@\w+\s?/g, "");
-    var indexOfSize = newCaption.indexOf("🔘 SIZE");
-    var request = newCaption.indexOf("Request");
-    var credit = newCaption.indexOf("Credit/Partner");
-    var plotIndex = newCaption.indexOf("Plot:");
-    var mkv = newCaption.indexOf("mkv");
+    const indexOfSize = newCaption.indexOf("🔘 SIZE");
+    const request = newCaption.indexOf("Request");
+    const credit = newCaption.indexOf("Credit/Partner");
+    const plotIndex = newCaption.indexOf("Plot:");
+    const mkv = newCaption.indexOf("mkv");
     if (indexOfSize !== -1) {
         newCaption = newCaption.substring(0, indexOfSize);
     }
@@ -65,7 +65,7 @@ export function editAIOTitle(oldCaption, join) {
     return newCaption;
 }
 export function processCaptionForStore(oldCaption) {
-    var newCaption = "";
+    let newCaption = "";
     newCaption = oldCaption
         .replace("@ADrama_Lovers", "")
         .replace(/\./g, " ")
@@ -83,7 +83,7 @@ export function processCaptionForStore(oldCaption) {
         .replace(/[!@#$%^&*]/g, "")
         .replace(/\s\s+/g, " ")
         .trim();
-    var mkv = newCaption.indexOf("mkv");
+    const mkv = newCaption.indexOf("mkv");
     if (mkv !== -1) {
         newCaption = newCaption.substring(0, mkv + 3);
     }
