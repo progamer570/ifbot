@@ -20,6 +20,7 @@ import TokenModel from "./models/tokenModel.js";
 import { ITokenDocument } from "./interfaces/token.js";
 import { sendToLogGroup } from "../utils/sendToCollection.js";
 import { IUserDocument } from "./models/inviteModel.js";
+import logger from "../utils/logger.js";
 
 class MongoDB {
   db: typeof mongoose;
@@ -68,7 +69,7 @@ class MongoDB {
       }
       return user;
     } catch (error) {
-      console.error("Error saving user:", error);
+      logger.error("Error saving user:", error);
     }
     return user;
   }
@@ -78,17 +79,17 @@ class MongoDB {
       const userIds = users.map((user) => user.id);
       return userIds;
     } catch (error) {
-      console.error("Error fetching user IDs:", error);
+      logger.error("Error fetching user IDs:", error);
       return [];
     }
   }
   async isUserExist(userId: string): Promise<boolean> {
     try {
       const userExists = await this.UserModel.findOne({ id: Number(userId) });
-      console.log(userExists);
+      logger.debug("User existence check:", userExists);
       return userExists?.id ? true : false;
     } catch (error) {
-      console.error("Error checking user existence:", error);
+      logger.error("Error checking user existence:", error);
       return false;
     }
   }
@@ -97,7 +98,8 @@ class MongoDB {
       const itemCount = await this.UserModel.countDocuments();
       return `: ${itemCount}`;
     } catch (error) {
-      return "Error counting users";
+      logger.error("Error counting users:", error);
+      return "Error counting users"; // Return a string in case of error
     }
   }
 
@@ -109,11 +111,12 @@ class MongoDB {
     try {
       const document = await SortModel.findOne({}, { sort: { $slice: 1 } });
       if (!document || document.sort.length === 0) {
-        console.log("No document found or the sort array is empty.");
+        logger.info("No document found or the sort array is empty.");
         return null;
       }
       return document;
     } catch (err) {
+      logger.error("Error getting first item from sort:", err);
       return null;
     }
   }
@@ -168,7 +171,7 @@ class MongoDB {
     messageIdLink?: string | null
   ): Promise<AIODocument[] | undefined> {
     if (!criteria.aIOTitle || criteria.aIOTitle.length < 2) {
-      console.log("Please provide a valid search criteria.");
+      logger.info("Please provide a valid search criteria for AIO.");
       return undefined;
     }
     const normalizedTitle = criteria.aIOTitle;
@@ -206,17 +209,17 @@ class MongoDB {
               messageIdLink || "https://www.telegram.org/"
             })`
           );
-        } catch {}
+        } catch (e) { logger.error("Error sending not found log for AIO search:", e); }
       }
       return results;
     } catch (err) {
-      console.error("Error executing the query:", err);
+      logger.error("Error executing AIO search query:", err);
       return undefined;
     }
   }
   async searchHindiDrama(criteria: AIOSearchCriteria): Promise<AIODocument[] | undefined> {
     if (!criteria.aIOTitle || criteria.aIOTitle.length < 2) {
-      console.log("Please provide a valid search criteria.");
+      logger.info("Please provide a valid search criteria for Hindi Drama.");
       return undefined;
     }
     const normalizedTitle = criteria.aIOTitle;
@@ -249,7 +252,7 @@ class MongoDB {
 
       return results;
     } catch (err) {
-      console.error("Error executing the query:", err);
+      logger.error("Error executing Hindi Drama search query:", err);
       return undefined;
     }
   }
@@ -283,7 +286,7 @@ class MongoDB {
       await AIOModel.updateOne({ shareId: shareId }, { $set: updateQuery });
       return true;
     } catch (error) {
-      console.error("Error updating drama attribute:", error);
+      logger.error("Error updating AIO attribute:", error);
       return false;
     }
   }
@@ -322,7 +325,7 @@ class MongoDB {
       const tokenData = await this.TokenModel.findOne({ userId });
       return tokenData !== null;
     } catch (error) {
-      console.error("Error checking if token exists for user:", error);
+      logger.error("Error checking if token exists for user:", error);
       throw error;
     }
   }
@@ -346,7 +349,7 @@ class MongoDB {
         const decoded = jwt.verify(tokenData.token, env.jwtSecret) as { userId: string };
 
         if (new Date() > tokenData.expiresAt) {
-          console.error("Token has expired");
+          logger.error("Token has expired");
           return false;
         }
 
@@ -354,11 +357,11 @@ class MongoDB {
       }
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        console.error("Token has expired");
+        logger.error("Token has expired");
       } else if (error instanceof jwt.JsonWebTokenError) {
-        console.error("Invalid token");
+        logger.error("Invalid token");
       } else {
-        console.error("Unexpected error during token verification:", error);
+        logger.error("Unexpected error during token verification:", error);
       }
 
       return false;
@@ -383,7 +386,7 @@ class MongoDB {
 
       return newToken;
     } catch (error) {
-      console.error("Error generating or saving token:", error);
+      logger.error("Error generating or saving token:", error);
       throw error;
     }
   }
@@ -409,7 +412,7 @@ class MongoDB {
         return { token: newToken, message: " New token generated." };
       }
     } catch (error) {
-      console.error("Error managing token:", error);
+      logger.error("Error managing token:", error);
       throw error;
     }
   }
@@ -434,7 +437,7 @@ class MongoDB {
 
       return true;
     } catch (error) {
-      console.error("Error checking bot premium status:", error);
+      logger.error("Error checking bot premium status:", error);
       return false;
     }
   }
@@ -445,7 +448,7 @@ class MongoDB {
       const match = duration.match(regex);
 
       if (!match) {
-        console.error("Invalid duration format. Please use a format like 1h, 2d, etc.");
+        logger.error("Invalid duration format. Please use a format like 1h, 2d, etc.");
         return "Invalid duration format. Please use a format like 1h, 2d, etc.";
       }
 
@@ -467,12 +470,12 @@ class MongoDB {
           durationMs = value * 24 * 60 * 60 * 1000;
           break;
         default:
-          console.error("Invalid time unit. Use s, m, h, or d.");
+          logger.error("Invalid time unit. Use s, m, h, or d.");
           return "Invalid time unit. Use s, m, h, or d.";
       }
 
       if (durationMs < 1 * 24 * 60 * 60 * 1000) {
-        console.error("The minimum duration for premium is 1 day.");
+        logger.error("The minimum duration for premium is 1 day.");
         return "The minimum duration for premium is 1 day.";
       }
 
@@ -493,7 +496,7 @@ class MongoDB {
         await this.manageToken(userId);
         const newTokenData = await this.TokenModel.findOne({ userId });
         if (!newTokenData) {
-          console.error("Failed to retrieve token after generation in addBotPremium.");
+          logger.error("Failed to retrieve token after generation in addBotPremium.");
           return "Failed to add premium. Please try again later.";
         }
         tokenData = newTokenData; // Assign the newly created/fetched tokenData
@@ -509,13 +512,13 @@ class MongoDB {
       };
 
       await tokenData.save();
-      console.log(
+      logger.info(
         `Premium added for ${userId}, subscription type: ${subscriptionType}, expires at ${expiresAt}`
       );
 
       return `Premium successfully added for ${userId}. Subscription type: ${subscriptionType}. Premium will expire on ${expiresAt.toLocaleString()}.`;
     } catch (error) {
-      console.error("Error adding bot premium:", error);
+      logger.error("Error adding bot premium:", error);
       return `Error adding bot premium:  + ${error}`;
     }
   }
@@ -551,7 +554,7 @@ class MongoDB {
     - Expires At: ${new Date(expires_at).toLocaleDateString()}
     - Additional Details: ${details}`;
     } catch (error) {
-      console.error("Error fetching premium details:", error);
+      logger.error("Error fetching premium details:", error);
       return "An error occurred while retrieving premium details. Please try again.";
     }
   }
@@ -567,7 +570,7 @@ class MongoDB {
 
       return result.modifiedCount > 0;
     } catch (error) {
-      console.error("Error adding link to first sort:", error);
+      logger.error("Error adding link to first sort:", error);
       return false;
     }
   }
@@ -577,12 +580,12 @@ class MongoDB {
     try {
       const document = await SortModel.findOne({}, { sort: { $slice: 1 } });
       if (!document || document.sort.length === 0) {
-        console.log("No document found or the sort array is empty.");
+        logger.info("No document found or the sort array is empty.");
         return null;
       }
       return document;
     } catch (error) {
-      console.error("Error retrieving first sort item:", error);
+      logger.error("Error retrieving first sort item:", error);
       return null;
     }
   }
@@ -597,7 +600,7 @@ class MongoDB {
 
       return result.modifiedCount > 0;
     } catch (error) {
-      console.error("Error setting active share ID:", error);
+      logger.error("Error setting active share ID:", error);
       return false;
     }
   }
@@ -619,7 +622,7 @@ class MongoDB {
 
       return result.modifiedCount > 0 || result.upsertedCount > 0;
     } catch (error) {
-      console.error("Error updating first sort and active path:", error);
+      logger.error("Error updating first sort and active path:", error);
       return false;
     }
   }
@@ -628,7 +631,7 @@ class MongoDB {
       const result = await SortModel.deleteMany({});
       return result.deletedCount > 0;
     } catch (error) {
-      console.error("Error deleting all sort data:", error);
+      logger.error("Error deleting all sort data:", error);
       return false;
     }
   }

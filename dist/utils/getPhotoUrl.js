@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import { delay } from "../extra/delay.js";
 import env from "../services/env.js";
 import telegram from "../services/telegram.js";
+import logger from "./logger.js";
 export function getPhotoUrl(photoId) {
     return __awaiter(this, void 0, void 0, function () {
         var success, photo, result, error_1;
@@ -63,13 +64,13 @@ export function getPhotoUrl(photoId) {
                     error_1 = _a.sent();
                     success = false;
                     if (!(error_1.code === 429)) return [3 /*break*/, 7];
-                    console.log("".concat(error_1));
+                    logger.warn("Rate limit error (429) in getPhotoUrl: ".concat(error_1));
                     return [4 /*yield*/, delay(40000, 41000)];
                 case 6:
                     _a.sent();
                     return [3 /*break*/, 9];
                 case 7:
-                    console.log("".concat(error_1));
+                    logger.error("Error in getPhotoUrl: ".concat(error_1));
                     return [4 /*yield*/, delay(40000, 41000)];
                 case 8:
                     _a.sent();

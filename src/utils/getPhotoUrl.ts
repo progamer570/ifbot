@@ -1,6 +1,7 @@
 import { delay } from "../extra/delay.js";
 import env from "../services/env.js";
 import telegram from "../services/telegram.js";
+import logger from "./logger.js";
 
 export async function getPhotoUrl(photoId: any): Promise<string> {
   let success = false;
@@ -15,10 +16,10 @@ export async function getPhotoUrl(photoId: any): Promise<string> {
     } catch (error) {
       success = false;
       if ((error as any).code === 429) {
-        console.log(`${error}`);
+        logger.warn(`Rate limit error (429) in getPhotoUrl: ${error}`);
         await delay(40000, 41000);
       } else {
-        console.log(`${error}`);
+        logger.error(`Error in getPhotoUrl: ${error}`);
         await delay(40000, 41000);
       }
     }

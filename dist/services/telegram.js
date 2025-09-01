@@ -52,6 +52,7 @@ import { delay } from "../extra/delay.js";
 import { scheduleMessageDeletion } from "../extra/scheduleMessageDeletion.js";
 import { processCaption } from "../utils/caption/editCaption.js";
 import { bold, fmt } from "telegraf/format";
+import logger from "../utils/logger.js";
 var Telegram = /** @class */ (function () {
     function Telegram() {
         this.app = new Telegraf(env.token);
@@ -76,11 +77,11 @@ var Telegram = /** @class */ (function () {
                                 },
                                 {
                                     command: "add",
-                                    description: "Admin Command",
+                                    description: "Admin Command (Add AIO)",
                                 },
                                 {
                                     command: "edit",
-                                    description: "Admin Command",
+                                    description: "Admin Command (Edit AIO)",
                                 },
                                 {
                                     command: "/cancel",
@@ -112,6 +113,7 @@ var Telegram = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         e_1 = _a.sent();
+                        logger.error("Error setting bot commands:", e_1);
                         return [3 /*break*/, 3];
                     case 3:
                         forceChatIds = __spreadArray(__spreadArray([], env.forceChannelIds, true), env.forceGroupIds, true);
@@ -143,23 +145,24 @@ var Telegram = /** @class */ (function () {
                 };
                 delay = this.firstWaitingMessage ? 0 : 1000;
                 this.waitingMessageTimeout = setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-                    var _a, waitingMessage;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
+                    var e_2, waitingMessage;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
                             case 0:
-                                _b.trys.push([0, 2, , 3]);
+                                _a.trys.push([0, 2, , 3]);
                                 return [4 /*yield*/, this.deleteWaitingMessage(chatId)];
                             case 1:
-                                _b.sent();
+                                _a.sent();
                                 return [3 /*break*/, 3];
                             case 2:
-                                _a = _b.sent();
+                                e_2 = _a.sent();
+                                logger.error("Error deleting waiting message:", e_2);
                                 return [3 /*break*/, 3];
                             case 3: return [4 /*yield*/, this.app.telegram.sendMessage(chatId, text, {
                                     reply_markup: replyMarkup,
                                 })];
                             case 4:
-                                waitingMessage = _b.sent();
+                                waitingMessage = _a.sent();
                                 this.waitingMessageId = waitingMessage.message_id;
                                 this.firstWaitingMessage = false;
                                 return [2 /*return*/];
@@ -294,13 +297,13 @@ var Telegram = /** @class */ (function () {
                         error_1 = _a.sent();
                         success = false;
                         if (!(error_1.code === 429)) return [3 /*break*/, 11];
-                        console.log("".concat(error_1));
+                        logger.warn("Rate limit error (429) when forwarding message: ".concat(error_1));
                         return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 40000); })];
                     case 10:
                         _a.sent();
                         return [3 /*break*/, 13];
                     case 11:
-                        console.log("".concat(error_1));
+                        logger.error("Error forwarding message: ".concat(error_1));
                         return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 40000); })];
                     case 12:
                         _a.sent();
@@ -317,17 +320,18 @@ var Telegram = /** @class */ (function () {
                                 .then(function (sentMessage) {
                                 var messageIdToDelete = sentMessage.message_id;
                                 setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
-                                    var _a;
-                                    return __generator(this, function (_b) {
-                                        switch (_b.label) {
+                                    var e_3;
+                                    return __generator(this, function (_a) {
+                                        switch (_a.label) {
                                             case 0:
-                                                _b.trys.push([0, 2, , 3]);
+                                                _a.trys.push([0, 2, , 3]);
                                                 return [4 /*yield*/, this.app.telegram.deleteMessage(toChatId, messageIdToDelete)];
                                             case 1:
-                                                _b.sent();
+                                                _a.sent();
                                                 return [3 /*break*/, 3];
                                             case 2:
-                                                _a = _b.sent();
+                                                e_3 = _a.sent();
+                                                logger.error("Error deleting scheduled message:", e_3);
                                                 return [3 /*break*/, 3];
                                             case 3: return [2 /*return*/];
                                         }

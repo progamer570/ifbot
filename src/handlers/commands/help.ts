@@ -1,6 +1,7 @@
 import { Markup } from "telegraf";
 import { CommandContext } from "../../interfaces.js";
 import auth from "../../services/auth.js";
+import logger from "../../utils/logger.js";
 
 export default async function helpHandler(ctx: CommandContext) {
   const userId = ctx.from?.id;
@@ -20,6 +21,6 @@ export default async function helpHandler(ctx: CommandContext) {
       ])
     );
   } catch (err) {
-    console.log(err);
+    logger.error("Error sending help message:", err);
   }
 }

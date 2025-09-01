@@ -1,3 +1,5 @@
+import logger from "../utils/logger.js";
+
 export function scheduleMessageDeletion(
   bot: any,
   chatId: any,
@@ -7,9 +9,9 @@ export function scheduleMessageDeletion(
   setTimeout(async () => {
     try {
       await bot.app.telegram.deleteMessage(chatId, messageId);
-      console.log("Message deleted successfully.");
+      logger.info("Message deleted successfully.");
     } catch (error) {
-      console.error("Error deleting message:", error);
+      logger.error("Error deleting message:", error);
     }
   }, delayInMinutes * 60 * 1000);
 }

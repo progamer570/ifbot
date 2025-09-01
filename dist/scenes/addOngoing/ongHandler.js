@@ -40,27 +40,28 @@ import database from "../../services/database.js";
 import { sendToCollectionOng2, sendToLogGroup } from "../../utils/sendToCollection.js";
 import env from "../../services/env.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
+import logger from "../../utils/logger.js";
 function startCopying(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var selectedShareId, _a, msgIds, captions, forwardedMessageIds_1, links, user, session, _b, session, caption;
-        var _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var selectedShareId, _a, msgIds, captions, forwardedMessageIds_1, links, user, session, e_1, session, caption;
+        var _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
                     if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/cancel")) return [3 /*break*/, 3];
-                    return [4 /*yield*/, ctx.reply("Share AIO Canceled start again /addaio")];
+                    return [4 /*yield*/, ctx.reply("Add Ongoing canceled. Start again with /addong")];
                 case 1:
-                    _e.sent();
+                    _d.sent();
                     ctx.session.done = false;
                     return [4 /*yield*/, ctx.scene.leave()];
-                case 2: return [2 /*return*/, _e.sent()];
+                case 2: return [2 /*return*/, _d.sent()];
                 case 3:
                     if (!(ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/addong"))) return [3 /*break*/, 5];
                     // if (ctx.message.text.split(" ").length !== 2) return ctx.reply("wrong format");
                     ctx.session.shareId = Number(ctx.message.text.replace("/addong", "").trim().trimStart());
-                    return [4 /*yield*/, ctx.reply("send Files")];
+                    return [4 /*yield*/, ctx.reply("Please send the files for the ongoing item.")];
                 case 4:
-                    _e.sent();
+                    _d.sent();
                     return [3 /*break*/, 17];
                 case 5:
                     selectedShareId = ctx.session.shareId || 0;
@@ -69,24 +70,24 @@ function startCopying(ctx) {
                         ctx.message.text.toLowerCase() === "done" &&
                         !ctx.session.done)) return [3 /*break*/, 15];
                     _a = ctx.session, msgIds = _a.msgIds, captions = _a.captions;
-                    return [4 /*yield*/, ctx.reply("```Add on going details and file received.\n \uD83C\uDF89```", {
+                    return [4 /*yield*/, ctx.reply("```Ongoing item details and files received. \uD83C\uDF89```", {
                             parse_mode: "HTML",
                         })];
                 case 6:
-                    _e.sent();
+                    _d.sent();
                     ctx.session.done = true;
-                    console.log(msgIds, captions);
-                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.id, msgIds ? msgIds : [], false, captions)];
+                    logger.info("Collected message IDs:", msgIds, "and captions:", captions);
+                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_b = ctx.chat) === null || _b === void 0 ? void 0 : _b.id, msgIds ? msgIds : [], false, captions)];
                 case 7:
-                    forwardedMessageIds_1 = _e.sent();
+                    forwardedMessageIds_1 = _d.sent();
                     return [4 /*yield*/, database.addOngoing(selectedShareId, forwardedMessageIds_1)];
                 case 8:
-                    _e.sent();
-                    _e.label = 9;
+                    _d.sent();
+                    _d.label = 9;
                 case 9:
-                    _e.trys.push([9, 12, , 13]);
+                    _d.trys.push([9, 12, , 13]);
                     if (!captions || !msgIds) {
-                        console.error("Error: captions or messageIds is undefined");
+                        logger.error("Error: captions or messageIds is undefined");
                         return [2 /*return*/];
                     }
                     links = captions.map(function (caption, index) { return ({
@@ -95,27 +96,28 @@ function startCopying(ctx) {
                     }); });
                     return [4 /*yield*/, sendToCollectionOng2(env.collectionOngoing, undefined, links, selectedShareId.toString())];
                 case 10:
-                    _e.sent();
+                    _d.sent();
                     user = {
                         id: ctx.from.id,
                         firstname: ctx.from.first_name,
                         username: ctx.from.username,
                     };
-                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Added eps To AIO ".concat(selectedShareId, " by "), user))];
+                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("Added episode(s) to Ongoing ".concat(selectedShareId, " by "), user))];
                 case 11:
-                    _e.sent();
+                    _d.sent();
                     session = ctx.session;
                     session.captions = [];
                     session.msgIds = [];
                     return [3 /*break*/, 13];
                 case 12:
-                    _b = _e.sent();
+                    e_1 = _d.sent();
+                    logger.error("Error in addOngoing handler:", e_1);
                     return [3 /*break*/, 13];
                 case 13: return [4 /*yield*/, ctx.scene.leave()];
-                case 14: return [2 /*return*/, _e.sent()];
-                case 15: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_d = ctx.session.msgIds) === null || _d === void 0 ? void 0 : _d.length), keyboard.oneTimeDoneKeyboard())];
+                case 14: return [2 /*return*/, _d.sent()];
+                case 15: return [4 /*yield*/, ctx.reply("Send the next file, or click 'Done' if you are finished. Current files: ".concat((_c = ctx.session.msgIds) === null || _c === void 0 ? void 0 : _c.length), keyboard.oneTimeDoneKeyboard())];
                 case 16:
-                    _e.sent();
+                    _d.sent();
                     session = ctx.session;
                     session.msgIds = session.msgIds || [];
                     session.msgIds.push(ctx.message.message_id);
@@ -125,8 +127,7 @@ function startCopying(ctx) {
                     }
                     session.captions = session.captions || [];
                     session.captions.push(caption);
-                    console.log(caption, "caption");
-                    _e.label = 17;
+                    _d.label = 17;
                 case 17: return [2 /*return*/];
             }
         });

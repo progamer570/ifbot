@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import auth from "../../services/auth.js";
-export default function addAIOHandler(ctx) {
+export default function addAioHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var userId;
         var _a;

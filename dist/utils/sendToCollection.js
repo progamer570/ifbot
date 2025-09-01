@@ -40,7 +40,8 @@ import { processCaption } from "./caption/editCaption.js";
 import { convertToTinySubscript, escapeMarkdownV2 } from "./helper.js";
 import * as keyboard from "./markupButton/permanantButton/keyboard.js";
 import database from "../services/database.js";
-export function sendToCOllection(chat, aIOPosterID, link, caption) {
+import logger from "./logger.js";
+export function sendToCollection(chat, aIOPosterID, link, caption) {
     return __awaiter(this, void 0, void 0, function () {
         var error_1;
         return __generator(this, function (_a) {
@@ -54,18 +55,18 @@ export function sendToCOllection(chat, aIOPosterID, link, caption) {
                         })];
                 case 1:
                     _a.sent();
-                    console.log("Photo sent successfully!");
+                    logger.info("Photo sent successfully!");
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
-                    console.error("Error sending photo:", error_1);
+                    logger.error("Error sending photo:", error_1);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
         });
     });
 }
-export function sendToCOllectionOng(chat, link, caption) {
+export function sendToCollectionOng(chat, link, caption) {
     return __awaiter(this, void 0, void 0, function () {
         var error_2;
         return __generator(this, function (_a) {
@@ -78,11 +79,11 @@ export function sendToCOllectionOng(chat, link, caption) {
                         })];
                 case 1:
                     _a.sent();
-                    console.log("Photo sent successfully!");
+                    logger.info("Ongoing text message sent successfully!");
                     return [3 /*break*/, 3];
                 case 2:
                     error_2 = _a.sent();
-                    console.error("Error sending photo:", error_2);
+                    logger.error("Error sending ongoing text message:", error_2);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
@@ -113,7 +114,7 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     return [3 /*break*/, 4];
                 case 3:
                     error_3 = _a.sent();
-                    console.error("Error sending photo:", error_3);
+                    logger.error("Error sending AIO poster:", error_3);
                     return [3 /*break*/, 4];
                 case 4:
                     _a.trys.push([4, 12, , 13]);
@@ -124,9 +125,10 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                 case 5:
                     photo = _a.sent();
                     if (!photo) {
+                        logger.error("AIO poster ID not found for ongoing messages.");
                         return [2 /*return*/];
                     }
-                    console.log(links, "links");
+                    logger.info("Links for ongoing collection:", links);
                     chunkSize = 10;
                     i = 0;
                     _a.label = 6;
@@ -139,24 +141,26 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     })
                         .join("\n\n");
                     messageText = formattedLinks;
-                    return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, "https://t.me/mypostercollection/10435", {
+                    return [4 /*yield*/, telegram.app.telegram.sendPhoto(chat, photo, {
                             caption: messageText,
                             parse_mode: "MarkdownV2",
                             reply_markup: keyboard.makeBackupButton(),
                         })];
                 case 7:
                     _a.sent();
-                    console.log("Sent message with ".concat(chunk.length, " links"));
+                    logger.info("Sent ".concat(chunk.length, " links for ongoing collection."));
                     _a.label = 8;
                 case 8:
                     i += chunkSize;
                     return [3 /*break*/, 6];
                 case 9: return [3 /*break*/, 11];
-                case 10: return [2 /*return*/];
+                case 10:
+                    logger.info("Share ID not provided for sendToCollectionOng2, skipping link sending.");
+                    return [2 /*return*/];
                 case 11: return [3 /*break*/, 13];
                 case 12:
                     error_4 = _a.sent();
-                    console.error("Error sending message:", error_4);
+                    logger.error("Error in sendToCollectionOng2:", error_4);
                     return [3 /*break*/, 13];
                 case 13: return [2 /*return*/];
             }
@@ -175,11 +179,11 @@ export function sendToLogGroup(chat, caption) {
                         })];
                 case 1:
                     _a.sent();
-                    console.log("log sent successfully!");
+                    logger.info("Log message sent successfully!");
                     return [3 /*break*/, 3];
                 case 2:
                     error_5 = _a.sent();
-                    console.error("Error sending log:", error_5);
+                    logger.error("Error sending log message:", error_5);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }

@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { Markup } from "telegraf";
 import auth from "../../services/auth.js";
+import logger from "../../utils/logger.js";
 export default function helpHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var userId, err_1;
@@ -63,7 +64,7 @@ export default function helpHandler(ctx) {
                     return [3 /*break*/, 4];
                 case 3:
                     err_1 = _b.sent();
-                    console.log(err_1);
+                    logger.error("Error sending help message:", err_1);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }

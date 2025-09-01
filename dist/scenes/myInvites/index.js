@@ -41,6 +41,7 @@ import getRandomId from "../../extra/getRandomId.js";
 import { sendCallbackQueryResponse } from "./answerCbQUery.js";
 import { makeInviteButtons } from "../../utils/markupButton/permanantButton/keyboard.js";
 import { generateInviteLink } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 // Create a Wizard Scene
 var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("message", function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var myInviteUser, random, invites, batchSize, numberOfBatches, batches, _loop_1, i, error_1;
@@ -79,7 +80,7 @@ var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("messag
                 ctx.session.inviteData = batches;
                 ctx.session.prev = "prev".concat(random);
                 ctx.session.next = "next".concat(random);
-                console.log(ctx.session.prev);
+                logger.debug("Previous page data:", ctx.session.prev);
                 _a.label = 2;
             case 2:
                 _a.trys.push([2, 4, , 5]);
@@ -95,13 +96,16 @@ var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("messag
                                 ctx.deleteMessage(messageIdToDelete_1);
                             }, 5 * 60 * 60 * 1000);
                         }
-                        catch (_a) { }
+                        catch (e) {
+                            logger.error("Error deleting message after timeout:", e);
+                        }
                     })];
             case 3:
                 _a.sent();
                 return [3 /*break*/, 5];
             case 4:
                 error_1 = _a.sent();
+                logger.error("Error replying with invite list:", error_1);
                 return [3 /*break*/, 5];
             case 5: return [2 /*return*/, ctx.wizard.next()];
             case 6: return [2 /*return*/];
@@ -120,10 +124,7 @@ var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("messag
                 link = generateInviteLink(ctx.session.id, true);
                 totalInvites = ctx.session.totalInvites;
                 inviteData = ctx.session.inviteData;
-                console.log([
-                    ctx.session.page || 0,
-                    (_a = ctx.session.inviteData) === null || _a === void 0 ? void 0 : _a.length,
-                ]);
+                logger.debug("Current page and invite data length:", ctx.session.page || 0, (_a = ctx.session.inviteData) === null || _a === void 0 ? void 0 : _a.length);
                 if (!inviteData) return [3 /*break*/, 13];
                 _d.label = 1;
             case 1:
@@ -132,7 +133,7 @@ var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("messag
                 if (!(page + 1 < inviteData.length)) return [3 /*break*/, 3];
                 ctx.session.page =
                     ((_b = ctx.session.page) !== null && _b !== void 0 ? _b : 0) + 1;
-                console.log(page, inviteData.length);
+                logger.debug("Page and invite data length (next):");
                 return [4 /*yield*/, ctx.editMessageText("```\n".concat(inviteData[page + 1], "\n```"), {
                         reply_markup: makeInviteButtons(link, totalInvites, ctx.session.next || "", ctx.session.prev || ""),
                         parse_mode: "MarkdownV2",
@@ -164,6 +165,7 @@ var myInvitePagination = new Scenes.WizardScene("myInvites", Composer.on("messag
             case 10: return [3 /*break*/, 12];
             case 11:
                 error_2 = _d.sent();
+                logger.error("Error handling invite pagination callback:", error_2);
                 return [3 /*break*/, 12];
             case 12: return [3 /*break*/, 15];
             case 13: return [4 /*yield*/, sendCallbackQueryResponse(ctx, "No more data there !!!")];

@@ -1,4 +1,5 @@
 import InviteModel, { IUserDocument } from "./models/inviteModel.js";
+import logger from "../utils/logger.js";
 
 export class InviteService {
   async addInvite(userId: string, invitedUsername: string, invitedUserId: string): Promise<void> {
@@ -77,7 +78,7 @@ export class InviteService {
 
       return topInviters;
     } catch (error) {
-      console.error("Error fetching top inviters:", error);
+      logger.error("Error fetching top inviters:", error);
       throw new Error("Failed to fetch top inviters.");
     }
   }
@@ -86,14 +87,14 @@ export class InviteService {
       const result = await InviteModel.updateOne({ userId }, { $set: { invites: [] } });
 
       if (result.matchedCount === 0) {
-        console.log(`❌ No user found with userId: ${userId}`);
+        logger.info(`No user found with userId: ${userId}`);
       } else if (result.modifiedCount === 0) {
-        console.log(`⚠️ No changes made. Invites were already empty for userId: ${userId}`);
+        logger.info(`No changes made. Invites were already empty for userId: ${userId}`);
       } else {
-        console.log(`✅ Successfully reset invites for userId: ${userId}`);
+        logger.info(`Successfully reset invites for userId: ${userId}`);
       }
     } catch (error) {
-      console.error("❌ Error resetting invites for user:", error);
+      logger.error("Error resetting invites for user:", error);
       throw new Error("Failed to reset invites for the user.");
     }
   }
@@ -102,7 +103,7 @@ export class InviteService {
       const user = await InviteModel.findOne({ userId });
 
       if (!user) {
-        console.log(`❌ No user found with userId: ${userId}`);
+        logger.info(`No user found with userId: ${userId}`);
         return false;
       }
 
@@ -118,11 +119,11 @@ export class InviteService {
       if (result.modifiedCount > 0) {
         return true;
       } else {
-        console.log(`⚠️ No changes made. InviteUsed for userId: ${userId} remains the same.`);
+        logger.info(`No changes made. InviteUsed for userId: ${userId} remains the same.`);
         return false;
       }
     } catch (error) {
-      console.error("❌ Error updating inviteUsed:", error);
+      logger.error("Error updating inviteUsed:", error);
 
       return false;
     }
@@ -136,7 +137,7 @@ export class InviteService {
       const user = await InviteModel.findOne({ userId });
 
       if (!user) {
-        console.log(`❌ No user found with userId: ${userId}`);
+        logger.info(`No user found with userId: ${userId}`);
         return null;
       }
 
@@ -147,7 +148,7 @@ export class InviteService {
 
       return { totalInvites, usedInvites, remainingInvites };
     } catch (error) {
-      console.error("❌ Error fetching invite status:", error);
+      logger.error("Error fetching invite status:", error);
       throw new Error("Failed to fetch invite status.");
     }
   }

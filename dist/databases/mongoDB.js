@@ -46,6 +46,7 @@ import { HindiDramaModel } from "./models/aIOModel.js";
 import { InviteService } from "./inviteService.js";
 import TokenModel from "./models/tokenModel.js";
 import { sendToLogGroup } from "../utils/sendToCollection.js";
+import logger from "../utils/logger.js";
 var MongoDB = /** @class */ (function () {
     function MongoDB() {
         this.db = mongoose;
@@ -104,7 +105,7 @@ var MongoDB = /** @class */ (function () {
                     case 3: return [2 /*return*/, user];
                     case 4:
                         error_1 = _a.sent();
-                        console.error("Error saving user:", error_1);
+                        logger.error("Error saving user:", error_1);
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/, user];
                 }
@@ -125,7 +126,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, userIds];
                     case 2:
                         error_2 = _a.sent();
-                        console.error("Error fetching user IDs:", error_2);
+                        logger.error("Error fetching user IDs:", error_2);
                         return [2 /*return*/, []];
                     case 3: return [2 /*return*/];
                 }
@@ -142,11 +143,11 @@ var MongoDB = /** @class */ (function () {
                         return [4 /*yield*/, this.UserModel.findOne({ id: Number(userId) })];
                     case 1:
                         userExists = _a.sent();
-                        console.log(userExists);
+                        logger.debug("User existence check:", userExists);
                         return [2 /*return*/, (userExists === null || userExists === void 0 ? void 0 : userExists.id) ? true : false];
                     case 2:
                         error_3 = _a.sent();
-                        console.error("Error checking user existence:", error_3);
+                        logger.error("Error checking user existence:", error_3);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -166,7 +167,8 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, ": ".concat(itemCount)];
                     case 2:
                         error_4 = _a.sent();
-                        return [2 /*return*/, "Error counting users"];
+                        logger.error("Error counting users:", error_4);
+                        return [2 /*return*/, "Error counting users"]; // Return a string in case of error
                     case 3: return [2 /*return*/];
                 }
             });
@@ -195,12 +197,13 @@ var MongoDB = /** @class */ (function () {
                     case 1:
                         document_1 = _a.sent();
                         if (!document_1 || document_1.sort.length === 0) {
-                            console.log("No document found or the sort array is empty.");
+                            logger.info("No document found or the sort array is empty.");
                             return [2 /*return*/, null];
                         }
                         return [2 /*return*/, document_1];
                     case 2:
                         err_1 = _a.sent();
+                        logger.error("Error getting first item from sort:", err_1);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -310,12 +313,12 @@ var MongoDB = /** @class */ (function () {
     };
     MongoDB.prototype.searchAIO = function (criteria, messageIdLink) {
         return __awaiter(this, void 0, void 0, function () {
-            var normalizedTitle, first20Chars, query, specialQuery, keywords, regexPattern, results, _a, err_2;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var normalizedTitle, first20Chars, query, specialQuery, keywords, regexPattern, results, e_1, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         if (!criteria.aIOTitle || criteria.aIOTitle.length < 2) {
-                            console.log("Please provide a valid search criteria.");
+                            logger.info("Please provide a valid search criteria for AIO.");
                             return [2 /*return*/, undefined];
                         }
                         normalizedTitle = criteria.aIOTitle;
@@ -335,33 +338,34 @@ var MongoDB = /** @class */ (function () {
                                 aIOTitle: { $regex: regexPattern },
                             };
                         }
-                        _b.label = 1;
+                        _a.label = 1;
                     case 1:
-                        _b.trys.push([1, 9, , 10]);
+                        _a.trys.push([1, 9, , 10]);
                         return [4 /*yield*/, this.AIOModel.find(query)];
                     case 2:
-                        results = _b.sent();
+                        results = _a.sent();
                         if (!(results.length === 0 && Object.keys(specialQuery).length > 0)) return [3 /*break*/, 4];
                         return [4 /*yield*/, this.AIOModel.find(specialQuery)];
                     case 3:
-                        results = _b.sent();
-                        _b.label = 4;
+                        results = _a.sent();
+                        _a.label = 4;
                     case 4:
                         if (!(results.length === 0)) return [3 /*break*/, 8];
-                        _b.label = 5;
+                        _a.label = 5;
                     case 5:
-                        _b.trys.push([5, 7, , 8]);
+                        _a.trys.push([5, 7, , 8]);
                         return [4 /*yield*/, sendToLogGroup(env.logGroupId, "not found: ".concat(normalizedTitle, " [View Message](").concat(messageIdLink || "https://www.telegram.org/", ")"))];
                     case 6:
-                        _b.sent();
+                        _a.sent();
                         return [3 /*break*/, 8];
                     case 7:
-                        _a = _b.sent();
+                        e_1 = _a.sent();
+                        logger.error("Error sending not found log for AIO search:", e_1);
                         return [3 /*break*/, 8];
                     case 8: return [2 /*return*/, results];
                     case 9:
-                        err_2 = _b.sent();
-                        console.error("Error executing the query:", err_2);
+                        err_2 = _a.sent();
+                        logger.error("Error executing AIO search query:", err_2);
                         return [2 /*return*/, undefined];
                     case 10: return [2 /*return*/];
                 }
@@ -375,7 +379,7 @@ var MongoDB = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (!criteria.aIOTitle || criteria.aIOTitle.length < 2) {
-                            console.log("Please provide a valid search criteria.");
+                            logger.info("Please provide a valid search criteria for Hindi Drama.");
                             return [2 /*return*/, undefined];
                         }
                         normalizedTitle = criteria.aIOTitle;
@@ -409,7 +413,7 @@ var MongoDB = /** @class */ (function () {
                     case 4: return [2 /*return*/, results];
                     case 5:
                         err_3 = _a.sent();
-                        console.error("Error executing the query:", err_3);
+                        logger.error("Error executing Hindi Drama search query:", err_3);
                         return [2 /*return*/, undefined];
                     case 6: return [2 /*return*/];
                 }
@@ -465,7 +469,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, true];
                     case 2:
                         error_5 = _a.sent();
-                        console.error("Error updating drama attribute:", error_5);
+                        logger.error("Error updating AIO attribute:", error_5);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -555,7 +559,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, tokenData !== null];
                     case 2:
                         error_6 = _a.sent();
-                        console.error("Error checking if token exists for user:", error_6);
+                        logger.error("Error checking if token exists for user:", error_6);
                         throw error_6;
                     case 3: return [2 /*return*/];
                 }
@@ -587,7 +591,7 @@ var MongoDB = /** @class */ (function () {
                     case 3:
                         decoded = jwt.verify(tokenData.token, env.jwtSecret);
                         if (new Date() > tokenData.expiresAt) {
-                            console.error("Token has expired");
+                            logger.error("Token has expired");
                             return [2 /*return*/, false];
                         }
                         return [2 /*return*/, true];
@@ -595,13 +599,13 @@ var MongoDB = /** @class */ (function () {
                     case 5:
                         error_7 = _a.sent();
                         if (error_7 instanceof jwt.TokenExpiredError) {
-                            console.error("Token has expired");
+                            logger.error("Token has expired");
                         }
                         else if (error_7 instanceof jwt.JsonWebTokenError) {
-                            console.error("Invalid token");
+                            logger.error("Invalid token");
                         }
                         else {
-                            console.error("Unexpected error during token verification:", error_7);
+                            logger.error("Unexpected error during token verification:", error_7);
                         }
                         return [2 /*return*/, false];
                     case 6: return [2 /*return*/];
@@ -639,7 +643,7 @@ var MongoDB = /** @class */ (function () {
                     case 6: return [2 /*return*/, newToken];
                     case 7:
                         error_8 = _a.sent();
-                        console.error("Error generating or saving token:", error_8);
+                        logger.error("Error generating or saving token:", error_8);
                         throw error_8;
                     case 8: return [2 /*return*/];
                 }
@@ -680,7 +684,7 @@ var MongoDB = /** @class */ (function () {
                     case 10: return [3 /*break*/, 12];
                     case 11:
                         error_9 = _a.sent();
-                        console.error("Error managing token:", error_9);
+                        logger.error("Error managing token:", error_9);
                         throw error_9;
                     case 12: return [2 /*return*/];
                 }
@@ -712,7 +716,7 @@ var MongoDB = /** @class */ (function () {
                     case 3: return [2 /*return*/, true];
                     case 4:
                         error_10 = _c.sent();
-                        console.error("Error checking bot premium status:", error_10);
+                        logger.error("Error checking bot premium status:", error_10);
                         return [2 /*return*/, false];
                     case 5: return [2 /*return*/];
                 }
@@ -729,7 +733,7 @@ var MongoDB = /** @class */ (function () {
                         regex = /^(\d+)([smhd])$/;
                         match = duration.match(regex);
                         if (!match) {
-                            console.error("Invalid duration format. Please use a format like 1h, 2d, etc.");
+                            logger.error("Invalid duration format. Please use a format like 1h, 2d, etc.");
                             return [2 /*return*/, "Invalid duration format. Please use a format like 1h, 2d, etc."];
                         }
                         value = parseInt(match[1]);
@@ -749,11 +753,11 @@ var MongoDB = /** @class */ (function () {
                                 durationMs = value * 24 * 60 * 60 * 1000;
                                 break;
                             default:
-                                console.error("Invalid time unit. Use s, m, h, or d.");
+                                logger.error("Invalid time unit. Use s, m, h, or d.");
                                 return [2 /*return*/, "Invalid time unit. Use s, m, h, or d."];
                         }
                         if (durationMs < 1 * 24 * 60 * 60 * 1000) {
-                            console.error("The minimum duration for premium is 1 day.");
+                            logger.error("The minimum duration for premium is 1 day.");
                             return [2 /*return*/, "The minimum duration for premium is 1 day."];
                         }
                         subscriptionType = "Other";
@@ -778,7 +782,7 @@ var MongoDB = /** @class */ (function () {
                     case 3:
                         newTokenData = _a.sent();
                         if (!newTokenData) {
-                            console.error("Failed to retrieve token after generation in addBotPremium.");
+                            logger.error("Failed to retrieve token after generation in addBotPremium.");
                             return [2 /*return*/, "Failed to add premium. Please try again later."];
                         }
                         tokenData = newTokenData; // Assign the newly created/fetched tokenData
@@ -795,11 +799,11 @@ var MongoDB = /** @class */ (function () {
                         return [4 /*yield*/, tokenData.save()];
                     case 5:
                         _a.sent();
-                        console.log("Premium added for ".concat(userId, ", subscription type: ").concat(subscriptionType, ", expires at ").concat(expiresAt));
+                        logger.info("Premium added for ".concat(userId, ", subscription type: ").concat(subscriptionType, ", expires at ").concat(expiresAt));
                         return [2 /*return*/, "Premium successfully added for ".concat(userId, ". Subscription type: ").concat(subscriptionType, ". Premium will expire on ").concat(expiresAt.toLocaleString(), ".")];
                     case 6:
                         error_11 = _a.sent();
-                        console.error("Error adding bot premium:", error_11);
+                        logger.error("Error adding bot premium:", error_11);
                         return [2 /*return*/, "Error adding bot premium:  + ".concat(error_11)];
                     case 7: return [2 /*return*/];
                 }
@@ -832,7 +836,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, "Premium Details:\n    - Subscription Type: ".concat(subscriptionType, "\n    - Total Duration: ").concat(duration, " days\n    - Remaining Time: ").concat(remainingDays, " day(s)\n    - Activated At: ").concat(activated_at.toLocaleDateString(), "\n    - Expires At: ").concat(new Date(expires_at).toLocaleDateString(), "\n    - Additional Details: ").concat(details)];
                     case 2:
                         error_12 = _b.sent();
-                        console.error("Error fetching premium details:", error_12);
+                        logger.error("Error fetching premium details:", error_12);
                         return [2 /*return*/, "An error occurred while retrieving premium details. Please try again."];
                     case 3: return [2 /*return*/];
                 }
@@ -853,7 +857,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
                         error_13 = _a.sent();
-                        console.error("Error adding link to first sort:", error_13);
+                        logger.error("Error adding link to first sort:", error_13);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -872,13 +876,13 @@ var MongoDB = /** @class */ (function () {
                     case 1:
                         document_2 = _a.sent();
                         if (!document_2 || document_2.sort.length === 0) {
-                            console.log("No document found or the sort array is empty.");
+                            logger.info("No document found or the sort array is empty.");
                             return [2 /*return*/, null];
                         }
                         return [2 /*return*/, document_2];
                     case 2:
                         error_14 = _a.sent();
-                        console.error("Error retrieving first sort item:", error_14);
+                        logger.error("Error retrieving first sort item:", error_14);
                         return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
@@ -899,7 +903,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, result.modifiedCount > 0];
                     case 2:
                         error_15 = _a.sent();
-                        console.error("Error setting active share ID:", error_15);
+                        logger.error("Error setting active share ID:", error_15);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -924,7 +928,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, result.modifiedCount > 0 || result.upsertedCount > 0];
                     case 2:
                         error_16 = _a.sent();
-                        console.error("Error updating first sort and active path:", error_16);
+                        logger.error("Error updating first sort and active path:", error_16);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }
@@ -944,7 +948,7 @@ var MongoDB = /** @class */ (function () {
                         return [2 /*return*/, result.deletedCount > 0];
                     case 2:
                         error_17 = _a.sent();
-                        console.error("Error deleting all sort data:", error_17);
+                        logger.error("Error deleting all sort data:", error_17);
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }

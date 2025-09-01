@@ -1,4 +1,5 @@
 import env from "../services/env.js";
+import logger from "../utils/logger.js";
 function sendRequest() {
     fetch(env.otherDomain)
         .then(function (response) {
@@ -8,10 +9,10 @@ function sendRequest() {
         return response.json();
     })
         .then(function (data) {
-        console.log(data);
+        logger.info("Response from other domain:", data);
     })
         .catch(function (error) {
-        console.error("Error:", error);
+        logger.error("Error sending request to other domain:", error);
     });
 }
 export default sendRequest;

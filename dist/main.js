@@ -43,11 +43,12 @@ import { session } from "telegraf";
 import database from "./services/database.js";
 import filters from "./middleware/filters.js";
 import { useNewReplies } from "telegraf/future";
+import logger from "./utils/logger.js";
 var app = telegram.app;
 app.use(session());
 app.use(stage.middleware());
 app.use(filters.private);
-app.use(commands.reqAIOHandler);
+app.use(commands.reqAioHandler);
 app.use(useNewReplies());
 app.command("start", commands.startHandler);
 app.command("addtopremium", commands.addToPremiumHandler);
@@ -58,7 +59,7 @@ app.command("myinvites", commands.invitesHandler);
 app.command("totalusers", commands.totalUsersHandler);
 app.command("broadcast", commands.myBroadcastHandler);
 app.command("add", commands.addAIOHandler);
-app.command("createong", commands.createOngHandler);
+app.command("createong", commands.createOngoingHandler);
 app.command("addh", commands.addAIOHandler);
 app.command("addong", commands.addOngoingHandler);
 app.command("edit", commands.editAIOHandler);
@@ -66,7 +67,7 @@ app.command("topinviters", commands.topInvitesHandler);
 app.command("myinvitestatus", commands.inviteStatusHandler);
 app.catch(function (err, ctx) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        console.error("Error in ".concat(ctx.updateType), err);
+        logger.error("Error in ".concat(ctx.updateType), err);
         return [2 /*return*/];
     });
 }); });
@@ -92,11 +93,11 @@ function main() {
                                     return [4 /*yield*/, fetch(env.webhookDomain + "/check")];
                                 case 1:
                                     response = _a.sent();
-                                    console.log("Service is alive: Status ".concat(response.status));
+                                    logger.info("Service is alive: Status ".concat(response.status));
                                     return [3 /*break*/, 3];
                                 case 2:
                                     error_1 = _a.sent();
-                                    console.error("service check failed");
+                                    logger.error("service check failed", error_1);
                                     return [3 /*break*/, 3];
                                 case 3: return [2 /*return*/];
                             }
@@ -119,13 +120,13 @@ function main() {
                     return [4 /*yield*/, app.createWebhook({ domain: domain, path: "/zhao010203" })];
                 case 4:
                     _b.apply(_a, [_c.sent()]);
-                    server.listen(port_1, function () { return console.log("Server listening on ".concat(port_1)); });
+                    server.listen(port_1, function () { return logger.info("Server listening on ".concat(port_1)); });
                     _c.label = 5;
                 case 5: return [2 /*return*/];
             }
         });
     });
 }
-main().catch(function (err) { return console.error(err); });
+main().catch(function (err) { return logger.error("Main function error:", err); });
 process.once("SIGINT", function () { return app.stop("SIGINT"); });
 process.once("SIGTERM", function () { return app.stop("SIGTERM"); });

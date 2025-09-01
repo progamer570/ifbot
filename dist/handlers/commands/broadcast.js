@@ -40,6 +40,7 @@ import { delay } from "../../extra/delay.js";
 import { sendToLogGroup } from "../../utils/sendToCollection.js";
 import env from "../../services/env.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
+import logger from "../../utils/logger.js";
 var broadcastActive = true;
 export default function myBroadcastHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
@@ -79,7 +80,7 @@ export default function myBroadcastHandler(ctx) {
                     return [3 /*break*/, 4];
                 case 3:
                     error_1 = _k.sent();
-                    console.error("Error logging broadcast:", error_1);
+                    logger.error("Error logging broadcast:", error_1);
                     return [3 /*break*/, 4];
                 case 4:
                     referencedMessage = ctx.message.reply_to_message;
@@ -113,7 +114,7 @@ export default function myBroadcastHandler(ctx) {
                     return [3 /*break*/, 11];
                 case 10:
                     error_2 = _k.sent();
-                    console.error("Failed to send message to user ".concat(user, ":"), error_2);
+                    logger.error("Failed to send message to user ".concat(user, ":"), error_2);
                     return [3 /*break*/, 11];
                 case 11: return [4 /*yield*/, delay(50, 60)];
                 case 12:
@@ -142,7 +143,7 @@ export default function myBroadcastHandler(ctx) {
                     return [3 /*break*/, 20];
                 case 19:
                     error_3 = _k.sent();
-                    console.error("Failed to send message to user ".concat(user, ":"), error_3);
+                    logger.error("Failed to send message to user ".concat(user, ":"), error_3);
                     return [3 /*break*/, 20];
                 case 20: return [4 /*yield*/, delay(500, 600)];
                 case 21:
@@ -156,7 +157,7 @@ export default function myBroadcastHandler(ctx) {
                     return [3 /*break*/, 25];
                 case 24:
                     error_4 = _k.sent();
-                    console.error("Error broadcasting message:", error_4);
+                    logger.error("Error broadcasting message:", error_4);
                     ctx.reply("Failed to broadcast message.");
                     return [3 /*break*/, 25];
                 case 25: return [2 /*return*/];

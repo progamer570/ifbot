@@ -14,6 +14,7 @@ import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
 import { deleteToWebsite, updateToWebsite } from "../../services/toWebsite.js";
 import { getUrlFromFileId } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 
 // Create a Wizard Scene
 const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
@@ -32,7 +33,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
       const random = getRandomId();
       (ctx.session as PageSessionData).prev = `prev${random}`;
       (ctx.session as PageSessionData).next = `next${random}`;
-      console.log((ctx.session as PageSessionData).prev);
+      logger.debug("Previous page data:", (ctx.session as PageSessionData).prev);
 
       (ctx.session as PageSessionData).aIOData = finalResult;
       if (finalResult && finalResult.length > 0) {
@@ -70,17 +71,14 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
     ) {
       const page = (ctx.session as PageSessionData).page || 0;
       const AIOData = (ctx.session as PageSessionData).aIOData;
-      console.log([
-        (ctx.session as PageSessionData).page || 0,
-        (ctx.session as PageSessionData).aIOData?.length,
-      ]);
+      logger.debug("Current page and AIO data length:", (ctx.session as PageSessionData).page || 0, (ctx.session as PageSessionData).aIOData?.length);
 
       if (AIOData) {
         if (ctx.callbackQuery.data.startsWith("next")) {
           if (page + 1 < AIOData.length) {
             (ctx.session as PageSessionData).page =
               ((ctx.session as PageSessionData).page ?? 0) + 1;
-            console.log(page, AIOData.length);
+            logger.debug("Page and AIO data length:", page, AIOData.length);
 
             const photo = AIOData[(ctx.session as PageSessionData).page || 0].aIOPosterID;
             //edit
@@ -174,7 +172,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
         await database.deleteAIO(selectedShareId);
         try {
           await deleteToWebsite(selectedShareId);
-        } catch (error) {}
+        } catch (error) { logger.error("Error deleting AIO from website:", error); }
         await ctx.editMessageText("deleted successfully");
         await ctx.editMessageReplyMarkup({
           inline_keyboard: [[{ text: "deleted", callback_data: "delete" }]],
@@ -191,7 +189,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
             message = `Deleted AIO ${selectedShareId} by [${firstName}: ${userId}](tg://user?id=${userId})`;
           }
           await sendToLogGroup(env.logGroupId, message);
-        } catch {}
+        } catch (e) { logger.error("Error sending AIO deletion log to group:", e); }
         return await ctx.scene.leave();
       }
     }
@@ -208,7 +206,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
         await updateToWebsite(selectedShareId, false, {
           title: ctx.message.text,
         });
-      } catch (error) {}
+      } catch (error) { logger.error("Error updating website with new AIO title:", error); }
       await ctx.reply("edited");
 
       try {
@@ -221,7 +219,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
           env.logGroupId,
           getUserLinkMessage(`Edited AIO Caption ${selectedShareId} by  `, user)
         );
-      } catch {}
+      } catch (e) { logger.error("Error sending AIO caption edit log to group:", e); }
       return await ctx.scene.leave();
     } else if (tracker.startsWith("poster") && ctx.message && "photo" in ctx.message) {
       if (ctx.message && "photo" in ctx.message) {
@@ -237,7 +235,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
             imageUrl: webPhotoUrl.replace(`${env.token}`, "token"),
             posterId: photoUrl,
           });
-        } catch (error) {}
+        } catch (error) { logger.error("Error updating website with new AIO poster:", error); }
         try {
           const user = {
             id: ctx.from.id,
@@ -251,7 +249,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
               user
             )
           );
-        } catch {}
+        } catch (e) { logger.error("Error sending AIO poster edit log to group:", e); }
         await ctx.reply("edited");
       }
       return await ctx.scene.leave();
@@ -288,7 +286,7 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
               env.logGroupId,
               getUserLinkMessage(`Added eps To AIO ${selectedShareId} by `, user)
             );
-          } catch {}
+          } catch (e) { logger.error("Error sending AIO addition log to group:", e); }
           return await ctx.scene.leave();
         } else {
           await ctx.reply(
@@ -299,21 +297,21 @@ const editDeleteWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
           );
           (ctx.session as PageSessionData).messageIds?.push(ctx.message.message_id);
           let caption: string = getRandomId().toString();
-          if ("caption" in ctx.message) {
-            caption = ctx.message.caption || "I_F";
-            (ctx.session as PageSessionData).captions =
-              (ctx.session as PageSessionData).captions || [];
-            (ctx.session as PageSessionData).captions?.push(caption);
+          if ("document" in ctx.message && ctx.message.document.file_name) {
+            caption = ctx.message.document.file_name;
+          } else if ("caption" in ctx.message) {
+            caption = ctx.message.caption || " ";
           } else {
             caption = "I_F";
-            (ctx.session as PageSessionData).captions =
-              (ctx.session as PageSessionData).captions || [];
-            (ctx.session as PageSessionData).captions?.push(caption);
           }
+          (ctx.session as PageSessionData).captions =
+            (ctx.session as PageSessionData).captions || [];
+          (ctx.session as PageSessionData).captions?.push(caption);
         }
       }
     } else {
-      ctx.reply("somthing went wrong try again");
+      logger.warn("Something went wrong in edit AIO, trying again.");
+      ctx.reply("Something went wrong, please try again.");
       return await ctx.scene.leave();
     }
   })

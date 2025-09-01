@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import database from "../../services/database.js";
 import { generateInviteLink } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 export default function addAIOHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var topInviters, userId, topInvitersString, resultString, error_1;
@@ -82,7 +83,7 @@ export default function addAIOHandler(ctx) {
                     return [3 /*break*/, 7];
                 case 5:
                     error_1 = _b.sent();
-                    console.error("Error displaying top inviters:", error_1);
+                    logger.error("Error displaying top inviters:", error_1);
                     return [4 /*yield*/, ctx.reply("❌ An error occurred while fetching the leaderboard.")];
                 case 6:
                     _b.sent();

@@ -1,6 +1,7 @@
 import { WizardContext } from "telegraf/typings/scenes";
 import database from "../../services/database.js";
 import { generateInviteLink } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 
 export default async function addAIOHandler(ctx: WizardContext) {
   try {
@@ -42,7 +43,7 @@ export default async function addAIOHandler(ctx: WizardContext) {
       },
     });
   } catch (error) {
-    console.error("Error displaying top inviters:", error);
+    logger.error("Error displaying top inviters:", error);
     await ctx.reply("❌ An error occurred while fetching the leaderboard.");
   }
 }

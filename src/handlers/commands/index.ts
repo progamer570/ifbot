@@ -1,6 +1,6 @@
 import startHandler from "./start.js";
 
-import reqAIOHandler from "./reqAIO.js";
+import reqAioHandler from "./reqAIO.js";
 import addAIOHandler from "./addAIO.js";
 import editAIOHandler from "./editAIO.js";
 import invitesHandler from "./myInvites.js";
@@ -13,12 +13,12 @@ import addToPremiumHandler from "./addToPremium.js";
 import premiumHandler from "./premium.js";
 import topInvitesHandler from "./topInvites.js";
 import inviteStatusHandler from "./inviteStatus.js";
-import createOngHandler from "./createOng.js";
+import createOngoingHandler from "./createOng.js";
 
 export default {
   startHandler,
 
-  createOngHandler,
+  createOngoingHandler,
 
   addToPremiumHandler,
 
@@ -30,7 +30,7 @@ export default {
 
   replyHandler,
 
-  reqAIOHandler,
+  reqAioHandler,
 
   addAIOHandler,
 

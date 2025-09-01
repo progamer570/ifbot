@@ -2,23 +2,23 @@ import { Scenes } from "telegraf";
 
 import shareAIO from "./addAIO/index.js";
 
-import reqAIO from "./reqAIO/index.js";
+import reqAio from "./reqAIO/index.js";
 
 import editAIO from "./editAIO/index.js";
 
 import myInvites from "./myInvites/index.js";
 
-import addOng from "./addOngoing/index.js";
+import addOngoing from "./addOngoing/index.js";
 
-import createOng from "./createOng/index.js";
+import createOngoing from "./createOng/index.js";
 
 const stage = new Scenes.Stage<Scenes.WizardContext>([
   shareAIO,
-  reqAIO,
+  reqAio,
   editAIO,
   myInvites,
-  addOng,
-  createOng,
+  addOngoing,
+  createOngoing,
 ]);
 
 // const shareStage = new Scenes.Stage<Scenes.SceneContext>([shareScene]);

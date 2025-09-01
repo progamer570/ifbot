@@ -7,6 +7,7 @@ import getRandomId from "../../extra/getRandomId.js";
 import { sendCallbackQueryResponse } from "./answerCbQUery.js";
 import { makeInviteButtons } from "../../utils/markupButton/permanantButton/keyboard.js";
 import { generateInviteLink } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 
 // Create a Wizard Scene
 const myInvitePagination = new Scenes.WizardScene<WizardContext<PageSessionData>>(
@@ -48,7 +49,7 @@ ___________________________________`;
         (ctx.session as PageSessionData).inviteData = batches;
         (ctx.session as PageSessionData).prev = `prev${random}`;
         (ctx.session as PageSessionData).next = `next${random}`;
-        console.log((ctx.session as PageSessionData).prev);
+        logger.debug("Previous page data:", (ctx.session as PageSessionData).prev);
         try {
           await ctx
             .reply(`\`\`\`\n${batches[0] || "You have not invited anyone yet."}\n\`\`\``, {
@@ -66,9 +67,9 @@ ___________________________________`;
                 setTimeout(() => {
                   ctx.deleteMessage(messageIdToDelete);
                 }, 5 * 60 * 60 * 1000);
-              } catch {}
+              } catch (e) { logger.error("Error deleting message after timeout:", e); }
             });
-        } catch (error) {}
+        } catch (error) { logger.error("Error replying with invite list:", error); }
       }
       return ctx.wizard.next();
     }
@@ -84,10 +85,7 @@ ___________________________________`;
       const totalInvites = (ctx.session as PageSessionData).totalInvites!;
 
       const inviteData = (ctx.session as PageSessionData).inviteData;
-      console.log([
-        (ctx.session as PageSessionData).page || 0,
-        (ctx.session as PageSessionData).inviteData?.length,
-      ]);
+      logger.debug("Current page and invite data length:", (ctx.session as PageSessionData).page || 0, (ctx.session as PageSessionData).inviteData?.length);
 
       if (inviteData) {
         try {
@@ -95,7 +93,7 @@ ___________________________________`;
             if (page + 1 < inviteData.length) {
               (ctx.session as PageSessionData).page =
                 ((ctx.session as PageSessionData).page ?? 0) + 1;
-              console.log(page, inviteData.length);
+              logger.debug("Page and invite data length (next):");
               await ctx.editMessageText(`\`\`\`\n${inviteData[page + 1]}\n\`\`\``, {
                 reply_markup: makeInviteButtons(
                   link,
@@ -132,7 +130,7 @@ ___________________________________`;
               await sendCallbackQueryResponse(ctx, `Nothing in Prev !! `);
             }
           }
-        } catch (error) {}
+        } catch (error) { logger.error("Error handling invite pagination callback:", error); }
       } else {
         await sendCallbackQueryResponse(ctx, `No more data there !!!`);
       }

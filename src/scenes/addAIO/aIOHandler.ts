@@ -5,7 +5,7 @@ import env from "../../services/env.js";
 import database from "../../services/database.js";
 import getAIOdata from "./aIODocument.js";
 import AIOWizardContext from "./aIOWizardContext.js";
-import { sendToCOllection, sendToLogGroup } from "../../utils/sendToCollection.js";
+import { sendToCollection, sendToLogGroup } from "../../utils/sendToCollection.js";
 import getRandomId from "../../extra/getRandomId.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
@@ -145,7 +145,7 @@ async function done(ctx: AIOWizardContext) {
         await ctx.reply(link + " " + AIOData.aioShortUrl);
         try {
           if ((ctx.session as AIOSessionData).isHindi) {
-            await sendToCOllection(
+            await sendToCollection(
               env.collectionHindi,
               AIOData.aIOPosterID,
               link,
@@ -162,8 +162,8 @@ async function done(ctx: AIOWizardContext) {
             }
           } else {
             await Promise.all([
-              sendToCOllection(env.collectionAIO, aIOPosterID, link, aIOTitle || "none"),
-              sendToCOllection(env.collectionAIOBackup, aIOPosterID, link, aIOTitle || "none"),
+              sendToCollection(env.collectionAIO, aIOPosterID, link, aIOTitle || "none"),
+              sendToCollection(env.collectionAIOBackup, aIOPosterID, link, aIOTitle || "none"),
             ]);
 
             try {

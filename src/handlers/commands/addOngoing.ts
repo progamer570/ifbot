@@ -1,4 +1,3 @@
-import { Context, Markup } from "telegraf";
 import { WizardContext } from "telegraf/typings/scenes";
 import auth from "../../services/auth.js";
 

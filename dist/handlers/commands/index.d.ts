@@ -1,5 +1,5 @@
 import startHandler from "./start.js";
-import reqAIOHandler from "./reqAIO.js";
+import reqAioHandler from "./reqAIO.js";
 import addAIOHandler from "./addAIO.js";
 import editAIOHandler from "./editAIO.js";
 import invitesHandler from "./myInvites.js";
@@ -12,16 +12,16 @@ import addToPremiumHandler from "./addToPremium.js";
 import premiumHandler from "./premium.js";
 import topInvitesHandler from "./topInvites.js";
 import inviteStatusHandler from "./inviteStatus.js";
-import createOngHandler from "./createOng.js";
+import createOngoingHandler from "./createOng.js";
 declare const _default: {
     startHandler: typeof startHandler;
-    createOngHandler: typeof createOngHandler;
+    createOngoingHandler: typeof createOngoingHandler;
     addToPremiumHandler: typeof addToPremiumHandler;
     topInvitesHandler: typeof topInvitesHandler;
     premiumHandler: typeof premiumHandler;
     autoReplyHandler: typeof autoReplyHandler;
     replyHandler: typeof replyHandler;
-    reqAIOHandler: typeof reqAIOHandler;
+    reqAioHandler: typeof reqAioHandler;
     addAIOHandler: typeof addAIOHandler;
     editAIOHandler: typeof editAIOHandler;
     invitesHandler: typeof invitesHandler;

@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import InviteModel from "./models/inviteModel.js";
+import logger from "../utils/logger.js";
 var InviteService = /** @class */ (function () {
     function InviteService() {
     }
@@ -150,7 +151,7 @@ var InviteService = /** @class */ (function () {
                         return [2 /*return*/, topInviters];
                     case 2:
                         error_1 = _a.sent();
-                        console.error("Error fetching top inviters:", error_1);
+                        logger.error("Error fetching top inviters:", error_1);
                         throw new Error("Failed to fetch top inviters.");
                     case 3: return [2 /*return*/];
                 }
@@ -168,18 +169,18 @@ var InviteService = /** @class */ (function () {
                     case 1:
                         result = _a.sent();
                         if (result.matchedCount === 0) {
-                            console.log("\u274C No user found with userId: ".concat(userId));
+                            logger.info("No user found with userId: ".concat(userId));
                         }
                         else if (result.modifiedCount === 0) {
-                            console.log("\u26A0\uFE0F No changes made. Invites were already empty for userId: ".concat(userId));
+                            logger.info("No changes made. Invites were already empty for userId: ".concat(userId));
                         }
                         else {
-                            console.log("\u2705 Successfully reset invites for userId: ".concat(userId));
+                            logger.info("Successfully reset invites for userId: ".concat(userId));
                         }
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
-                        console.error("❌ Error resetting invites for user:", error_2);
+                        logger.error("Error resetting invites for user:", error_2);
                         throw new Error("Failed to reset invites for the user.");
                     case 3: return [2 /*return*/];
                 }
@@ -197,7 +198,7 @@ var InviteService = /** @class */ (function () {
                     case 1:
                         user = _a.sent();
                         if (!user) {
-                            console.log("\u274C No user found with userId: ".concat(userId));
+                            logger.info("No user found with userId: ".concat(userId));
                             return [2 /*return*/, false];
                         }
                         oldUsedInvites = user.inviteUsed || 0;
@@ -209,13 +210,13 @@ var InviteService = /** @class */ (function () {
                             return [2 /*return*/, true];
                         }
                         else {
-                            console.log("\u26A0\uFE0F No changes made. InviteUsed for userId: ".concat(userId, " remains the same."));
+                            logger.info("No changes made. InviteUsed for userId: ".concat(userId, " remains the same."));
                             return [2 /*return*/, false];
                         }
                         return [3 /*break*/, 4];
                     case 3:
                         error_3 = _a.sent();
-                        console.error("❌ Error updating inviteUsed:", error_3);
+                        logger.error("Error updating inviteUsed:", error_3);
                         return [2 /*return*/, false];
                     case 4: return [2 /*return*/];
                 }
@@ -233,7 +234,7 @@ var InviteService = /** @class */ (function () {
                     case 1:
                         user = _a.sent();
                         if (!user) {
-                            console.log("\u274C No user found with userId: ".concat(userId));
+                            logger.info("No user found with userId: ".concat(userId));
                             return [2 /*return*/, null];
                         }
                         totalInvites = user.invites.length;
@@ -242,7 +243,7 @@ var InviteService = /** @class */ (function () {
                         return [2 /*return*/, { totalInvites: totalInvites, usedInvites: usedInvites, remainingInvites: remainingInvites }];
                     case 2:
                         error_4 = _a.sent();
-                        console.error("❌ Error fetching invite status:", error_4);
+                        logger.error("Error fetching invite status:", error_4);
                         throw new Error("Failed to fetch invite status.");
                     case 3: return [2 /*return*/];
                 }

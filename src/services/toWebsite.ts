@@ -1,4 +1,5 @@
 import env from "./env.js";
+import logger from "../utils/logger.js";
 
 /**
  * Sends data to the given server endpoint using fetch.
@@ -33,10 +34,11 @@ export async function addToWebsite(
     }
 
     const data = await response.json();
-    console.log("✅ Server Response:", data);
+    logger.info("✅ Server Response (addToWebsite):");
+    logger.info(data);
     return data;
   } catch (error) {
-    console.error("❌ Error:", error);
+    logger.error("❌ Error (addToWebsite):", error);
     return null;
   }
 }
@@ -67,10 +69,11 @@ export async function updateToWebsite(
     }
 
     const data = await response.json();
-    console.log("✅ Server Response:", data);
+    logger.info("✅ Server Response (updateToWebsite):");
+    logger.info(data);
     return data;
   } catch (error) {
-    console.error("❌ Error:", error);
+    logger.error("❌ Error (updateToWebsite):", error);
     return null;
   }
 }
@@ -90,10 +93,11 @@ export async function deleteToWebsite(shareId: number): Promise<any | null> {
     }
 
     const data = await response.json();
-    console.log("✅ Server Response:", data);
+    logger.info("✅ Server Response (deleteToWebsite):");
+    logger.info(data);
     return data;
   } catch (error) {
-    console.error("❌ Error:", error);
+    logger.error("❌ Error (deleteToWebsite):", error);
     return null;
   }
 }

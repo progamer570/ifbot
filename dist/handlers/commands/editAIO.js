@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import auth from "../../services/auth.js";
-export default function editAIOHandler(ctx) {
+export default function editAioHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var userId;
         var _a;
@@ -46,7 +46,7 @@ export default function editAIOHandler(ctx) {
                     if (!auth.isAdmin(userId ? userId : 0)) {
                         return [2 /*return*/, ctx.reply("Sorry, you have no permission to do this")];
                     }
-                    return [4 /*yield*/, ctx.scene.enter("editAIO")];
+                    return [4 /*yield*/, ctx.scene.enter("editAio")];
                 case 1:
                     _b.sent();
                     return [2 /*return*/];

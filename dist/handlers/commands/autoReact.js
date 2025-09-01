@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import auth from "../../services/auth.js";
 import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 export var autoReplyMemory = {};
 var cleanupMemory = function () {
     var now = Date.now();
@@ -128,7 +129,7 @@ export default function autoReactHandler(ctx) {
                     return [3 /*break*/, 20];
                 case 18:
                     error_1 = _e.sent();
-                    console.error("Error in autoReactHandler:", error_1);
+                    logger.error("Error in autoReactHandler:", error_1);
                     return [4 /*yield*/, ctx.reply("An unexpected error occurred. Please try again later.")];
                 case 19:
                     _e.sent();

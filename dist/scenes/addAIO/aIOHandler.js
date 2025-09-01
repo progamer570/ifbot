@@ -50,7 +50,7 @@ import telegram from "../../services/telegram.js";
 import env from "../../services/env.js";
 import database from "../../services/database.js";
 import getAIOdata from "./aIODocument.js";
-import { sendToCOllection, sendToLogGroup } from "../../utils/sendToCollection.js";
+import { sendToCollection, sendToLogGroup } from "../../utils/sendToCollection.js";
 import getRandomId from "../../extra/getRandomId.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
@@ -231,7 +231,7 @@ function done(ctx) {
                 case 21:
                     _o.trys.push([21, 33, , 34]);
                     if (!ctx.session.isHindi) return [3 /*break*/, 27];
-                    return [4 /*yield*/, sendToCOllection(env.collectionHindi, AIOData.aIOPosterID, link, AIOData.aIOTitle || "none")];
+                    return [4 /*yield*/, sendToCollection(env.collectionHindi, AIOData.aIOPosterID, link, AIOData.aIOTitle || "none")];
                 case 22:
                     _o.sent();
                     _o.label = 23;
@@ -247,8 +247,8 @@ function done(ctx) {
                     return [3 /*break*/, 26];
                 case 26: return [3 /*break*/, 32];
                 case 27: return [4 /*yield*/, Promise.all([
-                        sendToCOllection(env.collectionAIO, aIOPosterID, link, aIOTitle || "none"),
-                        sendToCOllection(env.collectionAIOBackup, aIOPosterID, link, aIOTitle || "none"),
+                        sendToCollection(env.collectionAIO, aIOPosterID, link, aIOTitle || "none"),
+                        sendToCollection(env.collectionAIOBackup, aIOPosterID, link, aIOTitle || "none"),
                     ])];
                 case 28:
                     _o.sent();

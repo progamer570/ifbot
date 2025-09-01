@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import logger from "../utils/logger.js";
 export function scheduleMessageDeletion(bot, chatId, messageId, delayInMinutes) {
     var _this = this;
     setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
@@ -45,11 +46,11 @@ export function scheduleMessageDeletion(bot, chatId, messageId, delayInMinutes) 
                     return [4 /*yield*/, bot.app.telegram.deleteMessage(chatId, messageId)];
                 case 1:
                     _a.sent();
-                    console.log("Message deleted successfully.");
+                    logger.info("Message deleted successfully.");
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
-                    console.error("Error deleting message:", error_1);
+                    logger.error("Error deleting message:", error_1);
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }

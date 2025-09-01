@@ -39,6 +39,7 @@ import database from "../../services/database.js";
 import env from "../../services/env.js";
 import telegram from "../../services/telegram.js";
 import { sendDailyLimitMessage, sendInviterWelcomeMessage, sendTokenExpiredMessage, sendTokenGeneratedMessage, sendWelcomeMessage, } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 export default function startHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var chatId, user, userId, payload, shareId, tokenNumber, firstSortItem, activeShareId, token, inviteParts, inviterId, newUserId, isUserExist, parts, chatsUserHasNotJoined, haveBotPremium, isValidToken, firstItem, canRequest, error_1, messageIds, channel, error_2, error_3;
@@ -50,7 +51,7 @@ export default function startHandler(ctx) {
                     userId = user.id;
                     payload = ctx.message.text.split(" ")[1];
                     shareId = undefined;
-                    console.log(payload);
+                    logger.debug("Payload:", payload);
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 40, , 41]);
@@ -65,7 +66,7 @@ export default function startHandler(ctx) {
                     return [4 /*yield*/, database.manageToken(userId.toString())];
                 case 3:
                     token = (_a.sent()).token;
-                    return [4 /*yield*/, sendTokenGeneratedMessage(ctx, token).catch(function (error) { return console.error(error); })];
+                    return [4 /*yield*/, sendTokenGeneratedMessage(ctx, token).catch(function (error) { return logger.error("Error sending token generated message:", error); })];
                 case 4: return [2 /*return*/, _a.sent()];
                 case 5:
                     if (!payload) return [3 /*break*/, 11];
@@ -82,7 +83,7 @@ export default function startHandler(ctx) {
                 case 7:
                     _a.sent();
                     return [4 /*yield*/, sendInviterWelcomeMessage(ctx, inviterId).catch(function (error) {
-                            return console.error(error);
+                            return logger.error("Error sending inviter welcome message:", error);
                         })];
                 case 8: return [2 /*return*/, _a.sent()];
                 case 9: return [3 /*break*/, 11];
@@ -95,7 +96,7 @@ export default function startHandler(ctx) {
                 case 11:
                     if (!!shareId) return [3 /*break*/, 13];
                     return [4 /*yield*/, sendWelcomeMessage(ctx, user, userId.toString()).catch(function (error) {
-                            return console.error(error);
+                            return logger.error("Error sending welcome message:", error);
                         })];
                 case 12: return [2 /*return*/, _a.sent()];
                 case 13:
@@ -109,18 +110,21 @@ export default function startHandler(ctx) {
                     _a.label = 15;
                 case 15: return [4 /*yield*/, database
                         .checkBotPremiumStatus(userId.toString())
-                        .catch(function (error) { return console.error(error); })];
+                        .catch(function (error) { return logger.error("Error checking bot premium status in start handler:", error); })];
                 case 16:
                     haveBotPremium = _a.sent();
                     return [4 /*yield*/, database.verifyAndValidateToken(userId.toString())];
                 case 17:
                     isValidToken = _a.sent();
                     if (!!isValidToken) return [3 /*break*/, 20];
-                    return [4 /*yield*/, database.getFirstItem().catch(function (error) { return console.error(error); })];
+                    return [4 /*yield*/, database.getFirstItem().catch(function (error) {
+                            logger.error("Error getting first item for token validation:", error);
+                            return null; // Explicitly return null on error
+                        })];
                 case 18:
                     firstItem = _a.sent();
                     if (!(firstItem && !haveBotPremium)) return [3 /*break*/, 20];
-                    return [4 /*yield*/, sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload).catch(function (error) { return console.error(error); })];
+                    return [4 /*yield*/, sendTokenExpiredMessage(ctx, user, firstItem.sort[0].aioShortUrl, payload).catch(function (error) { return logger.error("Error sending token expired message:", error); })];
                 case 19: return [2 /*return*/, _a.sent()];
                 case 20: return [4 /*yield*/, database.canRequest(userId.toString())];
                 case 21:
@@ -137,7 +141,7 @@ export default function startHandler(ctx) {
                 case 24: return [3 /*break*/, 26];
                 case 25:
                     error_1 = _a.sent();
-                    console.error("Error updating request count:", error_1);
+                    logger.error("Error updating request count:", error_1);
                     return [3 /*break*/, 26];
                 case 26:
                     messageIds = void 0;
@@ -181,17 +185,17 @@ export default function startHandler(ctx) {
                     return [3 /*break*/, 36];
                 case 35:
                     error_2 = _a.sent();
-                    console.error("Error saving user data:", error_2);
+                    logger.error("Error saving user data:", error_2);
                     return [3 /*break*/, 36];
                 case 36: return [3 /*break*/, 39];
                 case 37: return [4 /*yield*/, sendDailyLimitMessage(ctx, user, userId.toString()).catch(function (error) {
-                        return console.error(error);
+                        return logger.error("Error sending daily limit message:", error);
                     })];
                 case 38: return [2 /*return*/, _a.sent()];
                 case 39: return [3 /*break*/, 41];
                 case 40:
                     error_3 = _a.sent();
-                    console.error("Error in startHandler:", error_3);
+                    logger.error("Error in startHandler:", error_3);
                     return [3 /*break*/, 41];
                 case 41: return [2 /*return*/];
             }

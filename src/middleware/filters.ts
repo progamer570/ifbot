@@ -15,10 +15,11 @@ import {
 } from "../utils/helper.js";
 import telegram from "../services/telegram.js";
 import { FmtString } from "telegraf/format.js";
+import logger from "../utils/logger.js";
 
 export default {
   async private(ctx: Context, next: () => void) {
-    console.log(ctx.chat?.id);
+    logger.debug("Chat ID:", ctx.chat?.id);
 
     if (ctx.message && "text" in ctx.message && auth.isAdmin(ctx.from?.id ?? 0)) {
       const messageText = ctx.message?.text;
@@ -49,14 +50,14 @@ export default {
             break;
         }
       } catch (error) {
-        console.error("Error handling command:", error);
+        logger.error("Error handling command:", error);
         await ctx.reply("An error occurred while processing your request.");
       }
     }
     if (autoReplyMemory[ctx.from?.id!]) {
       setTimeout(async () => {
         await ctx.react(getRandomReactionEmoji()).catch((error) => {
-          console.error("Failed to react:", error);
+          logger.error("Failed to react:", error);
         });
       }, 60000);
     }
@@ -65,11 +66,11 @@ export default {
       try {
         setTimeout(async () => {
           await ctx.deleteMessage(ctx.message?.message_id).catch((error) => {
-            console.error("Failed to delete message:", error);
+            logger.error("Failed to delete message:", error);
           });
         }, 200000);
       } catch (error) {
-        console.error("Unexpected error while deleting message:", error);
+        logger.error("Unexpected error while deleting message:", error);
       }
     }
 
@@ -82,13 +83,10 @@ export default {
 
           switch (callbackData) {
             case "addDrama":
-              message = "";
-              break;
-            case "addOngoing":
-              message = "use /add to add new drama or series or movie";
+              message = "Use `/add` to add a new AIO drama, series, or movie.";
               break;
             case "editDrama":
-              message = "use </edit drama name> to edit uploaded drama or series or movie";
+              message = "Use `/edit <drama name>` to edit an uploaded AIO drama, series, or movie";
               break;
             case "addHindi":
               message = "use /addh to add new hindi drama or series or movie";
@@ -108,7 +106,7 @@ export default {
           }
           if (message) await ctx.reply(message);
         } catch (err) {
-          console.log("Error handling callback:", err);
+          logger.error("Error handling callback (admin commands):", err);
         }
       }
     }
@@ -148,14 +146,17 @@ export default {
             const homeMessage = `👋 ʜᴇʟʟᴏ ${firstName}!
             ɪ ᴀᴍ ᴀ ᴘᴏᴡᴇʀꜰᴜʟ ʙᴏᴛ ᴛʜᴀᴛ ᴡᴏʀᴋs ɪɴ ɢʀᴏᴜᴘs. 
             ${escapeMarkdownV2(env.request)}\n`;
-            const groupLink = await telegram
+            const groupLink: string | null = await telegram
               .getInviteLink(env.allowGroups[0])
-              .catch((error) => console.log(error));
+              .catch((error) => {
+                logger.error("Error getting invite link:", error);
+                return null;
+              });
             const homeKeyboard = Markup.inlineKeyboard([
               [
                 Markup.button.url(
                   "📌 Send Your Request Name Here 📌",
-                  groupLink || "https://t.me/kdrama_cht"
+                  groupLink ?? "https://t.me/kdrama_cht"
                 ),
               ],
               [
@@ -173,7 +174,7 @@ export default {
                 parse_mode: "HTML",
                 reply_markup: homeKeyboard.reply_markup,
               })
-              .catch((e) => console.log(e));
+              .catch((e) => logger.error("Error editing message text (home):", e));
           } else {
             const backKeyboard = Markup.inlineKeyboard([
               [Markup.button.callback("🔙 Home", "home")],
@@ -185,11 +186,11 @@ export default {
                 reply_markup: backKeyboard.reply_markup,
                 link_preview_options: { is_disabled: true },
               })
-              .catch((e) => console.log(e));
+              .catch((e) => logger.error("Error editing message text (back):", e));
           }
         }
       } catch (err) {
-        console.log("Error handling callback:", err);
+        logger.error("Error handling callback (user commands):", err);
       }
 
       try {
@@ -225,11 +226,11 @@ export default {
               );
             }
           } else {
-            console.log("No valid invite data found");
+            logger.info("No valid invite data found");
           }
         }
       } catch (error) {
-        console.error("Error occurred:", error);
+        logger.error("Error occurred during premium unlock:", error);
       }
     }
     if (ctx.chat?.id !== undefined) {
@@ -302,7 +303,7 @@ async function handleSystemUses(ctx: Context) {
       "System uses by: " + getSystemUsageDetails() + "\nSystem uses by machine: " + getSystemUsage()
     );
   } catch (error) {
-    console.error("Error fetching system usage:", error);
+    logger.error("Error fetching system usage:", error);
     await ctx.reply("Failed to retrieve system usage information.");
   }
 }

@@ -6,7 +6,7 @@ import database from "../../services/database.js";
 import getAIOdata from "./ongDocument.js";
 import AIOWizardContext from "./ongWizardContext.js";
 import {
-  sendToCOllection,
+  sendToCollection,
   sendToCollectionOng2,
   sendToLogGroup,
 } from "../../utils/sendToCollection.js";
@@ -15,6 +15,7 @@ import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
 import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
 import { getUrlFromFileId } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 
 async function askTitleAIO(ctx: AIOWizardContext) {
   (ctx.session as AIOSessionData).messageIds = [];
@@ -132,7 +133,7 @@ async function done(ctx: AIOWizardContext) {
         await ctx.reply(link);
         try {
           if (!captions || !forwardedMessageIds) {
-            console.error("Error: captions or messageIds is undefined");
+            logger.error("Error: captions or messageIds is undefined");
             return;
           }
 
@@ -157,7 +158,7 @@ async function done(ctx: AIOWizardContext) {
           //   console.error("Error sending to website (AIO):", error);
           // }
         } catch (error) {
-          console.error("Error processing AIO content:", error);
+          logger.error("Error processing AIO content for ongoing creation:", error);
         }
 
         try {
@@ -173,9 +174,10 @@ async function done(ctx: AIOWizardContext) {
               user
             )
           );
-        } catch {}
+        } catch (e) { logger.error("Error sending log to group for ongoing creation:", e); }
         return await ctx.scene.leave();
       } catch (error) {
+        logger.error("Error in ongoing creation wizard:", error);
         return await ctx.scene.leave();
       }
     } else {

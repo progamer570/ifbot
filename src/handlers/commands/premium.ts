@@ -1,5 +1,6 @@
 import { CommandContext } from "../../interfaces.js";
 import database from "../../services/database.js";
+import logger from "../../utils/logger.js";
 
 export default async function replyHandler(ctx: CommandContext) {
   try {
@@ -10,6 +11,6 @@ export default async function replyHandler(ctx: CommandContext) {
       parse_mode: "Markdown",
     });
   } catch (err) {
-    console.error("Error handling reply command:", err);
+    logger.error("Error handling premium command:", err);
   }
 }

@@ -1,6 +1,7 @@
 import { WizardContext } from "telegraf/typings/scenes";
 import auth from "../../services/auth.js";
 import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 
 interface AutoReplyEntry {
   userName: string;
@@ -88,7 +89,7 @@ export default async function autoReactHandler(ctx: WizardContext): Promise<void
       expiry: Date.now() + durationMs,
     };
   } catch (error) {
-    console.error("Error in autoReactHandler:", error);
+    logger.error("Error in autoReactHandler:", error);
     await ctx.reply("An unexpected error occurred. Please try again later.");
   }
 }

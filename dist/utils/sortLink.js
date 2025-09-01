@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import logger from "./logger.js";
 export function shortenUrl(baseUrl, apiToken, url) {
     return __awaiter(this, void 0, void 0, function () {
         var apiUrl, response, responseData, error_1;
@@ -41,7 +42,7 @@ export function shortenUrl(baseUrl, apiToken, url) {
             switch (_a.label) {
                 case 0:
                     apiUrl = "".concat(baseUrl, "?api=").concat(apiToken, "&url=").concat(encodeURIComponent(url));
-                    console.log(baseUrl, apiToken, apiUrl);
+                    logger.debug("Shortening URL - Base URL, API Token, API URL:", baseUrl, apiToken, apiUrl);
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 4, , 5]);
@@ -54,14 +55,14 @@ export function shortenUrl(baseUrl, apiToken, url) {
                     return [4 /*yield*/, response.json()];
                 case 3:
                     responseData = _a.sent();
-                    console.log(responseData);
+                    logger.info("Shortening URL response:", responseData);
                     if (!responseData.shortenedUrl) {
                         throw new Error("Shortened URL not found in response");
                     }
                     return [2 /*return*/, responseData.shortenedUrl];
                 case 4:
                     error_1 = _a.sent();
-                    console.error("Error while shortening URL:", error_1);
+                    logger.error("Error while shortening URL:", error_1);
                     return [2 /*return*/, null];
                 case 5: return [2 /*return*/];
             }

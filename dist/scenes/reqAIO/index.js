@@ -43,6 +43,7 @@ import { sendCallbackQueryResponse } from "./answerCbQUery.js";
 import { makeButtons } from "../../utils/markupButton/permanantButton/keyboard.js";
 import { reservedWordList } from "../../utils/markupButton/permanantButton/lists.js";
 import { cleanString } from "./cleanReq.js";
+import logger from "../../utils/logger.js";
 // Create a Wizard Scene
 var paginationWizard = new Scenes.WizardScene("reqAIO", Composer.on("message", function (ctx) { return __awaiter(void 0, void 0, void 0, function () {
     var request, finalResult, searchCriteria, searchCriteria_1, random, photo, link, error_1;
@@ -83,7 +84,7 @@ var paginationWizard = new Scenes.WizardScene("reqAIO", Composer.on("message", f
                 random = getRandomId();
                 ctx.session.prev = "prev".concat(random);
                 ctx.session.next = "next".concat(random);
-                console.log(ctx.session.prev);
+                logger.debug("Previous page data:", ctx.session.prev);
                 ctx.session.aIOData = finalResult;
                 if (!(finalResult && finalResult.length > 0)) return [3 /*break*/, 9];
                 photo = finalResult[0].aIOPosterID;
@@ -120,6 +121,7 @@ var paginationWizard = new Scenes.WizardScene("reqAIO", Composer.on("message", f
                 return [3 /*break*/, 8];
             case 7:
                 error_1 = _b.sent();
+                logger.error("Error replying with photo:", error_1);
                 return [3 /*break*/, 8];
             case 8:
                 if (finalResult.length > 1) {
@@ -148,10 +150,7 @@ var paginationWizard = new Scenes.WizardScene("reqAIO", Composer.on("message", f
                         ctx.session.prev === ctx.callbackQuery.data))) return [3 /*break*/, 18];
                 page = ctx.session.page || 0;
                 aIOData = ctx.session.aIOData;
-                console.log([
-                    ctx.session.page || 0,
-                    (_a = ctx.session.aIOData) === null || _a === void 0 ? void 0 : _a.length,
-                ]);
+                logger.debug("Current page and AIO data length:", ctx.session.page || 0, (_a = ctx.session.aIOData) === null || _a === void 0 ? void 0 : _a.length);
                 if (!aIOData) return [3 /*break*/, 15];
                 _d.label = 1;
             case 1:
@@ -160,7 +159,7 @@ var paginationWizard = new Scenes.WizardScene("reqAIO", Composer.on("message", f
                 if (!(page + 1 < aIOData.length)) return [3 /*break*/, 4];
                 ctx.session.page =
                     ((_b = ctx.session.page) !== null && _b !== void 0 ? _b : 0) + 1;
-                console.log(page, aIOData.length);
+                logger.debug("Page and AIO data length (next):");
                 photo = aIOData[ctx.session.page || 0].aIOPosterID;
                 //edit
                 return [4 /*yield*/, ctx.editMessageMedia({
@@ -224,6 +223,7 @@ var paginationWizard = new Scenes.WizardScene("reqAIO", Composer.on("message", f
             case 12: return [3 /*break*/, 14];
             case 13:
                 error_2 = _d.sent();
+                logger.error("Error handling pagination callback:", error_2);
                 return [3 /*break*/, 14];
             case 14: return [3 /*break*/, 17];
             case 15: return [4 /*yield*/, sendCallbackQueryResponse(ctx, "No more data there !!!")];

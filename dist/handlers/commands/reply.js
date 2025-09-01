@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+import logger from "../../utils/logger.js";
 export default function replyHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var replyMessage, msg, err_1;
@@ -65,7 +66,7 @@ export default function replyHandler(ctx) {
                     return [3 /*break*/, 4];
                 case 3:
                     err_1 = _a.sent();
-                    console.error("Error handling reply command:", err_1);
+                    logger.error("Error handling reply command:", err_1);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }

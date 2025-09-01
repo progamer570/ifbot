@@ -10,6 +10,7 @@ import { sendCallbackQueryResponse } from "./answerCbQUery.js";
 import { makeButtons } from "../../utils/markupButton/permanantButton/keyboard.js";
 import { reservedWordList } from "../../utils/markupButton/permanantButton/lists.js";
 import { cleanString } from "./cleanReq.js";
+import logger from "../../utils/logger.js";
 
 // Create a Wizard Scene
 const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
@@ -44,7 +45,7 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
         const random = getRandomId();
         (ctx.session as PageSessionData).prev = `prev${random}`;
         (ctx.session as PageSessionData).next = `next${random}`;
-        console.log((ctx.session as PageSessionData).prev);
+        logger.debug("Previous page data:", (ctx.session as PageSessionData).prev);
 
         (ctx.session as PageSessionData).aIOData = finalResult;
         if (finalResult && finalResult.length > 0) {
@@ -77,7 +78,7 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
                   ctx.deleteMessage(messageIdToDelete);
                 }, 5 * 60 * 1000);
               });
-          } catch (error) {}
+          } catch (error) { logger.error("Error replying with photo:", error); }
 
           if (finalResult.length > 1) {
             return ctx.wizard.next();
@@ -100,10 +101,7 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
     ) {
       const page = (ctx.session as PageSessionData).page || 0;
       const aIOData = (ctx.session as PageSessionData).aIOData;
-      console.log([
-        (ctx.session as PageSessionData).page || 0,
-        (ctx.session as PageSessionData).aIOData?.length,
-      ]);
+      logger.debug("Current page and AIO data length:", (ctx.session as PageSessionData).page || 0, (ctx.session as PageSessionData).aIOData?.length);
 
       if (aIOData) {
         try {
@@ -111,7 +109,7 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
             if (page + 1 < aIOData.length) {
               (ctx.session as PageSessionData).page =
                 ((ctx.session as PageSessionData).page ?? 0) + 1;
-              console.log(page, aIOData.length);
+              logger.debug("Page and AIO data length (next):");
 
               const photo = aIOData[(ctx.session as PageSessionData).page || 0].aIOPosterID;
               //edit
@@ -173,7 +171,7 @@ const paginationWizard = new Scenes.WizardScene<WizardContext<PageSessionData>>(
               await sendCallbackQueryResponse(ctx, `Nothing in Prev !! `);
             }
           }
-        } catch (error) {}
+        } catch (error) { logger.error("Error handling pagination callback:", error); }
       } else {
         await sendCallbackQueryResponse(ctx, `No more data there !!!`);
       }

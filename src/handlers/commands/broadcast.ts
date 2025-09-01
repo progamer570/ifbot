@@ -5,6 +5,7 @@ import { delay } from "../../extra/delay.js";
 import { sendToLogGroup } from "../../utils/sendToCollection.js";
 import env from "../../services/env.js";
 import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
+import logger from "../../utils/logger.js";
 
 let broadcastActive: boolean = true;
 
@@ -40,7 +41,7 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
 
     await sendToLogGroup(env.logGroupId, getUserLinkMessage("Broadcasted started by", user));
   } catch (error) {
-    console.error("Error logging broadcast:", error);
+    logger.error("Error logging broadcast:", error);
   }
 
   const referencedMessage = ctx.message.reply_to_message;
@@ -65,7 +66,7 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
           await ctx.telegram.copyMessage(user, ctx.chat!.id, referencedMessage.message_id);
           successCount++;
         } catch (error) {
-          console.error(`Failed to send message to user ${user}:`, error);
+          logger.error(`Failed to send message to user ${user}:`, error);
         }
         await delay(50, 60);
       }
@@ -77,7 +78,7 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
           await ctx.telegram.sendMessage(user, text);
           successCount++;
         } catch (error) {
-          console.error(`Failed to send message to user ${user}:`, error);
+          logger.error(`Failed to send message to user ${user}:`, error);
         }
         await delay(500, 600);
       }
@@ -85,7 +86,7 @@ export default async function myBroadcastHandler(ctx: WizardContext) {
 
     ctx.reply(`Message broadcasted to ${successCount} users.`);
   } catch (error) {
-    console.error("Error broadcasting message:", error);
+    logger.error("Error broadcasting message:", error);
     ctx.reply("Failed to broadcast message.");
   }
 }

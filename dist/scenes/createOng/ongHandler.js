@@ -45,6 +45,7 @@ import getUserLinkMessage from "../../utils/getUserLinkMessage.js";
 import { processCaptionForStore } from "../../utils/caption/editCaption.js";
 import { getPhotoUrl } from "../../utils/getPhotoUrl.js";
 import { getUrlFromFileId } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 function askTitleAIO(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -130,17 +131,17 @@ function handlePosterAskRelatedMsg(ctx) {
 }
 function done(ctx) {
     return __awaiter(this, void 0, void 0, function () {
-        var text, _a, backupChannel, messageIds, aIOPosterID, captions, _b, aIOTitle, webPhotoUrl, photoUrl, AIODetails, forwardedMessageIds_1, AIOData, shareId, link, botUsername, _c, links, error_1, user, _d, error_2, session, caption;
-        var _e, _f, _g;
-        return __generator(this, function (_h) {
-            switch (_h.label) {
+        var text, _a, backupChannel, messageIds, aIOPosterID, captions, _b, aIOTitle, webPhotoUrl, photoUrl, AIODetails, forwardedMessageIds_1, AIOData, shareId, link, botUsername, _c, links, error_1, user, e_1, error_2, session, caption;
+        var _d, _e, _f;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
                 case 0:
                     if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/cancel")) return [3 /*break*/, 3];
                     return [4 /*yield*/, ctx.reply("Share Creation Canceled start again /createong")];
                 case 1:
-                    _h.sent();
+                    _g.sent();
                     return [4 /*yield*/, ctx.scene.leave()];
-                case 2: return [2 /*return*/, _h.sent()];
+                case 2: return [2 /*return*/, _g.sent()];
                 case 3:
                     if (!ctx.message) return [3 /*break*/, 29];
                     text = "text" in ctx.message ? ctx.message.text : "";
@@ -149,7 +150,7 @@ function done(ctx) {
                     _b = ctx.session, aIOTitle = _b.aIOTitle, webPhotoUrl = _b.webPhotoUrl;
                     return [4 /*yield*/, getPhotoUrl(aIOPosterID)];
                 case 4:
-                    photoUrl = _h.sent();
+                    photoUrl = _g.sent();
                     AIODetails = {
                         aIOTitle: aIOTitle,
                         backupChannel: backupChannel,
@@ -161,45 +162,45 @@ function done(ctx) {
                             parse_mode: "MarkdownV2",
                         })];
                 case 5:
-                    _h.sent();
+                    _g.sent();
                     ctx.session.done = true;
-                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id, AIODetails.messageIds ? AIODetails.messageIds : [], false, captions)];
+                    return [4 /*yield*/, telegram.forwardMessages(env.dbOngoingChannelId, (_d = ctx.chat) === null || _d === void 0 ? void 0 : _d.id, AIODetails.messageIds ? AIODetails.messageIds : [], false, captions)];
                 case 6:
-                    forwardedMessageIds_1 = _h.sent();
-                    _h.label = 7;
+                    forwardedMessageIds_1 = _g.sent();
+                    _g.label = 7;
                 case 7:
-                    _h.trys.push([7, 24, , 26]);
+                    _g.trys.push([7, 24, , 26]);
                     return [4 /*yield*/, getAIOdata(AIODetails, forwardedMessageIds_1, "ongoing")];
                 case 8:
-                    AIOData = _h.sent();
+                    AIOData = _g.sent();
                     shareId = void 0;
                     link = void 0;
                     botUsername = ctx.botInfo.username;
                     if (!AIOData) return [3 /*break*/, 10];
                     return [4 /*yield*/, database.createOngoing(AIOData)];
                 case 9:
-                    _c = _h.sent();
+                    _c = _g.sent();
                     return [3 /*break*/, 11];
                 case 10:
                     _c = null;
-                    _h.label = 11;
+                    _g.label = 11;
                 case 11:
                     shareId = _c;
                     link = shareId ? "https://t.me/".concat(botUsername, "?start=").concat(shareId, "-eng") : null;
                     if (!(!AIOData || !shareId || !link || !webPhotoUrl)) return [3 /*break*/, 14];
                     return [4 /*yield*/, ctx.reply("Share Creation Canceled start again /createong")];
                 case 12:
-                    _h.sent();
+                    _g.sent();
                     return [4 /*yield*/, ctx.scene.leave()];
-                case 13: return [2 /*return*/, _h.sent()];
+                case 13: return [2 /*return*/, _g.sent()];
                 case 14: return [4 /*yield*/, ctx.reply(link)];
                 case 15:
-                    _h.sent();
-                    _h.label = 16;
+                    _g.sent();
+                    _g.label = 16;
                 case 16:
-                    _h.trys.push([16, 18, , 19]);
+                    _g.trys.push([16, 18, , 19]);
                     if (!captions || !forwardedMessageIds_1) {
-                        console.error("Error: captions or messageIds is undefined");
+                        logger.error("Error: captions or messageIds is undefined");
                         return [2 /*return*/];
                     }
                     links = captions.map(function (caption, index) { return ({
@@ -208,36 +209,38 @@ function done(ctx) {
                     }); });
                     return [4 /*yield*/, sendToCollectionOng2(env.collectionOngoing, aIOPosterID, links, shareId ? String(shareId) : undefined)];
                 case 17:
-                    _h.sent();
+                    _g.sent();
                     return [3 /*break*/, 19];
                 case 18:
-                    error_1 = _h.sent();
-                    console.error("Error processing AIO content:", error_1);
+                    error_1 = _g.sent();
+                    logger.error("Error processing AIO content for ongoing creation:", error_1);
                     return [3 /*break*/, 19];
                 case 19:
-                    _h.trys.push([19, 21, , 22]);
+                    _g.trys.push([19, 21, , 22]);
                     user = {
                         id: ctx.from.id,
                         firstname: ctx.from.first_name,
                         username: ctx.from.username,
                     };
-                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("".concat(processCaptionForStore(((_f = AIODetails.aIOTitle) === null || _f === void 0 ? void 0 : _f.slice(0, 40)) || "none"), " added by ..."), user))];
+                    return [4 /*yield*/, sendToLogGroup(env.logGroupId, getUserLinkMessage("".concat(processCaptionForStore(((_e = AIODetails.aIOTitle) === null || _e === void 0 ? void 0 : _e.slice(0, 40)) || "none"), " added by ..."), user))];
                 case 20:
-                    _h.sent();
+                    _g.sent();
                     return [3 /*break*/, 22];
                 case 21:
-                    _d = _h.sent();
+                    e_1 = _g.sent();
+                    logger.error("Error sending log to group for ongoing creation:", e_1);
                     return [3 /*break*/, 22];
                 case 22: return [4 /*yield*/, ctx.scene.leave()];
-                case 23: return [2 /*return*/, _h.sent()];
+                case 23: return [2 /*return*/, _g.sent()];
                 case 24:
-                    error_2 = _h.sent();
+                    error_2 = _g.sent();
+                    logger.error("Error in ongoing creation wizard:", error_2);
                     return [4 /*yield*/, ctx.scene.leave()];
-                case 25: return [2 /*return*/, _h.sent()];
+                case 25: return [2 /*return*/, _g.sent()];
                 case 26: return [3 /*break*/, 29];
-                case 27: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_g = ctx.session.messageIds) === null || _g === void 0 ? void 0 : _g.length), keyboard.oneTimeDoneKeyboard())];
+                case 27: return [4 /*yield*/, ctx.reply("Send next file if Done Click Done ".concat((_f = ctx.session.messageIds) === null || _f === void 0 ? void 0 : _f.length), keyboard.oneTimeDoneKeyboard())];
                 case 28:
-                    _h.sent();
+                    _g.sent();
                     session = ctx.session;
                     session.messageIds = session.messageIds || [];
                     session.messageIds.push(ctx.message.message_id);
@@ -253,7 +256,7 @@ function done(ctx) {
                     }
                     session.captions = session.captions || [];
                     session.captions.push(caption);
-                    _h.label = 29;
+                    _g.label = 29;
                 case 29: return [2 /*return*/];
             }
         });

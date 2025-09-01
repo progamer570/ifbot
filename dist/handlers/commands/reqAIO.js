@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { thankReply } from "../../utils/markupButton/permanantButton/lists.js";
 import env from "../../services/env.js";
-export default function reqAIOHandler(ctx, next) {
+export default function reqAioHandler(ctx, next) {
     return __awaiter(this, void 0, void 0, function () {
         var id, text, error_1;
         var _this = this;
@@ -55,13 +55,13 @@ export default function reqAIOHandler(ctx, next) {
                         text.length > 4 &&
                         !text.startsWith("/s") &&
                         !text.startsWith("/h"))) return [3 /*break*/, 3];
-                    return [4 /*yield*/, ctx.scene.enter("reqAIO")];
+                    return [4 /*yield*/, ctx.scene.enter("reqAio")];
                 case 2:
                     _b.sent();
                     return [3 /*break*/, 7];
                 case 3:
                     if (!(text.startsWith("/s") || text.startsWith("/h"))) return [3 /*break*/, 5];
-                    return [4 /*yield*/, ctx.scene.enter("reqAIO")];
+                    return [4 /*yield*/, ctx.scene.enter("reqAio")];
                 case 4:
                     _b.sent();
                     return [3 /*break*/, 7];
@@ -71,7 +71,7 @@ export default function reqAIOHandler(ctx, next) {
                         !text.includes("/") &&
                         text.length > 4 &&
                         !containsEmoji(text))) return [3 /*break*/, 7];
-                    return [4 /*yield*/, ctx.scene.enter("reqAIO")];
+                    return [4 /*yield*/, ctx.scene.enter("reqAio")];
                 case 6:
                     _b.sent();
                     _b.label = 7;

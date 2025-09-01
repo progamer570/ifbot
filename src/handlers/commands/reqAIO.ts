@@ -2,7 +2,7 @@ import { WizardContext } from "telegraf/typings/scenes";
 import { thankReply } from "../../utils/markupButton/permanantButton/lists.js";
 import env from "../../services/env.js";
 
-export default async function reqAIOHandler(ctx: WizardContext, next: () => void) {
+export default async function reqAioHandler(ctx: WizardContext, next: () => void) {
   if (ctx.message && "text" in ctx.message) {
     const id = ctx.chat?.id;
     const text = ctx.message.text;
@@ -15,9 +15,9 @@ export default async function reqAIOHandler(ctx: WizardContext, next: () => void
           !text.startsWith("/s") &&
           !text.startsWith("/h")
         ) {
-          await ctx.scene.enter("reqAIO");
+          await ctx.scene.enter("reqAio");
         } else if (text.startsWith("/s") || text.startsWith("/h")) {
-          await ctx.scene.enter("reqAIO");
+          await ctx.scene.enter("reqAio");
         } else if (
           !ctx.message.reply_to_message &&
           !text.includes("@") &&
@@ -25,7 +25,7 @@ export default async function reqAIOHandler(ctx: WizardContext, next: () => void
           text.length > 4 &&
           !containsEmoji(text)
         ) {
-          await ctx.scene.enter("reqAIO");
+          await ctx.scene.enter("reqAio");
         }
       }
 

@@ -10,6 +10,7 @@ import {
   sendTokenGeneratedMessage,
   sendWelcomeMessage,
 } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 
 export default async function startHandler(ctx: CommandContext) {
   const chatId = ctx.chat.id;
@@ -17,7 +18,7 @@ export default async function startHandler(ctx: CommandContext) {
   const userId = user.id;
   const payload: string = ctx.message.text.split(" ")[1];
   let shareId: number | undefined = undefined;
-  console.log(payload);
+  logger.debug("Payload:", payload);
   try {
     // Handle token generation
     if (payload && payload.includes("token-")) {
@@ -29,7 +30,7 @@ export default async function startHandler(ctx: CommandContext) {
 
         if (tokenNumber === activeShareId) {
           const { token } = await database.manageToken(userId.toString());
-          return await sendTokenGeneratedMessage(ctx, token).catch((error) => console.error(error));
+          return await sendTokenGeneratedMessage(ctx, token).catch((error) => logger.error("Error sending token generated message:", error));
         }
       }
     }
@@ -45,7 +46,7 @@ export default async function startHandler(ctx: CommandContext) {
           if (!isUserExist) {
             await addInviteUser(inviterId, newUserId, user.username || "null");
             return await sendInviterWelcomeMessage(ctx, inviterId).catch((error) =>
-              console.error(error)
+              logger.error("Error sending inviter welcome message:", error)
             );
           }
         }
@@ -60,7 +61,7 @@ export default async function startHandler(ctx: CommandContext) {
     // Default message if no shareId is found
     if (!shareId) {
       return await sendWelcomeMessage(ctx, user, userId.toString()).catch((error) =>
-        console.error(error)
+        logger.error("Error sending welcome message:", error)
       );
     }
 
@@ -74,18 +75,21 @@ export default async function startHandler(ctx: CommandContext) {
 
     const haveBotPremium = await database
       .checkBotPremiumStatus(userId.toString())
-      .catch((error) => console.error(error));
+      .catch((error) => logger.error("Error checking bot premium status in start handler:", error));
     // Token validation
     const isValidToken = await database.verifyAndValidateToken(userId.toString());
     if (!isValidToken) {
-      const firstItem = await database.getFirstItem().catch((error) => console.error(error));
+      const firstItem = await database.getFirstItem().catch((error) => {
+        logger.error("Error getting first item for token validation:", error);
+        return null; // Explicitly return null on error
+      });
       if (firstItem && !haveBotPremium) {
         return await sendTokenExpiredMessage(
           ctx,
           user,
           firstItem.sort[0].aioShortUrl,
           payload
-        ).catch((error) => console.error(error));
+        ).catch((error) => logger.error("Error sending token expired message:", error));
       }
     }
 
@@ -97,7 +101,7 @@ export default async function startHandler(ctx: CommandContext) {
           await database.useRequest(userId.toString());
         }
       } catch (error) {
-        console.error("Error updating request count:", error);
+        logger.error("Error updating request count:", error);
       }
 
       let messageIds;
@@ -126,15 +130,15 @@ export default async function startHandler(ctx: CommandContext) {
       try {
         await database.saveUser(user);
       } catch (error) {
-        console.error("Error saving user data:", error);
+        logger.error("Error saving user data:", error);
       }
     } else {
       return await sendDailyLimitMessage(ctx, user, userId.toString()).catch((error) =>
-        console.error(error)
+        logger.error("Error sending daily limit message:", error)
       );
     }
   } catch (error) {
-    console.error("Error in startHandler:", error);
+    logger.error("Error in startHandler:", error);
   }
 }
 

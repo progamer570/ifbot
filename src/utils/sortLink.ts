@@ -1,10 +1,12 @@
+import logger from "./logger.js";
+
 export async function shortenUrl(
   baseUrl: string,
   apiToken: string,
   url: string
 ): Promise<string | null> {
   const apiUrl = `${baseUrl}?api=${apiToken}&url=${encodeURIComponent(url)}`;
-  console.log(baseUrl, apiToken, apiUrl);
+  logger.debug("Shortening URL - Base URL, API Token, API URL:", baseUrl, apiToken, apiUrl);
 
   try {
     const response = await fetch(apiUrl);
@@ -14,7 +16,7 @@ export async function shortenUrl(
     }
 
     const responseData = await response.json();
-    console.log(responseData);
+    logger.info("Shortening URL response:", responseData);
 
     if (!responseData.shortenedUrl) {
       throw new Error("Shortened URL not found in response");
@@ -22,7 +24,7 @@ export async function shortenUrl(
 
     return responseData.shortenedUrl;
   } catch (error) {
-    console.error("Error while shortening URL:", error);
+    logger.error("Error while shortening URL:", error);
     return null;
   }
 }

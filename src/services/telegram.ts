@@ -8,6 +8,7 @@ import { delay } from "../extra/delay.js";
 import { scheduleMessageDeletion } from "../extra/scheduleMessageDeletion.js";
 import { processCaption } from "../utils/caption/editCaption.js";
 import { bold, fmt } from "telegraf/format";
+import logger from "../utils/logger.js";
 
 class Telegram {
   app: Telegraf<Scenes.WizardContext>;
@@ -35,12 +36,12 @@ class Telegram {
         },
         {
           command: "add",
-          description: "Admin Command",
+          description: "Admin Command (Add AIO)",
         },
 
         {
           command: "edit",
-          description: "Admin Command",
+          description: "Admin Command (Edit AIO)",
         },
         {
           command: "/cancel",
@@ -67,7 +68,7 @@ class Telegram {
           description: "To Check Your Invites",
         },
       ]);
-    } catch (e) {}
+    } catch (e) { logger.error("Error setting bot commands:", e); }
     const forceChatIds = [...env.forceChannelIds, ...env.forceGroupIds];
 
     await mapAsync(forceChatIds, async (chatId) => await this.getInviteLink(chatId));
@@ -87,7 +88,7 @@ class Telegram {
     this.waitingMessageTimeout = setTimeout(async () => {
       try {
         await this.deleteWaitingMessage(chatId);
-      } catch {}
+      } catch (e) { logger.error("Error deleting waiting message:", e); }
 
       const waitingMessage = await this.app.telegram.sendMessage(chatId, text, {
         reply_markup: replyMarkup,
@@ -179,10 +180,10 @@ class Telegram {
         } catch (error) {
           success = false;
           if ((error as any).code === 429) {
-            console.log(`${error}`);
+            logger.warn(`Rate limit error (429) when forwarding message: ${error}`);
             await new Promise((resolve) => setTimeout(resolve, 40000));
           } else {
-            console.log(`${error}`);
+            logger.error(`Error forwarding message: ${error}`);
             await new Promise((resolve) => setTimeout(resolve, 40000));
           }
         }
@@ -199,7 +200,7 @@ class Telegram {
           setTimeout(async () => {
             try {
               await this.app.telegram.deleteMessage(toChatId, messageIdToDelete);
-            } catch {}
+            } catch (e) { logger.error("Error deleting scheduled message:", e); }
           }, 5 * 60 * 1000);
         });
     }

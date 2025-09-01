@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import database from "../../services/database.js";
+import logger from "../../utils/logger.js";
 export default function replyHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var userId, premiumDetails, err_1;
@@ -55,7 +56,7 @@ export default function replyHandler(ctx) {
                     return [3 /*break*/, 4];
                 case 3:
                     err_1 = _b.sent();
-                    console.error("Error handling reply command:", err_1);
+                    logger.error("Error handling premium command:", err_1);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }

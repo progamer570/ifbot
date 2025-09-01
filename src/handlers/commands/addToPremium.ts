@@ -2,6 +2,7 @@ import { CommandContext } from "../../interfaces.js";
 import auth from "../../services/auth.js";
 import database from "../../services/database.js";
 import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 
 export default async function addToPremiumHandler(ctx: CommandContext) {
   const userId = ctx.from?.id;
@@ -39,6 +40,6 @@ export default async function addToPremiumHandler(ctx: CommandContext) {
       parse_mode: "Markdown",
     });
   } catch (err) {
-    console.log(err);
+    logger.error("Error adding to premium:", err);
   }
 }

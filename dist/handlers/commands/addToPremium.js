@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import auth from "../../services/auth.js";
 import database from "../../services/database.js";
 import { hasReplyToMessage, isTextMessage } from "../../utils/helper.js";
+import logger from "../../utils/logger.js";
 export default function addToPremiumHandler(ctx) {
     return __awaiter(this, void 0, void 0, function () {
         var userId, firstName, args, addUserToPremium, duration, replyToMessage, result, err_1;
@@ -89,7 +90,7 @@ export default function addToPremiumHandler(ctx) {
                     return [3 /*break*/, 12];
                 case 11:
                     err_1 = _c.sent();
-                    console.log(err_1);
+                    logger.error("Error adding to premium:", err_1);
                     return [3 /*break*/, 12];
                 case 12: return [2 /*return*/];
             }

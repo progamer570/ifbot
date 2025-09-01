@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import env from "./env.js";
+import logger from "../utils/logger.js";
 /**
  * Sends data to the given server endpoint using fetch.
  * @param {string} serverUrl - The API endpoint URL.
@@ -72,11 +73,12 @@ export function addToWebsite(imageUrl_1) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
-                    console.log("✅ Server Response:", data);
+                    logger.info("✅ Server Response (addToWebsite):");
+                    logger.info(data);
                     return [2 /*return*/, data];
                 case 3:
                     error_1 = _a.sent();
-                    console.error("❌ Error:", error_1);
+                    logger.error("❌ Error (addToWebsite):", error_1);
                     return [2 /*return*/, null];
                 case 4: return [2 /*return*/];
             }
@@ -111,11 +113,12 @@ export function updateToWebsite(shareId, isPoster, updateQuery) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
-                    console.log("✅ Server Response:", data);
+                    logger.info("✅ Server Response (updateToWebsite):");
+                    logger.info(data);
                     return [2 /*return*/, data];
                 case 3:
                     error_2 = _a.sent();
-                    console.error("❌ Error:", error_2);
+                    logger.error("❌ Error (updateToWebsite):", error_2);
                     return [2 /*return*/, null];
                 case 4: return [2 /*return*/];
             }
@@ -145,11 +148,12 @@ export function deleteToWebsite(shareId) {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     data = _a.sent();
-                    console.log("✅ Server Response:", data);
+                    logger.info("✅ Server Response (deleteToWebsite):");
+                    logger.info(data);
                     return [2 /*return*/, data];
                 case 3:
                     error_3 = _a.sent();
-                    console.error("❌ Error:", error_3);
+                    logger.error("❌ Error (deleteToWebsite):", error_3);
                     return [2 /*return*/, null];
                 case 4: return [2 /*return*/];
             }
