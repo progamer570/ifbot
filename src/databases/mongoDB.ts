@@ -205,8 +205,7 @@ class MongoDB {
         try {
           await sendToLogGroup(
             env.logGroupId,
-            `not found: ${normalizedTitle} [View Message](${
-              messageIdLink || "https://www.telegram.org/"
+            `not found: ${normalizedTitle} [View Message](${messageIdLink || "https://www.telegram.org/"
             })`
           );
         } catch (e) { logger.error("Error sending not found log for AIO search:", e); }
