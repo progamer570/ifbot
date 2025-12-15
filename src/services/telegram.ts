@@ -22,7 +22,7 @@ class Telegram {
     this.app = new Telegraf<Scenes.WizardContext>(env.token);
     this.messages = new Map();
     this.waitingMessageId = NaN;
-    this.waitingMessageTimeout = setTimeout(() => {});
+    this.waitingMessageTimeout = setTimeout(() => { });
     this.firstWaitingMessage = true;
     this.inviteLinks = new Map();
   }
@@ -71,7 +71,13 @@ class Telegram {
     } catch (e) { logger.error("Error setting bot commands:", e); }
     const forceChatIds = [...env.forceChannelIds, ...env.forceGroupIds];
 
-    await mapAsync(forceChatIds, async (chatId) => await this.getInviteLink(chatId));
+    await mapAsync(forceChatIds, async (chatId) => {
+      try {
+        await this.getInviteLink(chatId);
+      } catch (error) {
+        logger.error(`Failed to get invite link for chat ${chatId}:`, error);
+      }
+    });
   }
 
   async sendWaitingMessage(chatId: number) {

@@ -68,7 +68,14 @@ class Telegram {
             logger.error("Error setting bot commands:", e);
         }
         const forceChatIds = [...env.forceChannelIds, ...env.forceGroupIds];
-        await mapAsync(forceChatIds, async (chatId) => await this.getInviteLink(chatId));
+        await mapAsync(forceChatIds, async (chatId) => {
+            try {
+                await this.getInviteLink(chatId);
+            }
+            catch (error) {
+                logger.error(`Failed to get invite link for chat ${chatId}:`, error);
+            }
+        });
     }
     async sendWaitingMessage(chatId) {
         clearTimeout(this.waitingMessageTimeout);
