@@ -14,7 +14,7 @@ export async function sendToCollection(
 ): Promise<void> {
   try {
     await telegram.app.telegram.sendPhoto(chat, aIOPosterID || "", {
-      caption: `\`\n${caption}\n\``,
+      caption: `**${caption}**`,
       parse_mode: "Markdown",
       reply_markup: keyboard.makeCollectionButton(link),
     });
@@ -106,3 +106,4 @@ export async function sendToLogGroup(chat: any, caption: string): Promise<void> 
     logger.error("Error sending log message:", error);
   }
 }
+
