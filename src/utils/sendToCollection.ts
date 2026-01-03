@@ -14,7 +14,7 @@ export async function sendToCOllection(
 ): Promise<void> {
   try {
     await telegram.app.telegram.sendPhoto(chat, aIOPosterID || "", {
-      caption: `\`\n${caption}\n\``,
+      caption: `**${caption}**`,
       parse_mode: "Markdown",
       reply_markup: keyboard.makeCollectionButton(link),
     });
