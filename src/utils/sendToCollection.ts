@@ -14,8 +14,8 @@ export async function sendToCOllection(
 ): Promise<void> {
   try {
     await telegram.app.telegram.sendPhoto(chat, aIOPosterID || "", {
-      caption: `**${caption}**`,
-      parse_mode: "Markdown",
+      caption: `<b>${caption}</b>`,
+      parse_mode: "HTML",
       reply_markup: keyboard.makeCollectionButton(link),
     });
     console.log("Photo sent successfully!");
