@@ -72,7 +72,7 @@ export function sendToCOllectionOng(chat, link, caption) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, telegram.app.telegram.sendMessage(chat, "<b>".concat(caption, "</b>") || "", {
+                    return [4 /*yield*/, telegram.app.telegram.sendMessage(chat, "```\n".concat(caption, "\n```") || "", {
                             parse_mode: "Markdown",
                             reply_markup: keyboard.makeCollectionButton(link),
                         })];
@@ -100,7 +100,7 @@ export function sendToCollectionOng2(chat_1, aIOPoster_1, links_1) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    captionText = "<b>".concat(links[0].caption, "</b>");
+                    captionText = "```\n".concat(links[0].caption, "\n```");
                     shareText = shareId
                         ? "\n[\uD83D\uDD17add ongoing](tg://msg?text=/addong".concat(encodeURIComponent(shareId), ")")
                         : "";
