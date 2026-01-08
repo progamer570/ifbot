@@ -333,8 +333,8 @@ class MongoDB {
 
       if (!tokenData) {
         // one day free for new users
-        const newToken = jwt.sign({ userId }, env.jwtSecret, { expiresIn: "24h" });
-        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        const newToken = jwt.sign({ userId }, env.jwtSecret, { expiresIn: "12h" });
+        const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
         const newTokenData = new this.TokenModel({
           userId,
           token: newToken,
@@ -366,8 +366,8 @@ class MongoDB {
   }
 
   async generateNewToken(userId: string): Promise<string> {
-    const newToken = jwt.sign({ userId }, env.jwtSecret, { expiresIn: "24h" });
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const newToken = jwt.sign({ userId }, env.jwtSecret, { expiresIn: "12h" });
+    const expiresAt = new Date(Date.now() + 12 * 60 * 60 * 1000);
 
     try {
       const existingToken = await this.TokenModel.findOne({ userId });
